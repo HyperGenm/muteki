@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weiziplus.muteki.core.pc.system.mapper.UserMapper">
+    <select id="getListVo" resultType="com.weiziplus.muteki.core.pc.system.vo.UserVo">
+        SELECT tu.*,temp.create_time `lastActiveTime`,temp.ip_address `lastIpAddress`
+        FROM `t_user` tu
+        LEFT JOIN (
+        SELECT *
+        FROM (
+        SELECT `user_id`,`ip_address`,`create_time`
+        FROM `t_user_log`
+        <if test="null != lastActiveTimeSort and '' != lastActiveTimeSort">
+            ORDER BY `create_time` ${lastActiveTimeSort}
+        </if>
+        ) temp
+        GROUP BY `user_id`
+        ) temp ON tu.id = temp.user_id
+        <where>
+            <if test="null != status">
+                tu.status = #{status}
+            </if>
+            <if test="null != lastActiveTime">
+                AND temp.create_time LIKE CONCAT(#{lastActiveTime},'%')
+            </if>
+            <if test="null != createTime">
+                AND tu.create_time LIKE CONCAT(#{createTime},'%')
+            </if>
+            <if test="null != username and '' != username">
+                AND POSITION(#{username} IN tu.username)
+            </if>
+        </where>
+        <if test="null != createTimeSort and '' != createTimeSort">
+            ORDER BY tu.create_time ${createTimeSort}
+        </if>
+    </select>
+</mapper>

@@ -34,20 +34,18 @@
                 this.rows = [
                     {label: '用户名', prop: data['username']},
                     {label: '真实姓名', prop: data['realName']},
-                    {label: '角色', prop: data['roleList']},
-                    {label: '手机号', prop: data['phone']},
                     {
-                        label: '状态', type: 'switch',
+                        label: '状态', type: 'tag',
                         element() {
-                            return {
-                                value: 1 === data['status']
-                            }
-                        }
-                    },
-                    {
-                        label: '头像', type: 'avatar', element() {
-                            return {
-                                src: data['iconAllPath']
+                            let result = [
+                                null,
+                                {content: '正常', type: 'success'},
+                                {content: '禁用', type: 'warning'},
+                                {content: '封号', type: 'danger'},
+                            ];
+                            return result[data['status']] || {
+                                content: `未知状态 ${data['status']}`,
+                                type: 'danger'
                             }
                         }
                     },

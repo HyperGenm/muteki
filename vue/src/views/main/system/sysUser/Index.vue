@@ -77,7 +77,7 @@
                             }
                         }
                     },
-                    {label: '用户最后活跃ip地址', prop: 'laseIpAddress', showOverflowTooltip: true},
+                    {label: '用户最后活跃ip地址', prop: 'lastIpAddress', showOverflowTooltip: true},
                     {
                         label: '用户最后活跃时间',
                         prop: 'lastActiveTime',

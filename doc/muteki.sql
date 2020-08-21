@@ -82,7 +82,7 @@ CREATE TABLE `sys_function`  (
   `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '功能描述',
   `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '功能创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统功能表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统功能表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_function
@@ -90,7 +90,7 @@ CREATE TABLE `sys_function`  (
 INSERT INTO `sys_function` VALUES (1, 0, 'system', 'system', '系统管理', '[]', 1, 1, 1, 'el-icon-s-tools', 88, '后台的管理', '2019-05-09 16:55:47');
 INSERT INTO `sys_function` VALUES (2, 1, 'sysFunction', 'sysFunction', '功能管理', '[\"/pc/sysFunction/getPageList\"]', 1, 2, 1, 'el-icon-s-tools', 9, '管理后台的菜单、按钮等。对应api可以将权限精确到接口', '2019-05-09 16:56:10');
 INSERT INTO `sys_function` VALUES (3, 1, 'sysRole', 'sysRole', '角色管理', NULL, 1, 1, 1, 'el-icon-user-solid\r\n', 2, '管理后台系统的各项角色，以及角色所拥有的功能等', '2019-05-09 16:56:26');
-INSERT INTO `sys_function` VALUES (4, 1, 'sysUser', 'sysUser', '用户管理', NULL, 1, 1, 1, 'el-icon-user', 1, '管理后台的用户', '2019-05-09 16:56:52');
+INSERT INTO `sys_function` VALUES (4, 1, 'sysUser', 'sysUser', '系统用户管理', NULL, 1, 1, 1, 'el-icon-user', 1, '管理后台的用户', '2019-05-09 16:56:52');
 INSERT INTO `sys_function` VALUES (5, 29, 'sysUserLog', 'sysUserLog', '系统日志管理', '[\"/pc/sysUserLog/getPageList\"]', 1, 2, 1, 'el-icon-s-order', 4, '记录系统用户的操作', '2019-05-13 15:30:57');
 INSERT INTO `sys_function` VALUES (6, 3, 'sysRole_add', 'add', '新增', '[\"/pc/sysRole/add\"]', 2, 1, 1, 'el-icon-info', 0, '', '2019-05-10 10:23:08');
 INSERT INTO `sys_function` VALUES (7, 3, 'sysRole_update', 'update', '修改', '[\"/pc/sysRole/update\"]', 2, 1, 1, 'el-icon-info', 0, '', '2019-05-10 10:23:21');
@@ -118,6 +118,11 @@ INSERT INTO `sys_function` VALUES (28, 29, 'sysUserLoginLog', 'sysUserLoginLog',
 INSERT INTO `sys_function` VALUES (29, 1, 'logManage', 'logManage', '日志管理', NULL, 1, 1, 1, 'el-icon-info', 77, '', '2020-08-20 10:24:28');
 INSERT INTO `sys_function` VALUES (30, 29, 'userLoginLog', 'userLoginLog', '用户登录日志', '[\"/pc/userLoginLog/getPageList\"]', 1, 1, 1, 'el-icon-info', 77, '', '2020-08-20 10:37:37');
 INSERT INTO `sys_function` VALUES (31, 1, 'druid', 'http://localhost:8080/druid', '阿里druid', NULL, 1, 2, 2, 'el-icon-info', 77, '', '2020-08-20 11:38:02');
+INSERT INTO `sys_function` VALUES (32, 1, 'user', 'user', 'web用户管理', NULL, 1, 1, 1, 'el-icon-info', 77, '', '2020-08-21 15:23:12');
+INSERT INTO `sys_function` VALUES (33, 32, 'user_get', 'user_get', '查看', '[\"/pc/user/getPageList\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-08-21 15:24:45');
+INSERT INTO `sys_function` VALUES (34, 32, 'user_disable', 'user_disable', '禁用', '[\"/pc/user/disableUser\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-08-21 15:58:26');
+INSERT INTO `sys_function` VALUES (35, 32, 'user_enable', 'user_enable', '启用', '[\"/pc/user/enableUser\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-08-21 15:58:45');
+
 
 -- ----------------------------
 -- Table structure for sys_role

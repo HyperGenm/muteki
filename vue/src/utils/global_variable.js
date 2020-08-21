@@ -111,6 +111,15 @@ const URL = {
             /*获取分页数据*/
             getPageList: '/userLoginLog/getPageList'
         },
+        /*********************web用户*****************/
+        user: {
+            /*获取分页数据*/
+            getPageList: '/user/getPageList',
+            /*禁用账户*/
+            disableUser: '/user/disableUser',
+            /*启用账户*/
+            enableUser: '/user/enableUser'
+        },
     },
     /*************字典管理*****************/
     dataDictionary: {},

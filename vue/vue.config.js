@@ -70,7 +70,7 @@ module.exports = {
                         drop_debugger: true,
                         drop_console: true,
                         // 移除console
-                        pure_funcs: ['console.log', 'console.warn', 'console.debug']
+                        pure_funcs: ['console.log', 'console.debug','console.trace']
                     },
                 },
                 sourceMap: false,
