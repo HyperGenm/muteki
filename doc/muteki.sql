@@ -310,7 +310,8 @@ CREATE TABLE `t_user`  (
   `status` tinyint(2) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态,1:正常,2:禁用,3:封号',
   `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '用户创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `username`(`username`) USING BTREE
+  UNIQUE INDEX `username`(`username`) USING BTREE,
+  INDEX `create_time`(`create_time`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'web用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------

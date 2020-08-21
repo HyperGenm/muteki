@@ -31,10 +31,10 @@
                 AND su.status = #{status}
             </if>
             <if test="null != lastActiveTime">
-                AND temp.create_time LIKE CONCAT(#{lastActiveTime},'%')
+                AND temp.create_time BETWEEN #{lastActiveTime} AND CONCAT(#{lastActiveTime},' 23:59:59')
             </if>
             <if test="null != createTime">
-                AND su.create_time LIKE CONCAT(#{createTime},'%')
+                AND su.create_time BETWEEN #{createTime} AND CONCAT(#{createTime},' 23:59:59')
             </if>
             <if test="null != username and '' != username">
                 AND POSITION(#{username} IN su.username)
