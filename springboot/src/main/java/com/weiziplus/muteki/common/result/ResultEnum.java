@@ -20,6 +20,8 @@ public enum ResultEnum {
     ERROR("error", 402),
     ERROR_ROLE("没有权限", 403),
     ERROR_FAST("访问频率过快", 406),
+    ERROR_ALI("调用ali接口出错", 420),
+    ERROR_BAIDU("调用百度接口出错", 430),
     ERROR_EXCEPTION("系统异常", 500),
     ERROR_ASPECT("aop异常异常", 501);
 

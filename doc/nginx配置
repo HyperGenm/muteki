@@ -63,7 +63,7 @@ http {
             expires  7d;
         }
 
-        ###请求转发到某个端口
+        ###请求转发到某个端口,后面要有个/
         location /github/ {
             #注意后面有个/
             proxy_pass   http://127.0.0.1:8888/;

@@ -110,3 +110,17 @@ global:
   #百度开放平台
   baidu:
     ak: abc
+  #阿里云开放平台
+  ali:
+    #域名id
+    region-id: cn-hangzhou
+    #RAM账号的AccessKey ID
+    access-key-id: a
+    #RAM账号AccessKey Secret
+    access-secret: b
+    #短信
+    sms:
+      #签名
+      sign-name: WeiziPlus
+      #模板code
+      template-code: d

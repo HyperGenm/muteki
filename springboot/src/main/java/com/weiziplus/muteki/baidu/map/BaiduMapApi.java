@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.weiziplus.muteki.baidu.BaiduConfig;
 import com.weiziplus.muteki.baidu.map.iplocation.IpLocation;
 import com.weiziplus.muteki.common.result.ResultBean;
+import com.weiziplus.muteki.common.result.ResultEnum;
 import com.weiziplus.muteki.common.util.ToolUtils;
 import com.weiziplus.muteki.common.util.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -61,9 +62,10 @@ public class BaiduMapApi {
         //如果请求失败
         if (!BaiduConfig.SUCCESS_CODE.equals(ipLocation.getStatus())) {
             log.warn("百度api-普通ip定位调用出错，详情:" + JSON.toJSONString(ipLocation) + "。---状态码请参考:http://lbsyun.baidu.com/index.php?title=webapi/ip-api");
+            ResultBean<IpLocation> error = ResultBean.error(ResultEnum.ERROR_BAIDU, JSON.toJSONString(ipLocation));
             //请求失败，缓存3分钟
-            RedisUtils.set(redisKey, ResultBean.error(JSON.toJSONString(ipLocation)), 60L * 3);
-            return ResultBean.error(JSON.toJSONString(ipLocation));
+            RedisUtils.set(redisKey, error, 60L * 3);
+            return error;
         }
         //请求成功，缓存3小时
         RedisUtils.set(redisKey, ResultBean.success(ipLocation), 60L * 60 * 3);
