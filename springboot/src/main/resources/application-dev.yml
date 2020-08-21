@@ -1,0 +1,43 @@
+#####################################开发版配置####################################
+server:
+  port: 8080
+spring:
+  #开发版配置
+  profiles: dev
+  #配置数据源
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/muteki?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+mybatis:
+  #设置MyBatis全局变量
+  configuration-properties:
+  # 文件存放域名前缀
+    filePathPrefix: http://127.0.0.1:8080
+  configuration:
+    #IDEA的MyBatis Log插件以及控制台sql打印,dev打包部署不注释该代码，sql不会保存到日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#禁用swagger,
+knife4j:
+  production: false
+  basic:
+    enable: true
+    ## Basic认证用户名
+    username: weiziplus
+    ## Basic认证密码
+    password: 123456
+
+#自定义全局变量*******注意:  :后面要有空格
+global:
+  #拦截器部分规则
+  interceptor:
+    #不检验验证时间戳
+    timestamp: false
+  #图片存放路径--项目打包后的jar包同级目录static
+  base-file-path: F:\Workspaces\weiziplus\github-muteki\springboot\target\classes\static
+  #允许跨域地址(访问的浏览器的Origin,不设置默认*)---多个地址用,(英文逗号)分隔开---可精确到端口号
+  cors-filter-origins: '*'
+  #是否將异常详情展示给前端
+  response-show-runtime-exception: true
+  #日志文件路径
+  log-path: F:\Workspaces\weiziplus\github-muteki\springboot\target\logs

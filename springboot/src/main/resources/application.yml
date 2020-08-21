@@ -1,0 +1,112 @@
+#############################################通用配置#############################################
+#开启gzip
+server:
+  compression:
+    enabled: true
+    #压缩json
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+    #压缩的最小值
+    min-response-size: 2048
+spring:
+  #启动什么配置
+  profiles:
+    active: dev
+  #配置数据源
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    ###################以下为druid增加的配置###########################
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    druid:
+      # 初始化物理连接个数
+      initial-size: 2
+      # 最大连接池数量
+      max-active: 20
+      # 最小连接池数量
+      min-idle: 5
+      # 获取连接时最大等待时间(ms)
+      max-wait: 60000
+      # 开启缓存preparedStatement(PSCache)
+      pool-prepared-statements: true
+      # 启用PSCache后，指定每个连接上PSCache的大小
+      max-pool-prepared-statement-per-connection-size: 20
+      # 用来检测连接是否有效的sql
+      validation-query: select 1
+      # 申请连接时不检测连接是否有效
+      test-on-borrow: false
+      # 归还连接时不检测连接是否有效
+      test-on-return: false
+      # 申请连接时检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效（不影响性能）
+      test-while-idle: true
+      # 空闲连接回收的时间间隔，与test-while-idle一起使用
+      time-between-eviction-runs-millis: 30000
+      # 连接池空闲连接的有效时间
+      min-evictable-idle-time-millis: 600000
+      # 配置多个英文逗号分隔
+      filters: stat,wall
+      # 网页
+      stat-view-servlet:
+        enabled: true
+        # 监控页面访问路径
+        url-pattern: /druid/*
+        #  用户名
+        login-username: admin
+        #  密码
+        login-password: 123456
+        #  白名单
+        #allow:
+        #  黑名单,黑名单优先级高于白名单
+        #deny:
+  redis:
+    #索引(默认为0)
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    #password: 123456
+    #连接超时时间
+    timeout: 10000ms
+  servlet:
+    multipart:
+      #设置单个文件上传最大限制
+      max-file-size: 5MB
+      #设置多个文件上传最大限制
+      max-request-size: 100MB
+  jackson:
+    #配置时间格式
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  resources:
+    #配置静态资源路径，推荐使用nginx
+    static-locations: classpath:static/,file:static/
+mybatis:
+  #设置MyBatis配置
+  configuration:
+    #返回类型为Map时，null也返回
+    call-setters-on-nulls: true
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+  #指定sql映射文件位置
+  mapper-locations: classpath:mybatis/mapper/**/*Mapper.xml
+  #所在包配置别名
+  type-aliases-package: com.weiziplus.muteki.common.models
+#pagehelper分页插件配置
+pagehelper:
+  helper-dialect: mysql
+  #为了使用输入页数为负或者超出最大页时候使页数为最小或最大值
+  reasonable: false
+#日志打印
+logging:
+  config: classpath:config/logback-spring.xml
+
+#自定义全局变量*******注意:  :后面要有空格
+global:
+  token:
+    #token过期时间,单位秒
+    expire-time:
+      #系统用户
+      admin: 36000
+      #web用户
+      web: 86400
+  #百度开放平台
+  baidu:
+    ak: abc

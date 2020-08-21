@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weiziplus.muteki.core.pc.system.mapper.UserLoginLogMapper">
+    <select id="getList" resultType="TUserLogin">
+        SELECT *
+        FROM `t_user_login`
+        <where>
+            <if test="null != startTime and '' != startTime">
+                `create_time` <![CDATA[>]]> #{startTime}
+            </if>
+            <if test="null != endTime and '' != endTime">
+                AND `create_time` <![CDATA[<=]]> CONCAT(#{endTime},' 23:59:59')
+            </if>
+            <if test="null != loginProvince and '' != loginProvince">
+                AND `login_province` = #{loginProvince}
+            </if>
+            <if test="null != loginCity and '' != loginCity">
+                AND `login_city` = #{loginCity}
+            </if>
+            <if test="null != username and '' != username">
+                AND `username` LIKE CONCAT(#{username},'%')
+            </if>
+            <if test="null != ipAddress and '' != ipAddress">
+                AND `ip_address` LIKE CONCAT(#{ipAddress},'%')
+            </if>
+            <if test="null != result and '' != result">
+                <choose>
+                    <when test="'成功' == result">
+                        AND `result_code` = 200
+                    </when>
+                    <otherwise>
+                        AND `result_code` <![CDATA[<>]]> 200
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="null != osName and '' != osName">
+                AND `os_name` LIKE CONCAT(#{osName},'%')
+            </if>
+            <if test="null != borderName and '' != borderName">
+                AND `border_name` LIKE CONCAT(#{borderName},'%')
+            </if>
+        </where>
+        <if test="null != createTimeSort and '' != createTimeSort">
+            ORDER BY `create_time` ${createTimeSort}
+        </if>
+    </select>
+</mapper>

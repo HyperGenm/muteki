@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weiziplus.muteki.core.pc.system.mapper.SysRoleFunctionMapper">
+    <select id="getFunContainApiByRoleIds" resultType="String">
+        SELECT sf.contain_api
+        FROM `sys_function` sf
+        LEFT JOIN `sys_role_function` srf ON sf.id = srf.function_id
+        LEFT JOIN `sys_role` sr ON srf.role_id = sr.id
+        WHERE sf.super_flag = 2
+        AND sr.status = 1
+        AND srf.role_id IN (
+        <foreach collection="roleIds" item="roleId" separator=",">
+            #{roleId}
+        </foreach>
+        )
+    </select>
+</mapper>

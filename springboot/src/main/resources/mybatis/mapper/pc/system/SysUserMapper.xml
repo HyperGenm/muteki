@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weiziplus.muteki.core.pc.system.mapper.SysUserMapper">
+    <select id="getListVo" resultType="com.weiziplus.muteki.core.pc.system.vo.SysUserVo">
+        SELECT su.*, CONCAT('${filePathPrefix}', su.icon) `iconAllPath`,
+        GROUP_CONCAT(sr.name) `roleList`,
+        temp.create_time `lastActiveTime`,temp.ip_address `lastIpAddress`
+        FROM `sys_user` su
+        LEFT JOIN `sys_user_role` sur ON su.id = sur.user_id
+        LEFT JOIN `sys_role` sr ON sur.role_id = sr.id
+        LEFT JOIN (
+        SELECT *
+        FROM (
+        SELECT `user_id`,`ip_address`,`create_time`
+        FROM `sys_user_log`
+        WHERE `user_id` > 1
+        <if test="null != lastActiveTimeSort and '' != lastActiveTimeSort">
+            ORDER BY `create_time` ${lastActiveTimeSort}
+        </if>
+        ) temp
+        GROUP BY `user_id`
+        ) temp ON su.id = temp.user_id
+        <where>
+            su.id > 1 AND su.delete_time = 0
+            <if test="null != roleId">
+                AND sr.id = #{roleId}
+            </if>
+            <if test="null != status">
+                AND su.status = #{status}
+            </if>
+            <if test="null != lastActiveTime">
+                AND temp.create_time LIKE CONCAT(#{lastActiveTime},'%')
+            </if>
+            <if test="null != createTime">
+                AND su.create_time LIKE CONCAT(#{createTime},'%')
+            </if>
+            <if test="null != username and '' != username">
+                AND POSITION(#{username} IN su.username)
+            </if>
+        </where>
+        GROUP BY su.id
+        <if test="null != createTimeSort and '' != createTimeSort">
+            ORDER BY su.create_time ${createTimeSort}
+        </if>
+    </select>
+</mapper>

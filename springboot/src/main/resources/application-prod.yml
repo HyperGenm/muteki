@@ -1,0 +1,52 @@
+#####################################生产版配置###########################
+#为了优雅关机 curl -X POST 127.0.0.1:8085/weiziplus/shutdown
+management:
+  endpoint:
+    shutdown:
+      #启用shutdown
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        #开启shutdown
+        include: shutdown
+      #自定义管理端前缀
+      base-path: /weiziplus
+  server:
+    #自定义管理端端口
+    port: 8085
+    #指定本机地址作为管理端地址，不允许远程连接，保证安全
+    address: 127.0.0.1
+server:
+  port: 8080
+spring:
+  #生产版配置
+  profiles: prod
+  #配置数据源
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/muteki?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+  #redis
+  redis:
+    #索引(默认为0)
+    database: 0
+mybatis:
+  #设置MyBatis全局变量
+  configuration-properties:
+    # 文件存放域名前缀
+    filePathPrefix: http://39.96.52.201/muteki
+#禁用swagger,
+knife4j:
+  production: true
+
+#自定义全局变量*******注意:  :后面要有空格
+global:
+  #文件存放路径--（建议放在设置的nginx目录下）项目打包后的jar包同级目录static
+  base-file-path: /home/template/build/static
+  #允许跨域地址(访问的浏览器的Origin,不设置默认*)---多个地址用,(英文逗号)分隔开---可精确到端口号
+  cors-filter-origins: http://localhost,https://xxx.xxx.xxx
+  #是否將异常详情展示给前端
+  response-show-runtime-exception: false
+  #日志文件路径
+  log-path: /home/template/logs

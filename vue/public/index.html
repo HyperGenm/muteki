@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--默认使用谷歌内核-->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>WeiziPlus</title>
+    <% if(process.env.NODE_ENV === 'production'){ %>
+    <!--CDN引入Vue后，element-ui才可以CDN引入-->
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <script>window.Vue || document.write('<script src="<%= BASE_URL %>static/cdn/vue-2.6.11.min.js"><\/script>')</script>
+    <!--CDN引入element-ui，减少打包体积-->
+    <script src="https://cdn.bootcss.com/element-ui/2.13.2/index.js"></script>
+    <script>window.ELEMENT || document.write('<script src="<%= BASE_URL %>static/cdn/element-ui-2.13.2.min.js"><\/script>')</script>
+   <!--CDN引入vue-router，减少打包体积-->
+    <script src="https://cdn.bootcss.com/vue-router/3.2.0/vue-router.min.js"></script>
+    <script>window.VueRouter || document.write('<script src="<%= BASE_URL %>static/cdn/vue-router-3.2.0.min.js"><\/script>')</script>
+    <!--CDN引入vuex，减少打包体积-->
+    <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+    <script>window.Vuex || document.write('<script src="<%= BASE_URL %>static/cdn/vuex-3.0.1.min.js"><\/script>')</script>
+    <!--CDN引入axios，减少打包体积-->
+    <script src="https://cdn.bootcss.com/axios/0.19.2/axios.min.js"></script>
+    <script>window.axios || document.write('<script src="<%= BASE_URL %>static/cdn/axios-0.19.2.min.js"><\/script>')</script>
+    <% } %>
+</head>
+<body>
+<noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+</noscript>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+<!--CDN引入CryptoJS-->
+<script src="https://cdn.bootcdn.net/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<script>window.CryptoJS || document.write('<script src="<%= BASE_URL %>cdn/crypto-js-4.0.0.min.js"><\/script>')</script>
+</body>
+</html>

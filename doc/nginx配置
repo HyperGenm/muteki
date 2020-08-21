@@ -1,0 +1,93 @@
+
+#user  nobody;
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #开启gzip
+    gzip on;
+    #配置禁用gzip条件，支持正则。此处表示ie6及以下不启用gzip（因为ie低版本不支持）
+    gzip_disable "MSIE [1-6]\.";
+    #让代理服务器上的浏览器和服务器能正确辨认gzip压缩功能.
+    gzip_vary on;
+    #设置最小压缩文件大小
+    gzip_min_length 1k;
+    #压缩缓冲区大小
+    gzip_buffers 4 16k;
+    #压缩等级
+    gzip_comp_level 2;
+    gzip_proxied any;
+    #需要压缩的MIME类型文件(图片不建议压缩)
+    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/json;
+
+    server {
+        #监听80和443端口
+    	listen 80;
+    	listen 443 ssl;
+    	server_name 1.1.1.1;
+
+        #配置https
+    	#ssl on;
+        ssl_certificate      "/etc/letsencrypt/live/www.xxx/fullchain.pem";
+        ssl_certificate_key  "/etc/letsencrypt/live/www.xxx/privkey.pem";
+        ssl_session_timeout  5m;
+
+        ssl_protocols  SSLv2 SSLv3 TLSv1;
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers   on;
+
+        ###网站首页
+        location / {
+            root   /home/project/github/vue;
+			index  index.html index.htm;
+			try_files $uri $uri/ /index.html;
+        }
+
+        #静态文件存放
+        location /static {
+            #存放地址
+            alias /home/static/;
+            #缓存时间
+            expires  7d;
+        }
+
+        ###请求转发到某个端口
+        location /github/ {
+            #注意后面有个/
+            proxy_pass   http://127.0.0.1:8888/;
+            #配合后台获取到真实ip地址
+            proxy_set_header x-forwarded-for  $remote_addr;
+        }
+
+        ###请求转发到某个网页
+        location /vuepress {
+            alias   /home/project/github/vuepress;
+			index  index.html index.htm;
+			try_files $uri $uri/ /index.html;
+        }
+
+        error_page  404              /404.html;
+        location = /404.html {
+            root   html;
+        }
+
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+
+    }
+
+}

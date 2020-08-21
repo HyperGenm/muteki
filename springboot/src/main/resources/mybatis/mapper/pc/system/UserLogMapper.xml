@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weiziplus.muteki.core.pc.system.mapper.UserLogMapper">
+    <select id="getListVo" resultType="com.weiziplus.muteki.core.pc.system.vo.UserLogVo">
+        SELECT tul.*, u.username, u.real_name
+        FROM `t_user_log` tul
+        INNER JOIN `t_user` u ON tul.user_id = u.id
+        <where>
+            <if test="null != startTime and '' != startTime">
+                tul.create_time <![CDATA[>]]> #{startTime}
+            </if>
+            <if test="null != endTime and '' != endTime">
+                AND tul.create_time <![CDATA[<=]]> #{endTime}
+            </if>
+            <if test="null != type">
+                AND tul.type = #{type}
+            </if>
+            <if test="null != username and '' != username">
+                AND u.username LIKE CONCAT(#{username},'%')
+            </if>
+            <if test="null != realName and '' != realName">
+                AND u.real_name LIKE CONCAT(#{realName},'%')
+            </if>
+            <if test="null != description and '' != description">
+                AND tul.description LIKE CONCAT(#{description},'%')
+            </if>
+            <if test="null != resultCode">
+                AND tul.result_code = #{resultCode}
+            </if>
+            <if test="null != ipAddress and '' != ipAddress">
+                AND tul.ip_address LIKE CONCAT(#{ipAddress},'%')
+            </if>
+            <if test="null != borderName and '' != borderName">
+                AND tul.border_name LIKE CONCAT(#{borderName},'%')
+            </if>
+            <if test="null != osName and '' != osName">
+                AND tul.os_name LIKE CONCAT(#{osName},'%')
+            </if>
+        </where>
+        ORDER BY tul.create_time ${createTimeSort}
+    </select>
+</mapper>
