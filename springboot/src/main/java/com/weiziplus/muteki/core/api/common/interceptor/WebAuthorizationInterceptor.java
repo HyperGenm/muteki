@@ -1,14 +1,20 @@
 package com.weiziplus.muteki.core.api.common.interceptor;
 
+import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.RateLimiter;
 import com.weiziplus.muteki.common.config.GlobalConfig;
 import com.weiziplus.muteki.common.interceptor.AuthTokenIgnore;
 import com.weiziplus.muteki.common.result.ResultBean;
 import com.weiziplus.muteki.common.util.HttpRequestUtils;
 import com.weiziplus.muteki.common.util.JwtUtils;
+import com.weiziplus.muteki.common.util.Md5Utils;
 import com.weiziplus.muteki.common.util.RedisUtils;
 import com.weiziplus.muteki.core.api.common.token.WebTokenUtils;
+import com.weiziplus.muteki.core.pc.common.interceptor.PcRateLimiter;
+import com.weiziplus.muteki.core.pc.common.token.PcTokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -16,6 +22,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author wanglongwei
@@ -24,6 +32,11 @@ import java.lang.reflect.Method;
 @Slf4j
 @Component
 public class WebAuthorizationInterceptor implements HandlerInterceptor {
+
+    /**
+     * 使用url和用户id做为key,存放令牌桶 防止每次重新创建令牌桶
+     */
+    private final Map<String, RateLimiter> limitMap = Maps.newConcurrentMap();
 
 
     /**
@@ -161,8 +174,55 @@ public class WebAuthorizationInterceptor implements HandlerInterceptor {
             HttpRequestUtils.handleErrorResponse(ResultBean.errorToken("token失效"));
             return false;
         }
+        //判断是否触发限流
+        if (!handleRateLimiter(request, response, object)) {
+            HttpRequestUtils.handleErrorResponse(ResultBean.error("访问频率过快,请稍后再试"));
+            return false;
+        }
         WebTokenUtils.updateExpireTime(userId);
         return true;
+    }
+
+    /**
+     * 令牌桶根据用户id和url对请求限流
+     *
+     * @param request
+     * @param response
+     * @param object
+     * @return
+     */
+    private boolean handleRateLimiter(HttpServletRequest request, HttpServletResponse response, Object object) {
+        HandlerMethod handlerMethod = (HandlerMethod) object;
+        Method method = handlerMethod.getMethod();
+        //查看是否注解
+        WebRateLimiter webRateLimiter = method.getAnnotation(WebRateLimiter.class);
+        //默认每个用户,每个接口，每秒最大请求
+        double qps = 30D;
+        //获取令牌等待超时时间
+        long timeout = 1000L;
+        if (null != webRateLimiter) {
+            qps = webRateLimiter.QPS();
+            timeout = webRateLimiter.timeout();
+        } else {
+            //如果没有注解，并且请求方式不是get请求
+            if (!HttpMethod.GET.name().equals(request.getMethod())) {
+                qps = 7D;
+                timeout = 500L;
+            }
+        }
+        //获取用户id
+        Long userId = WebTokenUtils.getUserId();
+        //以用户id和url作为维度
+        String limitKey = Md5Utils.encode16(userId + ":" + request.getRequestURI());
+        RateLimiter limiter;
+        if (!limitMap.containsKey(limitKey)) {
+            limiter = RateLimiter.create(qps);
+            limitMap.put(limitKey, limiter);
+        } else {
+            limiter = limitMap.get(limitKey);
+        }
+        //获取令牌
+        return limiter.tryAcquire(timeout, TimeUnit.MILLISECONDS);
     }
 
 }
