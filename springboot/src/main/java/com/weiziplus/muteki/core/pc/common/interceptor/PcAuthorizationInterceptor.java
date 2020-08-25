@@ -10,7 +10,6 @@ import com.weiziplus.muteki.core.pc.common.config.PcGlobalConfig;
 import com.weiziplus.muteki.core.pc.common.token.PcTokenUtils;
 import com.weiziplus.muteki.core.pc.system.service.SysRoleFunctionService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;

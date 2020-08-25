@@ -172,7 +172,7 @@ public class FileUtils {
             builder.toFile(dest);
         } catch (IOException e) {
             log.warn("图片上传失败，图片压缩出错。详情:" + e);
-            return ResultBean.error("图片上传失败。" + e);
+            return ResultBean.error("图片上传失败。IOException", e);
         }
         return ResultBean.success(resultPath);
     }

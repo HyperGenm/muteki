@@ -1,8 +1,7 @@
 # muteki
 *springboot和vue搭建的前后端分离的后台管理模板,简便resultful接口开发*
 
-## <a href="http://39.96.52.201/vuepress" target="_blank">说明文档</a>
-   * 文档可能和当前项目有出入，大体上是类似的
+## <a href="http://39.96.52.201/muteki/vuepress" target="_blank">说明文档</a>
    * 文档更新中。。。
 
 ## <a href="https://gitee.com/WeiziPlus/springboot2-vue3-old" target="_blank">原项目地址</a>
