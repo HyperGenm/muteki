@@ -67,31 +67,17 @@ public class ResultBean<T> implements Serializable {
     }
 
     /**
-     * 创建ResultUtil对象
-     *
-     * @param code
-     * @param msg
-     * @param data
-     * @param errorMsg
-     */
-    private ResultBean(Integer code, String msg, T data, Exception errorMsg) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
-        //如果将异常信息暴露给前端
-        if (RESPONSE_SHOW_RUNTIME_EXCEPTION) {
-            this.errorMsg = errorMsg;
-        }
-    }
-
-    /**
      * 成功
      *
      * @param data
      * @return
      */
     public static <T> ResultBean<T> success(T data) {
-        return new ResultBean<>(ResultEnum.SUCCESS.getValue(), ResultEnum.SUCCESS.getMsg(), data, null);
+        ResultBean<T> resultBean = new ResultBean<>();
+        resultBean.code = ResultEnum.SUCCESS.getValue();
+        resultBean.msg = ResultEnum.SUCCESS.getMsg();
+        resultBean.data = data;
+        return resultBean;
     }
 
     /**
@@ -112,7 +98,14 @@ public class ResultBean<T> implements Serializable {
      * @return
      */
     private static <T> ResultBean<T> baseError(ResultEnum resultEnum, String msg, Exception errorMsg) {
-        return new ResultBean<>(resultEnum.getValue(), msg, null, errorMsg);
+        ResultBean<T> resultBean = new ResultBean<>();
+        resultBean.code = resultEnum.getValue();
+        resultBean.msg = msg;
+        //如果将异常信息暴露给前端
+        if (RESPONSE_SHOW_RUNTIME_EXCEPTION) {
+            resultBean.errorMsg = errorMsg;
+        }
+        return resultBean;
     }
 
     /**
@@ -154,17 +147,6 @@ public class ResultBean<T> implements Serializable {
      */
     public static <T> ResultBean<T> errorToken(String msg) {
         return baseError(ResultEnum.ERROR_TOKEN, msg, null);
-    }
-
-    /**
-     * 失败
-     *
-     * @param msg
-     * @param errorMsg
-     * @return
-     */
-    public static <T> ResultBean<T> error(String msg, Exception errorMsg) {
-        return baseError(ResultEnum.ERROR, msg, errorMsg);
     }
 
     /**

@@ -114,7 +114,7 @@ public class SysUserService extends BaseService {
         } catch (Exception e) {
             log.warn("新增系统用户出错，详情:" + e);
             TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savepoint);
-            return ResultBean.error("系统错误，请重试。Exception", e);
+            return ResultBean.errorException("系统错误，请重试。Exception", e);
         }
         return ResultBean.success();
     }
@@ -206,7 +206,7 @@ public class SysUserService extends BaseService {
         } catch (Exception e) {
             log.warn("修改用户角色出错，详情:" + e);
             TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savepoint);
-            return ResultBean.error("系统错误，请重试。Exception", e);
+            return ResultBean.errorException("系统错误，请重试。Exception", e);
         }
         return ResultBean.success();
     }

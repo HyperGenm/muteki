@@ -222,7 +222,7 @@ public class SysRoleService extends BaseService {
         } catch (Exception e) {
             log.warn("更新角色权限出错，详情:" + e);
             TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savepoint);
-            return ResultBean.error("系统错误，请重试。Exception", e);
+            return ResultBean.errorException("系统错误，请重试。Exception", e);
         }
         RedisUtils.deleteLikeKey(REDIS_KEY_PREFIX);
         RedisUtils.deleteLikeKey(SysRoleFunctionService.REDIS_KEY_PREFIX);
