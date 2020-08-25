@@ -57,7 +57,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.21</version>
+            <version>1.1.20</version>
         </dependency>
         <!--aop-->
         <dependency>
@@ -76,6 +76,12 @@
             <artifactId>screw-core</artifactId>
             <version>1.0.4</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>fastjson</artifactId>
+                    <groupId>com.alibaba</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -111,7 +117,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.70</version>
+            <version>1.2.73</version>
         </dependency>
         <!--swagger增强版-->
         <dependency>
