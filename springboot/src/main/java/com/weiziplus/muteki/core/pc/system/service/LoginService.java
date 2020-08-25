@@ -89,7 +89,7 @@ public class LoginService extends BaseService {
             ImageIO.write((BufferedImage) validateCode.get("image"), "png", os);
         } catch (IOException e) {
             log.warn("系统用户登录，图片验证码处理出错，详情:" + e);
-            return ResultBean.error("系统错误，请重试。" + e);
+            return ResultBean.error("系统错误，请重试。IOException", e);
         }
         Base64.Encoder encoder = Base64.getEncoder();
         byte[] bytes = os.toByteArray();

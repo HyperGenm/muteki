@@ -79,7 +79,7 @@ public class SysRoleService extends BaseService {
         }
         BaseWhere<SysRole> baseWhere = new BaseWhere<>(SysRole.class)
                 .where(new BaseWhereModel(SysRole.COLUMN_STATUS, SysRoleStatusEnum.NORMAL.getValue()))
-                .where(new BaseWhereModel(SysRole.COLUMN_ID, BaseWhereEnum.NOT_EQUAL,PcGlobalConfig.SUPER_ADMIN_ROLE_ID))
+                .where(new BaseWhereModel(SysRole.COLUMN_ID, BaseWhereEnum.NOT_EQUAL, PcGlobalConfig.SUPER_ADMIN_ROLE_ID))
                 .ascOrderBy(SysRole.COLUMN_SORT)
                 .descOrderBy(SysRole.COLUMN_CREATE_TIME);
         List<SysRole> sysRoleList = baseFindList(baseWhere);
@@ -222,7 +222,7 @@ public class SysRoleService extends BaseService {
         } catch (Exception e) {
             log.warn("更新角色权限出错，详情:" + e);
             TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savepoint);
-            return ResultBean.error("系统错误，请重试。" + e);
+            return ResultBean.error("系统错误，请重试。Exception", e);
         }
         RedisUtils.deleteLikeKey(REDIS_KEY_PREFIX);
         RedisUtils.deleteLikeKey(SysRoleFunctionService.REDIS_KEY_PREFIX);

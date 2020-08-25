@@ -103,7 +103,7 @@ public class AliSmsApi {
         } catch (ClientException e) {
             log.warn("阿里云发送短信出错,错误码:{},错误信息:{},错误类型:{},错误描述:{},详情:{}",
                     e.getErrCode(), e.getErrMsg(), e.getErrorType(), e.getErrorDescription(), e.getMessage());
-            return ResultBean.error(ResultEnum.ERROR_ALI, e.getErrMsg());
+            return ResultBean.error(ResultEnum.ERROR_ALI, e.getErrMsg(), e);
         }
     }
 

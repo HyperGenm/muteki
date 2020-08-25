@@ -57,7 +57,7 @@ public class BaiduMapApi {
             ipLocation = restTemplate.getForObject(url, IpLocation.class);
         } catch (Exception e) {
             log.warn("百度api-普通ip定位调用出错，详情:" + e);
-            return ResultBean.error("百度api-普通ip定位调用出错，详情:" + e);
+            return ResultBean.error("百度api-普通ip定位调用出错。Exception", e);
         }
         //如果请求失败
         if (!BaiduConfig.SUCCESS_CODE.equals(ipLocation.getStatus())) {

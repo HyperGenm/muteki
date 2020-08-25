@@ -31,3 +31,4 @@ package-lock.json
 target/
 node_modules/
 dist/
+vuepress/

@@ -1,8 +1,11 @@
 package com.weiziplus.muteki.common.result;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
@@ -14,7 +17,24 @@ import java.io.Serializable;
  */
 @Getter
 @ApiModel("统一返回结果")
+@Component
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResultBean<T> implements Serializable {
+
+    /**
+     * 是否將异常详情展示给前端
+     */
+    private static Boolean RESPONSE_SHOW_RUNTIME_EXCEPTION;
+
+    /**
+     * 赋值
+     *
+     * @param exception
+     */
+    @Value("${global.response-show-runtime-exception:false}")
+    private void setResponseShowRuntimeException(String exception) {
+        ResultBean.RESPONSE_SHOW_RUNTIME_EXCEPTION = Boolean.valueOf(exception);
+    }
 
     /**
      * 返回状态码code
@@ -35,6 +55,12 @@ public class ResultBean<T> implements Serializable {
     private T data;
 
     /**
+     * 如果有异常，异常信息
+     */
+    @ApiModelProperty("如果有异常，异常信息")
+    private Exception errorMsg;
+
+    /**
      * 创建无参数ResultUtil对象---fastjson反序列化需要无参数
      */
     public ResultBean() {
@@ -46,11 +72,16 @@ public class ResultBean<T> implements Serializable {
      * @param code
      * @param msg
      * @param data
+     * @param errorMsg
      */
-    private ResultBean(Integer code, String msg, T data) {
+    private ResultBean(Integer code, String msg, T data, Exception errorMsg) {
         this.code = code;
         this.msg = msg;
         this.data = data;
+        //如果将异常信息暴露给前端
+        if (RESPONSE_SHOW_RUNTIME_EXCEPTION) {
+            this.errorMsg = errorMsg;
+        }
     }
 
     /**
@@ -60,11 +91,7 @@ public class ResultBean<T> implements Serializable {
      * @return
      */
     public static <T> ResultBean<T> success(T data) {
-        ResultBean<T> resultBean = new ResultBean<>();
-        resultBean.code = ResultEnum.SUCCESS.getValue();
-        resultBean.msg = ResultEnum.SUCCESS.getMsg();
-        resultBean.data = data;
-        return resultBean;
+        return new ResultBean<>(ResultEnum.SUCCESS.getValue(), ResultEnum.SUCCESS.getMsg(), data, null);
     }
 
     /**
@@ -81,10 +108,22 @@ public class ResultBean<T> implements Serializable {
      *
      * @param resultEnum
      * @param msg
+     * @param errorMsg
      * @return
      */
-    private static <T> ResultBean<T> baseError(ResultEnum resultEnum, String msg) {
-        return new ResultBean<>(resultEnum.getValue(), msg, null);
+    private static <T> ResultBean<T> baseError(ResultEnum resultEnum, String msg, Exception errorMsg) {
+        return new ResultBean<>(resultEnum.getValue(), msg, null, errorMsg);
+    }
+
+    /**
+     * 自定义异常
+     *
+     * @param msg
+     * @param errorMsg
+     * @return
+     */
+    public static <T> ResultBean<T> error(ResultEnum resultEnum, String msg, Exception errorMsg) {
+        return baseError(resultEnum, msg, errorMsg);
     }
 
     /**
@@ -94,7 +133,7 @@ public class ResultBean<T> implements Serializable {
      * @return
      */
     public static <T> ResultBean<T> error(ResultEnum resultEnum, String msg) {
-        return baseError(resultEnum, msg);
+        return baseError(resultEnum, msg, null);
     }
 
     /**
@@ -104,7 +143,7 @@ public class ResultBean<T> implements Serializable {
      * @return
      */
     public static <T> ResultBean<T> errorParam(String msg) {
-        return baseError(ResultEnum.ERROR_PARAM, msg);
+        return baseError(ResultEnum.ERROR_PARAM, msg, null);
     }
 
     /**
@@ -114,7 +153,18 @@ public class ResultBean<T> implements Serializable {
      * @return
      */
     public static <T> ResultBean<T> errorToken(String msg) {
-        return baseError(ResultEnum.ERROR_TOKEN, msg);
+        return baseError(ResultEnum.ERROR_TOKEN, msg, null);
+    }
+
+    /**
+     * 失败
+     *
+     * @param msg
+     * @param errorMsg
+     * @return
+     */
+    public static <T> ResultBean<T> error(String msg, Exception errorMsg) {
+        return baseError(ResultEnum.ERROR, msg, errorMsg);
     }
 
     /**
@@ -124,7 +174,7 @@ public class ResultBean<T> implements Serializable {
      * @return
      */
     public static <T> ResultBean<T> error(String msg) {
-        return baseError(ResultEnum.ERROR, msg);
+        return baseError(ResultEnum.ERROR, msg, null);
     }
 
     /**
@@ -134,17 +184,18 @@ public class ResultBean<T> implements Serializable {
      * @return
      */
     public static <T> ResultBean<T> errorRole(String msg) {
-        return baseError(ResultEnum.ERROR_ROLE, msg);
+        return baseError(ResultEnum.ERROR_ROLE, msg, null);
     }
 
     /**
      * 系统异常
      *
      * @param msg
+     * @param errorMsg
      * @return
      */
-    public static <T> ResultBean<T> errorException(String msg) {
-        return baseError(ResultEnum.ERROR_EXCEPTION, msg);
+    public static <T> ResultBean<T> errorException(String msg, Exception errorMsg) {
+        return baseError(ResultEnum.ERROR_EXCEPTION, msg, errorMsg);
     }
 
     private static final long serialVersionUID = 1L;

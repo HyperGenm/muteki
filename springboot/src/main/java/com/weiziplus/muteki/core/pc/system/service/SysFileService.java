@@ -118,7 +118,7 @@ public class SysFileService extends BaseService {
             response.flushBuffer();
         } catch (Exception e) {
             log.warn("下载日志文件出错，详情:" + e);
-            HttpRequestUtils.handleErrorResponse(ResultBean.error("系统错误，请重试。" + e));
+            HttpRequestUtils.handleErrorResponse(ResultBean.error("系统错误，请重试。Exception", e));
         }
     }
 

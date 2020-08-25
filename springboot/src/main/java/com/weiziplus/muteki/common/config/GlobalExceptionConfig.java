@@ -4,7 +4,6 @@ import com.weiziplus.muteki.common.async.ErrorAsync;
 import com.weiziplus.muteki.common.result.ResultBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,12 +26,6 @@ public class GlobalExceptionConfig {
     ErrorAsync errorAsync;
 
     /**
-     * 是否將异常详情展示给前端
-     */
-    @Value("${global.response-show-runtime-exception:false}")
-    private Boolean responseShowRuntimeException;
-
-    /**
      * 捕获运行时异常
      *
      * @param ex
@@ -40,13 +33,9 @@ public class GlobalExceptionConfig {
      */
     @ExceptionHandler(RuntimeException.class)
     public ResultBean runtimeException(RuntimeException ex) {
-        log.warn("全局捕获运行时异常:" + ex);
-        errorAsync.saveError(ex, "系统捕获运行时异常");
-        if (responseShowRuntimeException) {
-            return ResultBean.errorException("系统异常，详情:" + ex.getMessage());
-        } else {
-            return ResultBean.errorException("系统错误，请重试");
-        }
+        log.warn("全局捕获运行时异常" + ex.getStackTrace()[0] + ":" + ex);
+        errorAsync.saveError(ex, "系统捕获运行时异常" + ex.getStackTrace()[0]);
+        return ResultBean.errorException("系统异常，请重试。RuntimeException", ex);
     }
 
     /**
@@ -59,12 +48,8 @@ public class GlobalExceptionConfig {
     @ExceptionHandler(NullPointerException.class)
     public ResultBean nullPointerException(NullPointerException ex) {
         log.warn("系统捕获空指针异常NullPointerException,详情:", ex);
-        errorAsync.saveError(ex, "系统捕获空指针异常NullPointerException");
-        if (responseShowRuntimeException) {
-            return ResultBean.errorException("系统异常，详情:" + ex.getMessage());
-        } else {
-            return ResultBean.errorException("系统错误，请重试");
-        }
+        errorAsync.saveError(ex, "系统捕获空指针异常NullPointerException" + ex.getStackTrace()[0]);
+        return ResultBean.errorException("系统异常，请重试。NullPointerException", ex);
     }
 
     /**
@@ -75,13 +60,9 @@ public class GlobalExceptionConfig {
      */
     @ExceptionHandler(Exception.class)
     public ResultBean exception(Exception ex) {
-        log.warn("全局捕获所有异常:" + ex);
-        errorAsync.saveError(ex, "系统捕获异常");
-        if (responseShowRuntimeException) {
-            return ResultBean.errorException("系统异常，详情:" + ex.getMessage());
-        } else {
-            return ResultBean.errorException("系统错误，请重试");
-        }
+        log.warn("全局捕获所有异常" + ex.getStackTrace()[0] + ":" + ex);
+        errorAsync.saveError(ex, "系统捕获异常"+ ex.getStackTrace()[0]);
+        return ResultBean.errorException("系统异常，请重试。Exception", ex);
     }
 
     /**
