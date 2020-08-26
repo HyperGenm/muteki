@@ -1,13 +1,15 @@
 package com.weiziplus.muteki.core.api.common.token;
 
-import com.weiziplus.muteki.common.util.JwtUtils;
-import com.weiziplus.muteki.common.util.Md5Utils;
-import com.weiziplus.muteki.common.util.UserAgentUtils;
-import com.weiziplus.muteki.common.util.RedisUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.weiziplus.muteki.common.util.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author wanglongwei
@@ -19,16 +21,25 @@ public class WebTokenUtils extends JwtUtils {
     /**
      * web用户redis过期时间--10小时过期
      */
-    private static Long EXPIRE_TIME = 60L * 60 * 10;
+    private static Long EXPIRE_TIME = 60L * 60 * 24;
 
     /**
      * token过期时间
      *
      * @param expireTime
      */
-    @Value("${global.token.expire-time.web:36000}")
+    @Value("${global.token.expire-time.web:86400}")
     private void setExpireTime(String expireTime) {
         EXPIRE_TIME = Long.valueOf(expireTime);
+    }
+
+    /**
+     * 获取token过期时间,单位 秒
+     *
+     * @return
+     */
+    public static Long getExpireTime() {
+        return WebTokenUtils.EXPIRE_TIME;
     }
 
     /**
@@ -62,10 +73,23 @@ public class WebTokenUtils extends JwtUtils {
      * @param expand
      * @return
      */
-    public static String createToken(Long userId, HttpServletRequest request, WebJwtExpand expand) {
+    public static String createToken(WebTerminalEnum terminalEnum, Long userId, HttpServletRequest request, WebJwtExpand expand) {
         String issuer = createIssuer(request);
+        expand.setTerminalEnum(terminalEnum);
         String token = JwtUtils.createToken(String.valueOf(userId), issuer, expand);
-        RedisUtils.set(createRedisKey(userId), token, EXPIRE_TIME);
+        String redisKey = createRedisKey(userId);
+        Object object = RedisUtils.get(redisKey);
+        Map<String, WebTokenModel> tokenMap;
+        if (null == object) {
+            tokenMap = new HashMap<>(ToolUtils.initialCapacity(1));
+        } else {
+            tokenMap = (Map<String, WebTokenModel>) object;
+        }
+        WebTokenModel webTokenModel = new WebTokenModel()
+                .setToken(token)
+                .setLastTimeStamp(System.currentTimeMillis());
+        tokenMap.put(terminalEnum.getName(), webTokenModel);
+        RedisUtils.set(createRedisKey(userId), tokenMap, EXPIRE_TIME);
         return token;
     }
 
@@ -89,12 +113,12 @@ public class WebTokenUtils extends JwtUtils {
     }
 
     /**
-     * 根据web用户id删除token
+     * 删除用户所有的token
      *
      * @param userId
      * @return
      */
-    public static Boolean deleteToken(Long userId) {
+    public static Boolean deleteAllToken(Long userId) {
         return RedisUtils.delete(createRedisKey(userId));
     }
 
@@ -104,8 +128,23 @@ public class WebTokenUtils extends JwtUtils {
      * @param userId
      * @return
      */
-    public static Boolean updateExpireTime(Long userId) {
-        return RedisUtils.expire(createRedisKey(userId), EXPIRE_TIME);
+    public static Boolean deleteToken(WebTerminalEnum terminalEnum, Long userId) {
+        String redisKey = createRedisKey(userId);
+        Object object = RedisUtils.get(redisKey);
+        //如果没有tokenMap
+        if (null == object) {
+            return true;
+        }
+        //取出存放的tokenMap
+        Map<String, WebTokenModel> tokenMap = (Map<String, WebTokenModel>) object;
+        //删除当前终端token
+        tokenMap.entrySet().removeIf(entry -> entry.getKey().equals(terminalEnum.getName()));
+        if (0 >= tokenMap.entrySet().size()) {
+            RedisUtils.delete(redisKey);
+            return true;
+        }
+        RedisUtils.setNotChangeTimeOut(redisKey, tokenMap);
+        return true;
     }
 
 }

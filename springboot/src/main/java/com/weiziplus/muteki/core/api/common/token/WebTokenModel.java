@@ -7,21 +7,21 @@ import java.io.Serializable;
 
 /**
  * @author wanglongwei
- * @date 2020/08/20 08/49
+ * @date 2020/08/25 16/29
  */
 @Data
 @Accessors(chain = true)
-public class WebJwtExpand implements Serializable {
+public class WebTokenModel implements Serializable {
 
     /**
-     * 用户名
+     * token
      */
-    private String username;
+    private String token;
 
     /**
-     * 终端类型
+     * 上次最后操作的时间戳
      */
-    private WebTerminalEnum terminalEnum;
+    private Long lastTimeStamp;
 
     private static final long serialVersionUID = 1L;
 

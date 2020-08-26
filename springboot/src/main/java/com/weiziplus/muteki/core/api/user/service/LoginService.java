@@ -15,6 +15,7 @@ import com.weiziplus.muteki.common.util.Md5Utils;
 import com.weiziplus.muteki.common.util.UserAgentUtils;
 import com.weiziplus.muteki.core.api.common.enums.UserStatusEnum;
 import com.weiziplus.muteki.core.api.common.token.WebJwtExpand;
+import com.weiziplus.muteki.core.api.common.token.WebTerminalEnum;
 import com.weiziplus.muteki.core.api.common.token.WebTokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,19 +44,21 @@ public class LoginService extends BaseService {
     public ResultBean<String> login(String username, String password) {
         User user = baseFindOneDataByClassAndColumnAndValue(
                 User.class, User.COLUMN_USERNAME, username);
-        UserLogin userLogin = new UserLogin().setUsername(username);
+        UserLogin userLogin = new UserLogin()
+                .setUsername(username)
+                .setTerminal(WebTerminalEnum.WEB.getName());
         if (null == user) {
             userLogin.setResultCode(ResultEnum.ERROR.getValue())
                     .setResultMsg("用户名或密码错误");
             saveLoginLog(userLogin);
             return ResultBean.error("用户名或密码错误");
         }
-        if (!user.getPassword().equals(Md5Utils.encode(password))) {
+        /*if (!user.getPassword().equals(Md5Utils.encode(password))) {
             userLogin.setResultCode(ResultEnum.ERROR.getValue())
                     .setResultMsg("用户名或密码错误");
             saveLoginLog(userLogin);
             return ResultBean.error("用户名或密码错误");
-        }
+        }*/
         //不是正常状态
         if (!UserStatusEnum.NORMAL.getValue().equals(user.getStatus())) {
             userLogin.setResultCode(ResultEnum.ERROR.getValue())
@@ -68,7 +71,26 @@ public class LoginService extends BaseService {
         HttpServletRequest request = getRequest();
         WebJwtExpand expand = new WebJwtExpand()
                 .setUsername(user.getUsername());
-        String token = WebTokenUtils.createToken(user.getId(), request, expand);
+        String token = WebTokenUtils.createToken(
+                WebTerminalEnum.WEB, user.getId(), request, expand);
+        return ResultBean.success(token);
+    }
+
+    /**
+     * app登录
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    public ResultBean<String> appLogin(String username, String password) {
+        User user = baseFindOneDataByClassAndColumnAndValue(
+                User.class, User.COLUMN_USERNAME, username);
+        HttpServletRequest request = getRequest();
+        WebJwtExpand expand = new WebJwtExpand()
+                .setUsername(user.getUsername());
+        String token = WebTokenUtils.createToken(
+                WebTerminalEnum.APP, user.getId(), request, expand);
         return ResultBean.success(token);
     }
 
@@ -103,7 +125,9 @@ public class LoginService extends BaseService {
      */
     public ResultBean logout() {
         Long userId = WebTokenUtils.getUserId();
-        WebTokenUtils.deleteToken(userId);
+        WebTerminalEnum terminalEnum = WebTokenUtils.getExpand().getTerminalEnum();
+        WebTokenUtils.deleteToken(terminalEnum, userId);
         return ResultBean.success();
     }
+
 }

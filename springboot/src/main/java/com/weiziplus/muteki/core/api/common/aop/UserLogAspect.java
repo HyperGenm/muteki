@@ -122,6 +122,7 @@ public class UserLogAspect extends BaseService {
         parameterMap.keySet().removeIf(paramIgnore::contains);
         UserLog userLog = new UserLog()
                 .setUserId(WebTokenUtils.getUserId())
+                .setTerminal(WebTokenUtils.getExpand().getTerminalEnum().getName())
                 .setUrl(request.getRequestURI())
                 .setMethodName(joinPoint.getTarget().getClass().getName() + method.getName())
                 .setParam(JSON.toJSONString(parameterMap))

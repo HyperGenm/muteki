@@ -45,6 +45,21 @@ public class LoginController {
         return service.login(username, password);
     }
 
+
+    @ApiOperation(value = "app登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名", dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "password", value = "密码", dataType = "String", paramType = "form"),
+    })
+    @PostMapping("/appLogin")
+    public ResultBean<String> appLogin(
+            @NotBlank(message = "用户名不能为空")
+            @Size(min = 2, message = "用户名最少两位") String username,
+            @NotBlank(message = "密码不能为空")
+            @Size(min = 2, message = "密码最少6位") String password) {
+        return service.appLogin(username, password);
+    }
+
     @ApiOperation(value = "用户退出登录")
     @WebAuthToken
     @PostMapping("/logout")

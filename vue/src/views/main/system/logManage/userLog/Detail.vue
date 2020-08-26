@@ -33,6 +33,19 @@
                 let {formData: data} = this;
                 this.rows = [
                     {label: '用户名', prop: data['username']},
+                    {
+                        label: '终端', type: 'tag',
+                        element() {
+                            let {terminal} = data;
+                            let result = {
+                                "网页": 'success'
+                            };
+                            return {
+                                content: terminal,
+                                type: result[terminal] || 'warning'
+                            }
+                        }
+                    },
                     {label: '真实姓名', prop: data['realName']},
                     {label: '请求路径', prop: data['url']},
                     {label: '请求方法名', prop: data['methodName']},

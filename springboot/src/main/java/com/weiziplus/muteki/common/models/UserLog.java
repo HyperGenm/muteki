@@ -15,7 +15,7 @@ import org.apache.ibatis.type.Alias;
  * web用户日志
  * t_user_log
  * @author 16028
- * @date 2020-08-20 09:10:17
+ * @date 2020-08-26 08:52:06
  */
 @BaseTable("t_user_log")
 @Alias("TUserLog")
@@ -35,6 +35,13 @@ public class UserLog implements Serializable {
     @BaseColumn("user_id")
     @ApiModelProperty("用户表主键")
     private Long userId;
+
+    /**
+     * 终端类型
+     */
+    @BaseColumn("terminal")
+    @ApiModelProperty("终端类型")
+    private String terminal;
 
     /**
      * 请求的路径
@@ -125,6 +132,8 @@ public class UserLog implements Serializable {
     public static final String COLUMN_ID = "id";
 
     public static final String COLUMN_USER_ID = "user_id";
+
+    public static final String COLUMN_TERMINAL = "terminal";
 
     public static final String COLUMN_URL = "url";
 

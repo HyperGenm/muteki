@@ -35,6 +35,18 @@
                 },
                 tableColumns: [
                     {label: '用户名', prop: 'username', showOverflowTooltip: true, fixed: 'left'},
+                    {
+                        label: '终端', type: 'tag',
+                        element({terminal}) {
+                            let result = {
+                                "网页": 'success'
+                            };
+                            return {
+                                content: terminal,
+                                type: result[terminal] || 'warning'
+                            }
+                        }
+                    },
                     {label: '省份', prop: 'loginProvince', showOverflowTooltip: true, fixed: 'left'},
                     {label: '城市', prop: 'loginCity', showOverflowTooltip: true, fixed: 'left'},
                     {label: 'ip', prop: 'ipAddress'},

@@ -15,7 +15,7 @@ import org.apache.ibatis.type.Alias;
  * 用户登录日志表
  * t_user_login
  * @author 16028
- * @date 2020-08-20 09:13:08
+ * @date 2020-08-26 08:49:59
  */
 @BaseTable("t_user_login")
 @Alias("TUserLogin")
@@ -35,6 +35,13 @@ public class UserLogin implements Serializable {
     @BaseColumn("username")
     @ApiModelProperty("用户名")
     private String username;
+
+    /**
+     * 终端类型
+     */
+    @BaseColumn("terminal")
+    @ApiModelProperty("终端类型")
+    private String terminal;
 
     /**
      * 登陆省份
@@ -97,6 +104,8 @@ public class UserLogin implements Serializable {
     public static final String COLUMN_ID = "id";
 
     public static final String COLUMN_USERNAME = "username";
+
+    public static final String COLUMN_TERMINAL = "terminal";
 
     public static final String COLUMN_LOGIN_PROVINCE = "login_province";
 

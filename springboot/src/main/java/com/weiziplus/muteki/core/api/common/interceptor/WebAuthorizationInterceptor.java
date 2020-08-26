@@ -1,5 +1,6 @@
 package com.weiziplus.muteki.core.api.common.interceptor;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.RateLimiter;
 import com.weiziplus.muteki.common.config.GlobalConfig;
@@ -9,6 +10,8 @@ import com.weiziplus.muteki.common.util.HttpRequestUtils;
 import com.weiziplus.muteki.common.util.JwtUtils;
 import com.weiziplus.muteki.common.util.Md5Utils;
 import com.weiziplus.muteki.common.util.RedisUtils;
+import com.weiziplus.muteki.core.api.common.token.WebTerminalEnum;
+import com.weiziplus.muteki.core.api.common.token.WebTokenModel;
 import com.weiziplus.muteki.core.api.common.token.WebTokenUtils;
 import com.weiziplus.muteki.core.pc.common.interceptor.PcRateLimiter;
 import com.weiziplus.muteki.core.pc.common.token.PcTokenUtils;
@@ -22,6 +25,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -160,8 +164,6 @@ public class WebAuthorizationInterceptor implements HandlerInterceptor {
      * @return
      */
     private boolean handleWebToken(HttpServletRequest request, HttpServletResponse response, Object object) {
-        //获取token
-        String token = request.getHeader(GlobalConfig.TOKEN);
         //获取用户id
         Long userId = WebTokenUtils.getUserId();
         //查看redis是否过期
@@ -169,17 +171,44 @@ public class WebAuthorizationInterceptor implements HandlerInterceptor {
             HttpRequestUtils.handleErrorResponse(ResultBean.errorToken("token失效"));
             return false;
         }
-        //查看redis中token是否是当前token
-        if (!token.equals(RedisUtils.get(WebTokenUtils.createRedisKey(userId)))) {
+        //获取存放的tokenMap
+        Object redisObject = RedisUtils.get(WebTokenUtils.createRedisKey(userId));
+        if (null == redisObject) {
             HttpRequestUtils.handleErrorResponse(ResultBean.errorToken("token失效"));
             return false;
         }
+        Map<String, WebTokenModel> tokenModelMap = (Map<String, WebTokenModel>) redisObject;
+        WebTerminalEnum terminalEnum = WebTokenUtils.getExpand().getTerminalEnum();
+        WebTokenModel webTokenModel = tokenModelMap.get(terminalEnum.getName());
+        if (null == webTokenModel) {
+            HttpRequestUtils.handleErrorResponse(ResultBean.errorToken("token失效"));
+            return false;
+        }
+        //获取token
+        String token = request.getHeader(GlobalConfig.TOKEN);
+        //如果当前终端中存放的token和获取的token不一致
+        if (!webTokenModel.getToken().equals(token)) {
+            HttpRequestUtils.handleErrorResponse(ResultBean.errorToken("token失效"));
+            return false;
+        }
+        //上次最后操作的时间戳
+        Long lastTimeStamp = webTokenModel.getLastTimeStamp();
+        //terminalEnum.getExpireTime() 过期时间单位 秒
+        int millisecond = 1000;
+        //如果过期
+        if (System.currentTimeMillis() > lastTimeStamp + terminalEnum.getExpireTime() * millisecond) {
+            HttpRequestUtils.handleErrorResponse(ResultBean.errorToken("token失效"));
+            return false;
+        }
+        //重新设置当前终端token的过期时间
+        webTokenModel.setLastTimeStamp(System.currentTimeMillis());
+        tokenModelMap.put(terminalEnum.getName(), webTokenModel);
+        RedisUtils.set(WebTokenUtils.createRedisKey(userId), tokenModelMap, WebTokenUtils.getExpireTime());
         //判断是否触发限流
         if (!handleRateLimiter(request, response, object)) {
             HttpRequestUtils.handleErrorResponse(ResultBean.error("访问频率过快,请稍后再试"));
             return false;
         }
-        WebTokenUtils.updateExpireTime(userId);
         return true;
     }
 

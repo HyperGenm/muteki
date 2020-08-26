@@ -46,7 +46,7 @@ public class UserLogController {
             @ApiImplicitParam(name = "createTimeSort", value = "创建时间排序", dataType = "String", paramType = "query"),
     })
     @GetMapping("/getPageList")
-    @SysUserLogInterface(description = "获取系统用户日志分页数据")
+    @SysUserLogInterface(description = "获取web用户日志分页数据")
     public ResultBean<PageUtils<UserLogVo>> getPageList(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,

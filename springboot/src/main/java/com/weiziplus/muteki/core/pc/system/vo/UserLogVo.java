@@ -29,6 +29,12 @@ public class UserLogVo implements Serializable {
     private Long userId;
 
     /**
+     * 终端类型
+     */
+    @ApiModelProperty("终端类型")
+    private String terminal;
+
+    /**
      * 请求的路径
      */
     @ApiModelProperty("请求的路径")

@@ -33,6 +33,19 @@
                 let {formData: data} = this;
                 this.rows = [
                     {label: '用户名', prop: data['username']},
+                    {
+                        label: '终端', type: 'tag',
+                        element() {
+                            let {terminal} = data;
+                            let result = {
+                                "网页": 'success'
+                            };
+                            return {
+                                content: terminal,
+                                type: result[terminal] || 'warning'
+                            }
+                        }
+                    },
                     {label: '省份', prop: data['loginProvince']},
                     {label: '城市', prop: data['loginCity']},
                     {label: 'ip', prop: data['ipAddress']},

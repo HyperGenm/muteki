@@ -68,7 +68,7 @@ public class UserService extends BaseService {
             return ResultBean.error("当前用户为 " + UserStatusEnum.getName(user.getStatus()) + " 状态");
         }
         user.setStatus(UserStatusEnum.DISABLE.getValue());
-        WebTokenUtils.deleteToken(id);
+        WebTokenUtils.deleteAllToken(id);
         baseUpdate(user);
         return ResultBean.success();
     }

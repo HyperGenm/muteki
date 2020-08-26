@@ -36,6 +36,18 @@
                 tableColumns: [
                     {label: '用户名', prop: 'username', showOverflowTooltip: true, fixed: 'left'},
                     {label: '真实姓名', prop: 'realName', fixed: 'left'},
+                    {
+                        label: '终端', type: 'tag',
+                        element({terminal}) {
+                            let result = {
+                                "网页": 'success'
+                            };
+                            return {
+                                content: terminal,
+                                type: result[terminal] || 'warning'
+                            }
+                        }
+                    },
                     {label: '请求路径', prop: 'url', showOverflowTooltip: true},
                     {label: '请求方法名', prop: 'methodName', showOverflowTooltip: true},
                     {label: '参数', prop: 'param'},
