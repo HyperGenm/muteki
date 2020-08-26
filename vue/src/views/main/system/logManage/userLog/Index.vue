@@ -137,6 +137,13 @@
                     {type: 'input', prop: 'username', placeholder: '用户名'},
                     {type: 'input', prop: 'realName', placeholder: '真实姓名'},
                     {
+                        type: 'select', prop: 'terminal', allowCreate: true, placeholder: '终端',
+                        options: [
+                            {label: '网页', value: '网页'},
+                            {label: '客户端', value: '客户端'},
+                        ]
+                    },
+                    {
                         type: 'select', prop: 'type', placeholder: '类型',
                         options: [
                             {label: '查询', value: 1},

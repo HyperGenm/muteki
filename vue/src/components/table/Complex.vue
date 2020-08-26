@@ -13,6 +13,7 @@
                         <template v-else-if="'select' === item.type">
                             <el-select v-model="tableDataRequest.data[item.prop]"
                                        clearable filterable :disabled="item.disabled"
+                                       :allow-create="item.allowCreate"
                                        :placeholder="item.placeholder || '请选择'">
                                 <el-option v-for="option in item.options" :key="option.value"
                                            :label="option.label" :value="option.value"

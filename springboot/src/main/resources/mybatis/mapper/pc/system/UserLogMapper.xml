@@ -3,7 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.weiziplus.muteki.core.pc.system.mapper.UserLogMapper">
-    <select id="getListVo" resultType="com.weiziplus.muteki.core.pc.system.vo.UserLogVo">
+    <select id="getListVo"
+            parameterType="com.weiziplus.muteki.core.pc.system.dto.UserLogQueryDto"
+            resultType="com.weiziplus.muteki.core.pc.system.vo.UserLogVo">
         SELECT tul.*, u.username, u.real_name
         FROM `t_user_log` tul
         INNER JOIN `t_user` u ON tul.user_id = u.id
@@ -16,6 +18,9 @@
             </if>
             <if test="null != type">
                 AND tul.type = #{type}
+            </if>
+            <if test="null != terminal">
+                AND tul.terminal = #{terminal}
             </if>
             <if test="null != username and '' != username">
                 AND u.username LIKE CONCAT(#{username},'%')

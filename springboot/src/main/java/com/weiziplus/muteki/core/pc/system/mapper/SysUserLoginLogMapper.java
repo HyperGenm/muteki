@@ -1,6 +1,7 @@
 package com.weiziplus.muteki.core.pc.system.mapper;
 
 import com.weiziplus.muteki.common.models.SysUserLogin;
+import com.weiziplus.muteki.core.pc.system.dto.SysUserLoginLogQueryDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,20 +16,9 @@ public interface SysUserLoginLogMapper {
     /**
      * 获取列表数据
      *
-     * @param username
-     * @param loginProvince
-     * @param loginCity
-     * @param ipAddress
-     * @param result
-     * @param osName
-     * @param borderName
-     * @param startTime
-     * @param endTime
-     * @param createTimeSort
+     * @param sysUserLoginLogQueryDto
      * @return
      */
-    List<SysUserLogin> getList(String username, String loginProvince, String loginCity, String ipAddress
-            , String result, String osName, String borderName, String startTime, String endTime
-            , String createTimeSort);
+    List<SysUserLogin> getList(SysUserLoginLogQueryDto sysUserLoginLogQueryDto);
 
 }

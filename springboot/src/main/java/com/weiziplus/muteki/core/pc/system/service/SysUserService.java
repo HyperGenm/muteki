@@ -14,6 +14,7 @@ import com.weiziplus.muteki.core.pc.common.config.PcGlobalConfig;
 import com.weiziplus.muteki.core.pc.common.enums.SysUserStatusEnum;
 import com.weiziplus.muteki.core.pc.common.token.PcTokenUtils;
 import com.weiziplus.muteki.core.pc.system.dto.SysUserDto;
+import com.weiziplus.muteki.core.pc.system.dto.SysUserQueryDto;
 import com.weiziplus.muteki.core.pc.system.mapper.SysUserMapper;
 import com.weiziplus.muteki.core.pc.system.vo.SysUserVo;
 import lombok.extern.slf4j.Slf4j;
@@ -44,25 +45,15 @@ public class SysUserService extends BaseService {
      *
      * @param pageNum
      * @param pageSize
-     * @param username
-     * @param roleId
-     * @param status
-     * @param lastActiveTime
-     * @param createTime
-     * @param lastActiveTimeSort
-     * @param createTimeSort
+     * @param sysUserQueryDto
      * @return
      */
-    public ResultBean<PageUtils<SysUserVo>> getPageList(Integer pageNum, Integer pageSize
-            , String username, Integer roleId, Integer status, String lastActiveTime, String createTime
-            , String lastActiveTimeSort, String createTimeSort) {
-        if (!containsOrderByType(lastActiveTimeSort, createTimeSort)) {
+    public ResultBean<PageUtils<SysUserVo>> getPageList(Integer pageNum, Integer pageSize, SysUserQueryDto sysUserQueryDto) {
+        if (!containsOrderByType(sysUserQueryDto.getCreateTimeSort(), sysUserQueryDto.getLastActiveTimeSort())) {
             return ResultBean.error("排序类型错误");
         }
         PageHelper.startPage(pageNum, pageSize);
-        PageUtils<SysUserVo> pageUtil = PageUtils.pageInfo(mapper.getListVo(
-                username, roleId, status, lastActiveTime, createTime,
-                lastActiveTimeSort, createTimeSort));
+        PageUtils<SysUserVo> pageUtil = PageUtils.pageInfo(mapper.getListVo(sysUserQueryDto));
         return ResultBean.success(pageUtil);
     }
 

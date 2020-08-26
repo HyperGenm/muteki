@@ -5,6 +5,7 @@ import com.weiziplus.muteki.common.result.ResultBean;
 import com.weiziplus.muteki.common.util.PageUtils;
 import com.weiziplus.muteki.core.pc.common.interceptor.PcAuthToken;
 import com.weiziplus.muteki.core.pc.common.aop.SysUserLogInterface;
+import com.weiziplus.muteki.core.pc.system.dto.SysUserLoginLogQueryDto;
 import com.weiziplus.muteki.core.pc.system.service.SysUserLoginLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -33,29 +34,14 @@ public class SysUserLoginLogController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "pageNum", defaultValue = "1", dataType = "Integer", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", defaultValue = "10", dataType = "Integer", paramType = "query"),
-            @ApiImplicitParam(name = "username", value = "用户名", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "loginProvince", value = "省份", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "loginCity", value = "城市", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "ipAddress", value = "ip", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "result", value = "结果", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "osName", value = "操作系统", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "borderName", value = "浏览器", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "startTime", value = "起始时间", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "endTime", value = "截止时间", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "createTimeSort", value = "创建时间排序", dataType = "String", paramType = "query"),
     })
     @GetMapping("/getPageList")
     @SysUserLogInterface(description = "获取系统登录日志分页数据")
     public ResultBean<PageUtils<SysUserLogin>> getPageList(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            String username, String loginProvince, String loginCity, String ipAddress, String result,
-            String osName, String borderName, String startTime, String endTime,
-            String createTimeSort) {
-        return service.getPageList(pageNum, pageSize,
-                username, loginProvince, loginCity, ipAddress, result,
-                osName, borderName, startTime, endTime,
-                createTimeSort);
+            SysUserLoginLogQueryDto sysUserLoginLogQueryDto) {
+        return service.getPageList(pageNum, pageSize, sysUserLoginLogQueryDto);
     }
 
 }

@@ -109,6 +109,13 @@
                 //表格顶部搜索
                 tableSearch: [
                     {type: 'input', prop: 'username', placeholder: '用户名'},
+                    {
+                        type: 'select', prop: 'terminal', allowCreate: true, placeholder: '终端',
+                        options: [
+                            {label: '网页', value: '网页'},
+                            {label: '客户端', value: '客户端'},
+                        ]
+                    },
                     {type: 'input', prop: 'loginProvince', placeholder: '省份'},
                     {type: 'input', prop: 'loginCity', placeholder: '城市'},
                     {type: 'input', prop: 'ipAddress', placeholder: 'ip'},

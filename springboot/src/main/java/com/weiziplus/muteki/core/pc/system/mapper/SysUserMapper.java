@@ -1,5 +1,6 @@
 package com.weiziplus.muteki.core.pc.system.mapper;
 
+import com.weiziplus.muteki.core.pc.system.dto.SysUserQueryDto;
 import com.weiziplus.muteki.core.pc.system.vo.SysUserVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,17 +18,10 @@ public interface SysUserMapper {
     /**
      * 获取列表数据
      *
-     * @param username
-     * @param roleId
-     * @param status
-     * @param lastActiveTime
-     * @param createTime
-     * @param lastActiveTimeSort
-     * @param createTimeSort
+     * @param sysUserQueryDto
      * @return
      */
-    List<SysUserVo> getListVo(String username, Integer roleId, Integer status
-            , String lastActiveTime, String createTime, String lastActiveTimeSort, String createTimeSort);
+    List<SysUserVo> getListVo(SysUserQueryDto sysUserQueryDto);
 
     /**
      * 根据用户id删除用户角色信息

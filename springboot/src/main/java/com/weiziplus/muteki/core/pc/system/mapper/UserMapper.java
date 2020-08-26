@@ -1,5 +1,6 @@
 package com.weiziplus.muteki.core.pc.system.mapper;
 
+import com.weiziplus.muteki.core.pc.system.dto.UserQueryDto;
 import com.weiziplus.muteki.core.pc.system.vo.UserVo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,15 +16,9 @@ public interface UserMapper {
     /**
      * 获取列表数据
      *
-     * @param username
-     * @param status
-     * @param lastActiveTime
-     * @param createTime
-     * @param lastActiveTimeSort
-     * @param createTimeSort
+     * @param userQueryDto
      * @return
      */
-    List<UserVo> getListVo(String username, Integer status
-            , String lastActiveTime, String createTime, String lastActiveTimeSort, String createTimeSort);
+    List<UserVo> getListVo(UserQueryDto userQueryDto);
 
 }

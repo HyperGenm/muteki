@@ -5,6 +5,7 @@ import com.weiziplus.muteki.common.base.BaseService;
 import com.weiziplus.muteki.common.models.UserLogin;
 import com.weiziplus.muteki.common.result.ResultBean;
 import com.weiziplus.muteki.common.util.PageUtils;
+import com.weiziplus.muteki.core.pc.system.dto.UserLoginLogQueryDto;
 import com.weiziplus.muteki.core.pc.system.mapper.UserLoginLogMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,30 +27,15 @@ public class UserLoginLogService extends BaseService {
      *
      * @param pageNum
      * @param pageSize
-     * @param username
-     * @param loginProvince
-     * @param loginCity
-     * @param ipAddress
-     * @param result
-     * @param osName
-     * @param borderName
-     * @param startTime
-     * @param endTime
-     * @param createTimeSort
+     * @param userLoginLogQueryDto
      * @return
      */
-    public ResultBean<PageUtils<UserLogin>> getPageList(Integer pageNum, Integer pageSize
-            , String username, String loginProvince, String loginCity, String ipAddress
-            , String result, String osName, String borderName, String startTime, String endTime
-            , String createTimeSort) {
-        if (!containsOrderByType(createTimeSort)) {
+    public ResultBean<PageUtils<UserLogin>> getPageList(Integer pageNum, Integer pageSize, UserLoginLogQueryDto userLoginLogQueryDto) {
+        if (!containsOrderByType(userLoginLogQueryDto.getCreateTimeSort())) {
             return ResultBean.error("排序字段错误");
         }
         PageHelper.startPage(pageNum, pageSize);
-        PageUtils<UserLogin> pageUtil = PageUtils.pageInfo(mapper.getList(
-                username, loginProvince, loginCity, ipAddress, result,
-                osName, borderName, startTime, endTime,
-                createTimeSort));
+        PageUtils<UserLogin> pageUtil = PageUtils.pageInfo(mapper.getList(userLoginLogQueryDto));
         return ResultBean.success(pageUtil);
     }
 

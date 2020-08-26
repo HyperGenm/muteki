@@ -1,6 +1,7 @@
 package com.weiziplus.muteki.core.pc.system.mapper;
 
 import com.weiziplus.muteki.common.models.UserLogin;
+import com.weiziplus.muteki.core.pc.system.dto.UserLoginLogQueryDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,20 +16,9 @@ public interface UserLoginLogMapper {
     /**
      * 获取列表数据
      *
-     * @param username
-     * @param loginProvince
-     * @param loginCity
-     * @param ipAddress
-     * @param result
-     * @param osName
-     * @param borderName
-     * @param startTime
-     * @param endTime
-     * @param createTimeSort
+     * @param userLoginLogQueryDto
      * @return
      */
-    List<UserLogin> getList(String username, String loginProvince, String loginCity, String ipAddress
-            , String result, String osName, String borderName, String startTime, String endTime
-            , String createTimeSort);
+    List<UserLogin> getList(UserLoginLogQueryDto userLoginLogQueryDto);
 
 }

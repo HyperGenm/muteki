@@ -5,6 +5,7 @@ import com.weiziplus.muteki.common.util.PageUtils;
 import com.weiziplus.muteki.core.pc.common.interceptor.PcAuthToken;
 import com.weiziplus.muteki.core.pc.common.aop.SysUserLogInterface;
 import com.weiziplus.muteki.core.pc.system.dto.SysUserDto;
+import com.weiziplus.muteki.core.pc.system.dto.SysUserQueryDto;
 import com.weiziplus.muteki.core.pc.system.service.SysUserService;
 import com.weiziplus.muteki.core.pc.system.vo.SysUserVo;
 import io.swagger.annotations.Api;
@@ -36,26 +37,14 @@ public class SysUserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "pageNum", defaultValue = "1", dataType = "Integer", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "pageSize", defaultValue = "10", dataType = "Integer", paramType = "query"),
-            @ApiImplicitParam(name = "username", value = "用户名", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "roleId", value = "角色", dataType = "Integer", paramType = "query"),
-            @ApiImplicitParam(name = "status", value = "状态", dataType = "Integer", paramType = "query"),
-            @ApiImplicitParam(name = "lastActiveTime", value = "最后活跃时间", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "createTime", value = "创建时间", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "lastActiveTimeSort", value = "最后活跃时间排序", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "createTimeSort", value = "创建时间排序", dataType = "String", paramType = "query"),
     })
     @GetMapping("/getPageList")
     @SysUserLogInterface(description = "获取系统用户分页数据")
     public ResultBean<PageUtils<SysUserVo>> getPageList(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            String username,
-            @Min(value = 2, message = "角色id不能小于2") Integer roleId,
-            Integer status, String lastActiveTime, String createTime,
-            String lastActiveTimeSort, String createTimeSort) {
-        return service.getPageList(pageNum, pageSize,
-                username, roleId, status, lastActiveTime, createTime,
-                lastActiveTimeSort, createTimeSort);
+            SysUserQueryDto sysUserQueryDto) {
+        return service.getPageList(pageNum, pageSize, sysUserQueryDto);
     }
 
     @ApiOperation(value = "新增用户")

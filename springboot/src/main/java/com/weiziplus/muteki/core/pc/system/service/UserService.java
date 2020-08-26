@@ -7,6 +7,7 @@ import com.weiziplus.muteki.common.result.ResultBean;
 import com.weiziplus.muteki.common.util.PageUtils;
 import com.weiziplus.muteki.core.api.common.enums.UserStatusEnum;
 import com.weiziplus.muteki.core.api.common.token.WebTokenUtils;
+import com.weiziplus.muteki.core.pc.system.dto.UserQueryDto;
 import com.weiziplus.muteki.core.pc.system.mapper.UserMapper;
 import com.weiziplus.muteki.core.pc.system.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
@@ -29,24 +30,15 @@ public class UserService extends BaseService {
      *
      * @param pageNum
      * @param pageSize
-     * @param username
-     * @param status
-     * @param lastActiveTime
-     * @param createTime
-     * @param lastActiveTimeSort
-     * @param createTimeSort
+     * @param userQueryDto
      * @return
      */
-    public ResultBean<PageUtils<UserVo>> getPageList(Integer pageNum, Integer pageSize
-            , String username, Integer status, String lastActiveTime, String createTime
-            , String lastActiveTimeSort, String createTimeSort) {
-        if (!containsOrderByType(lastActiveTimeSort, createTimeSort)) {
+    public ResultBean<PageUtils<UserVo>> getPageList(Integer pageNum, Integer pageSize, UserQueryDto userQueryDto) {
+        if (!containsOrderByType(userQueryDto.getLastActiveTimeSort(), userQueryDto.getCreateTimeSort())) {
             return ResultBean.error("排序类型错误");
         }
         PageHelper.startPage(pageNum, pageSize);
-        PageUtils<UserVo> pageUtil = PageUtils.pageInfo(mapper.getListVo(
-                username, status, lastActiveTime, createTime,
-                lastActiveTimeSort, createTimeSort));
+        PageUtils<UserVo> pageUtil = PageUtils.pageInfo(mapper.getListVo(userQueryDto));
         return ResultBean.success(pageUtil);
     }
 
