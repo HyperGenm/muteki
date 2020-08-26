@@ -167,6 +167,18 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgs>
+                        <!-- java8 保留参数名编译参数 (Mybatis等可以不用加@Param注解)-->
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <!-- 配置不打包的文件 -->
