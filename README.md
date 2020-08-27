@@ -1,5 +1,6 @@
 # muteki
 *springboot和vue搭建的前后端分离的后台管理模板,简便resultful接口开发*
+*闪耀吧! 宛如流星一般*
 
 ## <a href="http://39.96.52.201/muteki/vuepress" target="_blank">说明文档</a>
    * 文档更新中。。。
