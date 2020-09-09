@@ -42,6 +42,10 @@
                         </template>
                     </el-form-item>
                     <slot name="search"></slot>
+                    <el-button type="warning" size="mini" icon="el-icon-refresh" style="margin-bottom: 10px;"
+                               @click="resetSearch">
+                        重置
+                    </el-button>
                     <el-button type="primary" size="mini" icon="el-icon-refresh" style="margin-bottom: 10px;"
                                @click="renderTable">
                         查询
@@ -609,6 +613,16 @@
                     console.debug(`未找到property字段，请检查 tableColumns 中prop字段设置,如果不需要表格行点击事件，请忽略该提示`);
                 }
                 this.$emit('cellClick', {row, column: column['property'], cell, event});
+            },
+            /**
+             * 重置搜索表单
+             */
+            resetSearch() {
+                let {tableSearch = [], tableDataRequest: {data = {}}} = this;
+                tableSearch.forEach(value => {
+                    data[value['prop']] = null;
+                });
+                this.tableDataRequest.data = JSON.parse(JSON.stringify(data));
             }
         }
     }
