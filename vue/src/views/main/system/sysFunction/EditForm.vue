@@ -95,6 +95,7 @@
             isShow(show) {
                 if (show) {
                     this.changeFormOptions();
+                    this.getTree();
                 }
             }
         },
@@ -103,28 +104,31 @@
             ** [Vue warn]: Error in callback for watcher "value": "TypeError: Cannot read property 'level' of null" **
             不过并不影响使用，个人感觉是级联选择器问题`);
             this.changeFormOptions();
-            let that = this;
-            this.$axios({
-                url: that.$global.URL.system.sysFunction.getTree,
-                success(data) {
-                    let options = [];
-                    data.forEach(value => {
-                        let children = that.handleChildren(value.children);
-                        options.push({
-                            label: value.title,
-                            value: value.id,
-                            children
-                        });
-                    });
-                    that.formOptions[2]['options'] = [{
-                        label: '最高级',
-                        value: 0,
-                        children: options
-                    }];
-                }
-            });
+            this.getTree();
         },
         methods: {
+            getTree() {
+                let that = this;
+                this.$axios({
+                    url: that.$global.URL.system.sysFunction.getTree,
+                    success(data) {
+                        let options = [];
+                        data.forEach(value => {
+                            let children = that.handleChildren(value.children);
+                            options.push({
+                                label: value.title,
+                                value: value.id,
+                                children
+                            });
+                        });
+                        that.formOptions[2]['options'] = [{
+                            label: '最高级',
+                            value: 0,
+                            children: options
+                        }];
+                    }
+                });
+            },
             /**
              * 处理子级
              */
