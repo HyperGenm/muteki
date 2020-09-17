@@ -39,11 +39,6 @@
             )
         </foreach>
     </insert>
-    <delete id="deleteById">
-        DELETE
-        FROM `${TABLE_NAME}`
-        WHERE `id` = #{id}
-    </delete>
     <delete id="deleteByIds">
         DELETE
         FROM `${TABLE_NAME}`
@@ -61,11 +56,6 @@
         </foreach>
         WHERE `${KEY_ID}` = #{KEY_VALUE}
     </update>
-    <select id="findById" resultType="Map">
-        SELECT *
-        FROM `${TABLE_NAME}`
-        WHERE `id` = #{id}
-    </select>
     <select id="findByIds" resultType="Map">
         SELECT *
         FROM `${TABLE_NAME}`
@@ -74,12 +64,6 @@
             #{id}
         </foreach>
         )
-    </select>
-    <select id="findOneDataByColumn" resultType="Map">
-        SELECT *
-        FROM `${TABLE_NAME}`
-        WHERE `${COLUMN}` = #{value}
-        LIMIT 1
     </select>
     <select id="findOneDataByColumnMap" resultType="Map">
         SELECT *
@@ -122,11 +106,6 @@
         </if>
         LIMIT 1
     </select>
-    <select id="findListByColumn" resultType="Map">
-        SELECT *
-        FROM `${TABLE_NAME}`
-        WHERE `${COLUMN}` = #{value}
-    </select>
     <select id="findListByColumnMap" resultType="Map">
         SELECT *
         FROM `${TABLE_NAME}`
@@ -168,31 +147,5 @@
         <if test="null != ORDER_BY and '' != ORDER_BY">
             ORDER BY ${ORDER_BY}
         </if>
-    </select>
-    <select id="findAll" resultType="Map">
-        SELECT *
-        FROM `${TABLE_NAME}`
-    </select>
-    <select id="findAllOrderByColumnDesc" resultType="Map">
-        SELECT *
-        FROM `${TABLE_NAME}`
-        ORDER BY ${COLUMN} DESC
-    </select>
-    <select id="findOneDataOrderByColumnDesc" resultType="Map">
-        SELECT *
-        FROM `${TABLE_NAME}`
-        ORDER BY ${COLUMN} DESC
-        LIMIT 1
-    </select>
-    <select id="findAllOrderByColumnAsc" resultType="Map">
-        SELECT *
-        FROM `${TABLE_NAME}`
-        ORDER BY ${COLUMN} ASC
-    </select>
-    <select id="findOneDataOrderByColumnAsc" resultType="Map">
-        SELECT *
-        FROM `${TABLE_NAME}`
-        ORDER BY ${COLUMN} ASC
-        LIMIT 1
     </select>
 </mapper>

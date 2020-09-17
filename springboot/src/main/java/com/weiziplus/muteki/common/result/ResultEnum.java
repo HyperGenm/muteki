@@ -19,7 +19,7 @@ public enum ResultEnum {
     ERROR_TOKEN("token错误", 401),
     ERROR("error", 402),
     ERROR_ROLE("没有权限", 403),
-    ERROR_FAST("访问频率过快", 406),
+    ERROR_FAST("访问频率过快", 429),
     ERROR_ALI("调用ali接口出错", 420),
     ERROR_BAIDU("调用百度接口出错", 430),
     ERROR_EXCEPTION("系统异常", 500),

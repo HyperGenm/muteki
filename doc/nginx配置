@@ -18,6 +18,8 @@ http {
 
     #开启gzip
     gzip on;
+    ########################################################如果本地有gzip压缩过的文件，直接使用,建议开启   需要安装模块   --with-http_gzip_static_module
+    #gzip_static on;
     #配置禁用gzip条件，支持正则。此处表示ie6及以下不启用gzip（因为ie低版本不支持）
     gzip_disable "MSIE [1-6]\.";
     #让代理服务器上的浏览器和服务器能正确辨认gzip压缩功能.
@@ -34,19 +36,19 @@ http {
 
     server {
         #监听80和443端口
-    	listen 80;
-    	listen 443 ssl;
-    	server_name 1.1.1.1;
+    	#listen 80;
+    	#listen 443 ssl;
+    	#server_name 1.1.1.1;
 
-        #配置https
+        #######################################################配置https   需要安装模块   --with-http_ssl_module
     	#ssl on;
-        ssl_certificate      "/etc/letsencrypt/live/www.xxx/fullchain.pem";
-        ssl_certificate_key  "/etc/letsencrypt/live/www.xxx/privkey.pem";
-        ssl_session_timeout  5m;
+        #ssl_certificate      "/etc/letsencrypt/live/www.xxx/fullchain.pem";
+        #ssl_certificate_key  "/etc/letsencrypt/live/www.xxx/privkey.pem";
+        #ssl_session_timeout  5m;
 
-        ssl_protocols  SSLv2 SSLv3 TLSv1;
-        ssl_ciphers  HIGH:!aNULL:!MD5;
-        ssl_prefer_server_ciphers   on;
+        #ssl_protocols  SSLv2 SSLv3 TLSv1;
+        #ssl_ciphers  HIGH:!aNULL:!MD5;
+        #ssl_prefer_server_ciphers   on;
 
         ###网站首页
         location / {

@@ -38,10 +38,15 @@ public interface BaseMapper {
 
     /**
      * 根据表名和id删除
-     *
+     *DELETE
+     *         FROM `${TABLE_NAME}`
+     *         WHERE `id` = #{id}
      * @param map
      * @return
      */
+    @Delete("" +
+            "DELETE FROM `${TABLE_NAME}` " +
+            "WHERE `id` = #{id} ")
     int deleteById(Map<String, Object> map);
 
     /**
@@ -66,6 +71,10 @@ public interface BaseMapper {
      * @param map
      * @return
      */
+    @Select("" +
+            "SELECT * " +
+            "FROM `${TABLE_NAME}` " +
+            "WHERE `id` = #{id} ")
     Map<String, Object> findById(Map<String, Object> map);
 
     /**
@@ -82,6 +91,11 @@ public interface BaseMapper {
      * @param map
      * @return
      */
+    @Select("" +
+            "SELECT * " +
+            "FROM `${TABLE_NAME}` " +
+            "WHERE `${COLUMN}` = #{value} " +
+            "LIMIT 1 ")
     Map<String, Object> findOneDataByColumn(Map<String, Object> map);
 
     /**
@@ -106,6 +120,10 @@ public interface BaseMapper {
      * @param map
      * @return
      */
+    @Select("" +
+            "SELECT * " +
+            "FROM `${TABLE_NAME}` " +
+            "WHERE `${COLUMN}` = #{value} ")
     List<Map<String, Object>> findListByColumn(Map<String, Object> map);
 
     /**
@@ -130,6 +148,9 @@ public interface BaseMapper {
      * @param tableName
      * @return
      */
+    @Select("" +
+            "SELECT * " +
+            "FROM `${TABLE_NAME}` ")
     List<Map<String, Object>> findAll(@Param("TABLE_NAME") String tableName);
 
     /**
@@ -138,6 +159,10 @@ public interface BaseMapper {
      * @param map
      * @return
      */
+    @Select("" +
+            "SELECT * " +
+            "FROM `${TABLE_NAME}` " +
+            "ORDER BY ${COLUMN} DESC ")
     List<Map<String, Object>> findAllOrderByColumnDesc(Map<String, String> map);
 
     /**
@@ -146,6 +171,11 @@ public interface BaseMapper {
      * @param map
      * @return
      */
+    @Select("" +
+            "SELECT * " +
+            "FROM `${TABLE_NAME}` " +
+            "ORDER BY ${COLUMN} DESC " +
+            "LIMIT 1 ")
     Map<String, Object> findOneDataOrderByColumnDesc(Map<String, String> map);
 
     /**
@@ -154,6 +184,10 @@ public interface BaseMapper {
      * @param map
      * @return
      */
+    @Select("" +
+            "SELECT * " +
+            "FROM `${TABLE_NAME}` " +
+            "ORDER BY ${COLUMN} ")
     List<Map<String, Object>> findAllOrderByColumnAsc(Map<String, String> map);
 
     /**
@@ -162,6 +196,21 @@ public interface BaseMapper {
      * @param map
      * @return
      */
+    @Select("" +
+            "SELECT * " +
+            "FROM `${TABLE_NAME}` " +
+            "ORDER BY ${COLUMN} " +
+            "LIMIT 1 ")
     Map<String, Object> findOneDataOrderByColumnAsc(Map<String, String> map);
 
+    /**
+     * 获取总数
+     *
+     * @param tableName
+     * @return
+     */
+    @Select("" +
+            "SELECT COUNT(*) " +
+            "FROM `${TABLE_NAME}` ")
+    int count(@Param("TABLE_NAME") String tableName);
 }

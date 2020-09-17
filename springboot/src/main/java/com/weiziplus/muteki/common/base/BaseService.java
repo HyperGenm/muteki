@@ -815,4 +815,14 @@ public class BaseService {
         return JSON.parseObject(JSON.toJSONString(oneDataOrderByColumnDesc, SerializerFeature.WriteDateUseDateFormat), clazz);
     }
 
+    /**
+     * 获取总数
+     *
+     * @param clazz
+     * @return
+     */
+    protected int baseCountByClass(Class<?> clazz) {
+        return mapper.count(getTableName(clazz));
+    }
+
 }
