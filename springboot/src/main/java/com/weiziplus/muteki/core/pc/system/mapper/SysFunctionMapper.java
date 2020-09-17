@@ -2,6 +2,7 @@ package com.weiziplus.muteki.core.pc.system.mapper;
 
 import com.weiziplus.muteki.common.models.SysFunction;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface SysFunctionMapper {
      * @param roleIds
      * @return
      */
-    Integer getMinNotSuperMenuParentIdByRoleIds(Set<Integer> roleIds);
+    Integer getMinNotSuperMenuParentIdByRoleIds(@Param("roleIds") Set<Integer> roleIds);
 
     /**
      * 根据角色ids获取不是超级管理员专属的菜单列表
@@ -28,7 +29,7 @@ public interface SysFunctionMapper {
      * @param roleIds
      * @return
      */
-    List<SysFunction> getNotSuperMenuListByRoleIds(Set<Integer> roleIds);
+    List<SysFunction> getNotSuperMenuListByRoleIds(@Param("roleIds") Set<Integer> roleIds);
 
     /**
      * 根据角色ids获取不是超级管理员专属的按钮列表
@@ -36,7 +37,7 @@ public interface SysFunctionMapper {
      * @param roleIds
      * @return
      */
-    Set<String> getNotSuperButtonSetByRoleIds(Set<Integer> roleIds);
+    Set<String> getNotSuperButtonSetByRoleIds(@Param("roleIds") Set<Integer> roleIds);
 
     /**
      * 获取最小的上级id

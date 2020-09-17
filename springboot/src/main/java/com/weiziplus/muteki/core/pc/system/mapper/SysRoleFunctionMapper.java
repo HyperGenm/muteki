@@ -1,6 +1,7 @@
 package com.weiziplus.muteki.core.pc.system.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Set;
 
@@ -17,6 +18,6 @@ public interface SysRoleFunctionMapper {
      * @param roleIds
      * @return
      */
-    Set<String> getFunContainApiByRoleIds(Set<Integer> roleIds);
+    Set<String> getFunContainApiByRoleIds(@Param("roleIds") Set<Integer> roleIds);
 
 }
