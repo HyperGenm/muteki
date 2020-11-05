@@ -52,5 +52,10 @@ public class SysFunctionDto implements Serializable {
     @ApiModelProperty("内/外部链接")
     private Integer externalFlag;
 
+    @ApiModelProperty("排序")
+    private Integer sort;
+
+    @ApiModelProperty("备注")
+    private String remark;
 
 }
