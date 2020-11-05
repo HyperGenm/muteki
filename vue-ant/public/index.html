@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--默认使用谷歌内核-->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>WeiziPlus</title>
+</head>
+<style>
+
+    #app > .border {
+        position: fixed;
+        top: 50%;
+        right: 50%;
+        margin-top: -3rem;
+        margin-right: -3rem;
+        border-radius: 50%;
+        width: 5rem;
+        height: 5rem;
+        border-top: 1rem solid #9b59b6;
+        border-right: 1rem solid transparent;
+        border-bottom: 1rem solid #9b59b6;
+        border-left: 1rem solid transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: border-animation 1.5s infinite linear;
+    }
+
+    @keyframes border-animation {
+        0% {
+            transform: rotate(0);
+            border-top: 1rem solid #9b59b6;
+            border-bottom: 1rem solid #9b59b6;
+        }
+
+        50% {
+            transform: rotate(180deg);
+            border-top: 1rem solid #3498db;
+            border-bottom: 1rem solid #3498db;
+        }
+
+        100% {
+            transform: rotate(360deg);
+            border-top: 1rem solid #9b59b6;
+            border-bottom: 1rem solid #9b59b6;
+        }
+    }
+
+    #app > .border > .box {
+        border-radius: 50%;
+        width: 3rem;
+        height: 3rem;
+        background-color: #1890ff;
+        animation: box-animation 1.5s infinite linear;
+    }
+
+    @keyframes box-animation {
+        50% {
+            background-color: #2ecc71;
+        }
+    }
+</style>
+<body>
+<noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+</noscript>
+<div id="app">
+    <!--外面的边框-->
+    <div class="border">
+        <!--里面的内容-->
+        <div class="box"></div>
+    </div>
+</div>
+<!-- built files will be auto injected -->
+</body>
+</html>
