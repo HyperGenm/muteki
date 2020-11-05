@@ -16,7 +16,7 @@
     <!--CDN引入element-ui，减少打包体积-->
     <script src="https://cdn.bootcss.com/element-ui/2.13.2/index.js"></script>
     <script>window.ELEMENT || document.write('<script src="<%= BASE_URL %>static/cdn/element-ui-2.13.2.min.js"><\/script>')</script>
-   <!--CDN引入vue-router，减少打包体积-->
+    <!--CDN引入vue-router，减少打包体积-->
     <script src="https://cdn.bootcss.com/vue-router/3.2.0/vue-router.min.js"></script>
     <script>window.VueRouter || document.write('<script src="<%= BASE_URL %>static/cdn/vue-router-3.2.0.min.js"><\/script>')</script>
     <!--CDN引入vuex，减少打包体积-->
@@ -27,12 +27,73 @@
     <script>window.axios || document.write('<script src="<%= BASE_URL %>static/cdn/axios-0.19.2.min.js"><\/script>')</script>
     <% } %>
 </head>
+<style>
+
+    #app > .border {
+        position: fixed;
+        top: 50%;
+        right: 50%;
+        margin-top: -3rem;
+        margin-right: -3rem;
+        border-radius: 50%;
+        width: 5rem;
+        height: 5rem;
+        border-top: 1rem solid #9b59b6;
+        border-right: 1rem solid transparent;
+        border-bottom: 1rem solid #9b59b6;
+        border-left: 1rem solid transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: border-animation 1.5s infinite linear;
+    }
+
+    @keyframes border-animation {
+        0% {
+            transform: rotate(0);
+            border-top: 1rem solid #9b59b6;
+            border-bottom: 1rem solid #9b59b6;
+        }
+
+        50% {
+            transform: rotate(180deg);
+            border-top: 1rem solid #3498db;
+            border-bottom: 1rem solid #3498db;
+        }
+
+        100% {
+            transform: rotate(360deg);
+            border-top: 1rem solid #9b59b6;
+            border-bottom: 1rem solid #9b59b6;
+        }
+    }
+
+    #app > .border > .box {
+        border-radius: 50%;
+        width: 3rem;
+        height: 3rem;
+        background-color: #1890ff;
+        animation: box-animation 1.5s infinite linear;
+    }
+
+    @keyframes box-animation {
+        50% {
+            background-color: #2ecc71;
+        }
+    }
+</style>
 <body>
 <noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
         Please enable it to continue.</strong>
 </noscript>
-<div id="app"></div>
+<div id="app">
+    <!--外面的边框-->
+    <div class="border">
+        <!--里面的内容-->
+        <div class="box"></div>
+    </div>
+</div>
 <!-- built files will be auto injected -->
 <!--CDN引入CryptoJS-->
 <script src="https://cdn.bootcdn.net/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
