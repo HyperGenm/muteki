@@ -118,7 +118,8 @@
                  :locale="locale"
                  :rowKey="rowKey"
                  :scroll="{x:true}"
-                 :rowSelection="realRowSelection">
+                 :rowSelection="realRowSelection"
+                 @change="change">
             <!--表格header-->
             <template v-slot:title="currentPageData">
                 <slot name="title" :rows="currentPageData"></slot>
@@ -143,6 +144,8 @@
                                     :fixed="column.fixed"
                                     :key="column.key"
                                     :sorter="column.sorter"
+                                    :sortOrder="column.sortOrder"
+                                    :class="column.class"
                                     :width="column.width">
                         <!--表头，添加文字提示-->
                         <template #title>
@@ -577,6 +580,30 @@
                     let paginationHeight = null != pagination ? pagination.getBoundingClientRect().height : 0;
                     tableMaxHeight.value = boxHeight - headerButtonHeight - headerSearchListHeight - paginationHeight;
                 });
+                //如果参数中有排序，显示表格的蓝色排序小箭头
+                for (let key in props['data']) {
+                    if (!props['data'].hasOwnProperty(key)) {
+                        continue;
+                    }
+                    if (!key.endsWith('Sort')
+                        || null == props['data'][key]) {
+                        continue;
+                    }
+                    for (let i = 0; i < props['columns'].length; i++) {
+                        let {dataIndex} = props['columns'][i];
+                        if (key !== (dataIndex + 'Sort')) {
+                            continue;
+                        }
+                        if ('ASC' === props['data'][key].toUpperCase()) {
+                            props['columns'][i]['sortOrder'] = 'ASC';
+                            props['columns'][i]['class'] = 'wei-sorter-up-on';
+                        } else if ('DESC' === props['data'][key].toUpperCase()) {
+                            props['columns'][i]['sortOrder'] = 'DESC';
+                            props['columns'][i]['class'] = 'wei-sorter-down-on';
+                        }
+                        break;
+                    }
+                }
                 getTableData();
             });
             //顶部搜索框
@@ -639,6 +666,44 @@
                     delete props['data'][value['prop']];
                 });
             };
+            //分页、排序、筛选变化时触发
+            let change = (pagination, filters, sorter, content) => {
+                //只处理排序
+                if (null == sorter) {
+                    return;
+                }
+                let {order, column, field} = sorter;
+                let sorterIndex = null;
+                for (let i = 0; i < props['columns'].length; i++) {
+                    let {dataIndex} = props['columns'][i];
+                    if (field === dataIndex) {
+                        sorterIndex = i;
+                        break;
+                    }
+                }
+                if (null == sorterIndex) {
+                    console.warn(`如果不需要排序，请忽略此提示。 dataIndex字段未设置,请检查 columns 配置`);
+                    return;
+                }
+                let orderValue = props['data'][`${field}Sort`];
+                //如果原来为升序
+                if ('ASC' === orderValue) {
+                    props['columns'][sorterIndex]['sortOrder'] = 'DESC';
+                    props['columns'][sorterIndex]['class'] = 'wei-sorter-down-on';
+                    props['data'][`${field}Sort`] = 'DESC';
+                } else if ('DESC' === orderValue) {
+                    //如果原来为降序
+                    props['columns'][sorterIndex]['sortOrder'] = false;
+                    props['columns'][sorterIndex]['class'] = '';
+                    delete props['data'][`${field}Sort`];
+                } else {
+                    //如果原来未设置
+                    props['columns'][sorterIndex]['sortOrder'] = 'ASC';
+                    props['columns'][sorterIndex]['class'] = 'wei-sorter-up-on';
+                    props['data'][`${field}Sort`] = 'ASC';
+                }
+                getTableData();
+            }
             return {
                 getTableData,
                 dataSource,
@@ -653,7 +718,8 @@
                 isShowRowActionButtonsPopover,
                 realRowActionButtons,
                 resetHeaderForm,
-                tableMaxHeight
+                tableMaxHeight,
+                change
             }
         }
     }
@@ -698,6 +764,24 @@
 
         .pagination {
             margin-top: 20px;
+        }
+
+        //配合表格排序显示
+        ::v-deep(.wei-sorter-up-on) {
+            .ant-table-column-sorters .ant-table-column-sorter-inner {
+                & > span.anticon.anticon-caret-up {
+                    color: #1890ff;
+                }
+            }
+        }
+
+        //配合表格排序显示
+        ::v-deep(.wei-sorter-down-on) {
+            .ant-table-column-sorters .ant-table-column-sorter-inner {
+                & > span.anticon.anticon-caret-down {
+                    color: #1890ff;
+                }
+            }
         }
 
     }

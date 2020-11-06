@@ -29,7 +29,7 @@ const handleRouter = (value: any, parentPath = '') => {
     } else {
         router['component'] = () => import(`@/views/common/station/Index.vue`);
         router['redirect'] = `${parentPath}/${value.path}/${children[0]['path']}`;
-        router['children'] = handleChildrenRouters(value['children'], `${value['path']}/`);
+        router['children'] = handleChildrenRouters(value['children'], `${parentPath}${value['path']}/`);
     }
     return router;
 }

@@ -63,8 +63,8 @@
                         }
                     },
                     {title: '用户最后活跃ip地址', dataIndex: 'lastIpAddress'},
-                    {title: '用户最后活跃时间', dataIndex: 'lastActiveTime'},
-                    {title: '用户创建时间', dataIndex: 'createTime', width: 120},
+                    {title: '用户最后活跃时间', dataIndex: 'lastActiveTime', width: 150, sorter: true},
+                    {title: '用户创建时间', dataIndex: 'createTime', width: 120, sorter: true},
                 ],
                 headerSearchList: [
                     {type: 'input', prop: 'username', placeholder: '用户名'},

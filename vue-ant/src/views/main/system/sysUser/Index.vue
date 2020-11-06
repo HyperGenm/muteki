@@ -158,7 +158,9 @@
                     $ref = ref;
                 },
                 url: $global.url.system.sysUser.getPageList,
-                data: {},
+                data: {
+                    createTimeSort: 'DESC'
+                },
                 columns: [
                     {title: '真实姓名', dataIndex: 'realName', width: 120, fixed: 'left'},
                     {title: '用户名', dataIndex: 'username', width: 120, fixed: 'left'},
@@ -185,8 +187,8 @@
                         }
                     },
                     {title: '用户最后活跃ip地址', dataIndex: 'lastIpAddress'},
-                    {title: '用户最后活跃时间', dataIndex: 'lastActiveTime', tooltip: true},
-                    {title: '用户创建时间', dataIndex: 'createTime', tooltip: true},
+                    {title: '用户最后活跃时间', dataIndex: 'lastActiveTime', tooltip: true, sorter: true},
+                    {title: '用户创建时间', dataIndex: 'createTime', tooltip: true, sorter: true},
                 ],
                 headerButtons: [
                     {

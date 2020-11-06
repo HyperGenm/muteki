@@ -56,11 +56,6 @@ export default {
                 /*删除*/
                 delete: '/sysRole/delete',
             },
-            //系统用户日志
-            sysUserLog: {
-                //获取分页数据
-                getPageList: '/sysLog/getPageList'
-            },
             //系统方法
             sysFunction: {
                 /*获取分页数据*/
@@ -95,6 +90,26 @@ export default {
                 getLogFile: '/sysFile/getLogFile',
                 /*下载日志文件*/
                 downLogFile: '/sysFile/downLogFile'
+            },
+            //系统用户日志
+            sysUserLog: {
+                //获取分页数据
+                getPageList: '/sysUserLog/getPageList'
+            },
+            //系统用户登录日志
+            sysUserLoginLog: {
+                /*获取分页数据*/
+                getPageList: '/sysUserLoginLog/getPageList'
+            },
+            //用户日志
+            userLog: {
+                /*获取分页数据*/
+                getPageList: '/userLog/getPageList'
+            },
+            //用户登录日志
+            userLoginLog: {
+                /*获取分页数据*/
+                getPageList: '/userLoginLog/getPageList'
             },
         }
     }

@@ -35,7 +35,7 @@
                     {title: '行数', dataIndex: 'lineNumber'},
                     {title: '详情', dataIndex: 'content', tooltip: true},
                     {title: '备注', dataIndex: 'remark', tooltip: true},
-                    {title: '创建时间', dataIndex: 'createTime', width: 120},
+                    {title: '创建时间', dataIndex: 'createTime', width: 120, sorter: true},
                 ],
                 rowActionButtons: [
                     {
