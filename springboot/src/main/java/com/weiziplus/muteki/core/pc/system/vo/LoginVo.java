@@ -25,7 +25,7 @@ public class LoginVo {
     private String token;
 
     @ApiModelProperty("用户信息")
-    private SysUser sysUser;
+    private SysUser user;
 
     @ApiModelProperty("角色ids")
     private Set<Integer> roleIds;

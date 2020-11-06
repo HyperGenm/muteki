@@ -137,7 +137,7 @@
                 }
                 this.$globalFun.setSessionStorage('buttonMap', buttonMap);
                 this.$globalFun.setSessionStorage('roleIds', data['roleIds']);
-                this.$globalFun.setSessionStorage('userInfo', data['sysUser']);
+                this.$globalFun.setSessionStorage('userInfo', data['user']);
                 let menuTree = data['menuTree'];
                 if (null == menuTree || 0 >= menuTree.length) {
                     this.$globalFun.errorMsg("您还没有可用菜单，请联系管理员添加");

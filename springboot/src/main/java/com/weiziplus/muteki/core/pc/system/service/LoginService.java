@@ -176,7 +176,7 @@ public class LoginService extends BaseService {
         }
         LoginVo vo = new LoginVo()
                 .setToken(token)
-                .setSysUser(sysUser)
+                .setUser(sysUser)
                 .setRoleIds(roleIds)
                 .setMenuTree(menuTreeByRoleIds)
                 .setButtonSet(buttonNameSetByRoleIds);
