@@ -46,6 +46,7 @@
     import $ant from '@/utils/ant';
     import MyRouter from "../../router/MyRouter";
     import {Input, Button} from 'ant-design-vue';
+    import $cryptoJS from '@/utils/cryptoJS';
 
     export default {
         name: "Login",
@@ -99,7 +100,7 @@
                     data: {
                         uuid,
                         code,
-                        password,
+                        password: $cryptoJS.md5(password),
                         username
                     },
                     success(data) {

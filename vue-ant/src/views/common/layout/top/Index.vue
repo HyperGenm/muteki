@@ -196,8 +196,10 @@
             width: 60px;
             text-align: center;
 
-            ::v-deep span > svg {
-                font-size: 26px;
+            ::v-deep(span) {
+                & > svg {
+                    font-size: 26px;
+                }
             }
 
             &:hover {
@@ -207,11 +209,9 @@
         }
 
         .tags {
-            ::v-deep {
-                .ant-tabs-bar {
-                    margin: 0 0 10px 0;
-                    border-bottom: 0;
-                }
+            ::v-deep(.ant-tabs-bar) {
+                margin: 0 0 10px 0;
+                border-bottom: 0;
             }
         }
 
@@ -238,8 +238,10 @@
             .badge {
                 padding: 0 20px;
 
-                ::v-deep span > svg {
-                    font-size: 26px;
+                ::v-deep(span) {
+                    & > svg {
+                        font-size: 26px;
+                    }
                 }
 
                 &:hover {

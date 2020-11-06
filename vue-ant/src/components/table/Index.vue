@@ -688,7 +688,7 @@
                 margin-right: 20px;
                 height: 50px;
 
-                ::v-deep .ant-form-item {
+                ::v-deep(.ant-form-item) {
                     display: flex;
                     margin-bottom: 10px;
                 }
