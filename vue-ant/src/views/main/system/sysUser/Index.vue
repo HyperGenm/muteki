@@ -1,5 +1,5 @@
 <template>
-    <my-table :ref="table.ref"
+    <my-table @myRef="table.myRef"
               :url="table.url"
               :data="table.data"
               :columns="table.columns"
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-    import {reactive, onMounted, defineAsyncComponent, ref} from 'vue';
+    import {reactive, onMounted, defineAsyncComponent} from 'vue';
     import $global from '@/utils/global';
     import $axios from "../../../../utils/axios";
     import $function from '@/utils/function';
@@ -76,7 +76,7 @@
                     },
                     success() {
                         $ant.successMsg('更新成功');
-                        $ref['dataSource'][index]['status'] = status;
+                        tableRef['dataSource'][index]['status'] = status;
                     }
                 });
             }
@@ -92,7 +92,7 @@
                                 id: row['id']
                             },
                             success() {
-                                $ref.getTableData();
+                                tableRef.getTableData();
                                 $ant.successMsg('删除成功');
                             }
                         })
@@ -117,7 +117,7 @@
                                 phone: value
                             },
                             success() {
-                                $ref['dataSource'][index]['phone'] = value;
+                                tableRef['dataSource'][index]['phone'] = value;
                                 done();
                                 $ant.successMsg('修改成功');
                             }
@@ -125,6 +125,7 @@
                     }
                 });
             };
+            //重置密码
             const resetPassword = (row) => {
                 $ant.confirm({
                     content: `请输入${row['realName']}重置后的密码`,
@@ -144,18 +145,18 @@
                             },
                             success() {
                                 done();
-                                $ant.successMsg('修改成功');
+                                $ant.successMsg('重置成功');
                             }
                         })
                     }
                 });
             }
             //table的ref
-            let $ref = null;
+            let tableRef = null;
             //表格展示
             let table = reactive({
-                ref(ref) {
-                    $ref = ref;
+                myRef(ref) {
+                    tableRef = ref;
                 },
                 url: $global.url.system.sysUser.getPageList,
                 data: {
@@ -317,8 +318,9 @@
                         method: 'post',
                         data: form,
                         success() {
-                            $ref.getTableData();
+                            tableRef.getTableData();
                             $ant.successMsg('成功');
+                            addUser.visible = false;
                         }
                     });
                 }
@@ -339,8 +341,9 @@
                             roleIds: role.value
                         },
                         success() {
-                            $ref.getTableData();
+                            tableRef.getTableData();
                             $ant.successMsg('成功');
+                            role.visible = false;
                         }
                     })
                 }

@@ -1,5 +1,6 @@
 <template>
-    <my-table :url="table.url"
+    <my-table @myRef="table.myRef"
+              :url="table.url"
               :data="table.data"
               :columns="table.columns"
               :headerButtons="table.headerButtons"
@@ -25,7 +26,7 @@
 </template>
 
 <script>
-    import {reactive, defineAsyncComponent, onMounted} from 'vue';
+    import {reactive, defineAsyncComponent, onMounted, getCurrentInstance, nextTick} from 'vue';
     import $global from '@/utils/global';
     import {Drawer} from 'ant-design-vue';
     import $function from '@/utils/function';
@@ -41,15 +42,16 @@
             'my-form': defineAsyncComponent(() => import('@/components/form/Index.vue')),
         },
         setup() {
+            //获取当前实例
+            let instance = getCurrentInstance();
             let {
                 sysFunction_add, sysFunction_update, sysFunction_delete
             } = $function.getLocationStorage('buttonMap');
-            //table的ref
-            let $ref = null;
+            let tableRef = null;
             //表格展示
             let table = reactive({
-                ref(ref) {
-                    $ref = ref;
+                myRef(ref) {
+                    tableRef = ref;
                 },
                 url: $global.url.system.sysFunction.getPageList,
                 data: {},
@@ -283,8 +285,9 @@
                         method: 'post',
                         data: form,
                         success() {
-                            $ref.getTableData();
+                            tableRef.getTableData();
                             $ant.successMsg('成功');
+                            editFunction.visible = false;
                         }
                     });
                 }
@@ -301,8 +304,9 @@
                                 id: row['id']
                             },
                             success() {
-                                $ref.getTableData();
+                                tableRef.getTableData();
                                 $ant.successMsg('删除成功');
+                                editFunction.visible = false;
                             }
                         })
                     }

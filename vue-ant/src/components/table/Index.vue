@@ -432,6 +432,10 @@
                 default: true
             }
         },
+        mounted() {
+            //对外抛出自身
+            this.$emit('my-ref', this);
+        },
         setup(props, content) {
             const $router = useRouter();
             //展示的数据

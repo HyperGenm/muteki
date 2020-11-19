@@ -1,7 +1,7 @@
 <template>
     <div class="box">
         <div class="table">
-            <my-table :ref="table.ref"
+            <my-table @myRef="table.myRef"
                       :rowSelection="table.rowSelection"
                       :url="table.url"
                       :data="table.data"
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import {reactive, onMounted, ref, defineAsyncComponent, getCurrentInstance} from 'vue';
+    import {reactive, onMounted, defineAsyncComponent} from 'vue';
     import $global from '@/utils/global';
     import {Divider, Tree, Button, Drawer, Descriptions} from 'ant-design-vue';
     import $axios from "../../../../utils/axios";
@@ -78,7 +78,7 @@
             }
             let $ref = {};
             let table = reactive({
-                ref(ref) {
+                myRef(ref) {
                     $ref['table'] = ref;
                 },
                 //当前选择的角色
@@ -249,7 +249,8 @@
                         data: form,
                         success() {
                             $ref.table.getTableData();
-                            $ant.successMsg('添加成功');
+                            $ant.successMsg('成功');
+                            editRole.visible = false;
                         }
                     })
                 }

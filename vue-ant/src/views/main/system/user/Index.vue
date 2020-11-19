@@ -1,5 +1,5 @@
 <template>
-    <my-table :ref="table.ref"
+    <my-table @myRef="table.myRef"
               :url="table.url"
               :data="table.data"
               :columns="table.columns"
@@ -37,7 +37,7 @@
             let $ref = null;
             //表格展示
             let table = reactive({
-                ref(ref) {
+                myRef(ref) {
                     $ref = ref;
                 },
                 url: $global.url.system.user.getPageList,
