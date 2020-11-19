@@ -107,10 +107,10 @@ global:
       admin: 36000
       #web用户
       web: 86400
-  #百度开放平台
-  baidu:
-    ak: abc
-  #阿里云开放平台
+  #高德开放平台
+  amap:
+    key: 93f
+  #阿里云开放平台,可以不设置
   ali:
     #域名id
     region-id: cn-hangzhou

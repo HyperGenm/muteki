@@ -1,8 +1,7 @@
 package com.weiziplus.muteki.core.pc.system.service;
 
-import com.weiziplus.muteki.baidu.map.BaiduMapApi;
-import com.weiziplus.muteki.baidu.map.iplocation.IpLocation;
-import com.weiziplus.muteki.baidu.map.iplocation.IpLocationAddressDetail;
+import com.weiziplus.muteki.amap.ip.AmapIp;
+import com.weiziplus.muteki.amap.ip.AmapIpApi;
 import com.weiziplus.muteki.common.async.LogAsync;
 import com.weiziplus.muteki.common.base.BaseService;
 import com.weiziplus.muteki.common.base.BaseWhere;
@@ -12,10 +11,10 @@ import com.weiziplus.muteki.common.models.*;
 import com.weiziplus.muteki.common.result.ResultEnum;
 import com.weiziplus.muteki.common.util.*;
 import com.weiziplus.muteki.core.pc.common.enums.SysFunctionTypeEnum;
-import com.weiziplus.muteki.core.pc.common.enums.SysUserStatusEnum;
 import com.weiziplus.muteki.common.result.ResultBean;
 import com.weiziplus.muteki.common.util.RedisUtils;
 import com.weiziplus.muteki.core.pc.common.config.PcGlobalConfig;
+import com.weiziplus.muteki.core.pc.common.enums.SysUserStatusEnum;
 import com.weiziplus.muteki.core.pc.common.token.PcJwtExpand;
 import com.weiziplus.muteki.core.pc.common.token.PcTokenUtils;
 import com.weiziplus.muteki.core.pc.system.dto.LoginDto;
@@ -194,18 +193,18 @@ public class LoginService extends BaseService {
     private void saveLoginLog(SysUserLogin login) {
         HttpServletRequest request = getRequest();
         String ipAddress = HttpRequestUtils.getIpAddress(request);
-        ResultBean<IpLocation> location = BaiduMapApi.getLocation(ipAddress);
-        //地址信息
-        IpLocationAddressDetail addressDetail = null;
+        ResultBean<AmapIp> location = AmapIpApi.getLocation(ipAddress);
         //如果请求成功
         if (ResultEnum.SUCCESS.getValue().equals(location.getCode())) {
-            addressDetail = location.getData().getContent().getAddress_detail();
+            login.setLoginProvince(location.getData().getProvince())
+                    .setLoginCity(location.getData().getCity());
+        } else {
+            login.setLoginProvince("未知")
+                    .setLoginCity("未知");
         }
         login.setBorderName(UserAgentUtils.getBorderName(request))
                 .setOsName(UserAgentUtils.getOsName(request))
                 .setIpAddress(ipAddress)
-                .setLoginProvince(null != addressDetail ? addressDetail.getProvince() : "未知")
-                .setLoginCity(null != addressDetail ? addressDetail.getCity() : "未知")
                 .setCreateTime(DateUtils.getNowDateTime());
         logAsync.saveLoginLog(login);
     }
