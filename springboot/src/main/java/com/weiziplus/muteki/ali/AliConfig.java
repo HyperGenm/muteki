@@ -22,7 +22,7 @@ public class AliConfig {
      *
      * @param regionId
      */
-    @Value("${global.ali.region-id}")
+    @Value("${global.ali.region-id:}")
     private void setRegionId(String regionId) {
         AliConfig.REGION_ID = regionId;
     }
@@ -46,7 +46,7 @@ public class AliConfig {
      *
      * @param accessKeyId
      */
-    @Value("${global.ali.access-key-id}")
+    @Value("${global.ali.access-key-id:}")
     private void setAccessKeyId(String accessKeyId) {
         AliConfig.ACCESS_KEY_ID = accessKeyId;
     }
@@ -71,7 +71,7 @@ public class AliConfig {
      *
      * @param accessSecret
      */
-    @Value("${global.ali.access-secret}")
+    @Value("${global.ali.access-secret:}")
     private void setAccessSecret(String accessSecret) {
         AliConfig.ACCESS_SECRET = accessSecret;
     }

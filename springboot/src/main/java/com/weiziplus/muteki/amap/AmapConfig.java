@@ -1,5 +1,6 @@
 package com.weiziplus.muteki.amap;
 
+import com.weiziplus.muteki.common.util.ToolUtils;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,9 @@ public class AmapConfig {
      */
     @Value("${global.amap.key:}")
     private void setKey(String key) {
+        if (ToolUtils.isBlank(key)) {
+            log.warn("如果您想根据ip获取到登录用户的城市信息，请在yml文件中设置  global.amap.key 的值,  高德开放平台控制台:https://console.amap.com/dev/key/app  。如不需要，请忽略该提示");
+        }
         KEY = key;
     }
 

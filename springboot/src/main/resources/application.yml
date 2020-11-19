@@ -78,6 +78,8 @@ spring:
   resources:
     #配置静态资源路径，推荐使用nginx
     static-locations: classpath:static/,file:static/
+  freemarker:
+    check-template-location: false
 mybatis:
   #设置MyBatis配置
   configuration:
