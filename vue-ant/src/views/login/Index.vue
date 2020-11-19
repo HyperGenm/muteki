@@ -45,7 +45,7 @@
     import $axios from '@/utils/axios';
     import $ant from '@/utils/ant';
     import MyRouter from "../../router/MyRouter";
-    import {Input, Button} from 'ant-design-vue';
+    import {Input, Button, notification} from 'ant-design-vue';
     import $cryptoJS from '@/utils/cryptoJS';
 
     export default {
@@ -104,6 +104,11 @@
                         username
                     },
                     success(data) {
+                        //弹出提示
+                        notification['success']({
+                            message: 'tip',
+                            description: `欢迎回来 ${data['user']['realName'] || data['user']['username']}`
+                        });
                         $function.setLocationStorage('user', data['user']);
                         $function.setLocationStorage('menuTree', data['menuTree']);
                         $function.setLocationStorage('token', data['token']);

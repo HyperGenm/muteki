@@ -23,12 +23,30 @@
                      @onSubmit="editFunction.onSubmit"></my-form>
         </a-drawer>
     </template>
+    <template>
+        <a-drawer width="67%"
+                  :title="editApi.row.title"
+                  v-model:visible="editApi.visible">
+            <div style="display: flex;margin: 10px 0;"
+                 v-for="(item,index) in editApi.list" :key="index">
+                <a-input v-model:value="item.value"
+                         placeholder="请输入api"/>
+                <a-button type="danger" style="margin-left: 20px;"
+                          @click="editApi.deleteItem(index,item)">删除
+                </a-button>
+            </div>
+            <div style="margin-top: 20px;">
+                <a-button type="primary" @click="editApi.addItem">新增api</a-button>
+                <a-button type="primary" style="margin-left: 20px;" @click="editApi.submit">提交</a-button>
+            </div>
+        </a-drawer>
+    </template>
 </template>
 
 <script>
-    import {reactive, defineAsyncComponent, onMounted, getCurrentInstance, nextTick} from 'vue';
+    import {reactive, defineAsyncComponent, onMounted} from 'vue';
     import $global from '@/utils/global';
-    import {Drawer} from 'ant-design-vue';
+    import {Drawer, Input, Button} from 'ant-design-vue';
     import $function from '@/utils/function';
     import $axios from "../../../../utils/axios";
     import $ant from '@/utils/ant';
@@ -37,13 +55,13 @@
         name: "Index",
         components: {
             [Drawer.name]: Drawer,
+            [Input.name]: Input,
+            [Button.name]: Button,
             'my-table': defineAsyncComponent(() => import('@/components/table/Index.vue')),
             'my-descriptions': defineAsyncComponent(() => import('@/components/descriptions/Index.vue')),
             'my-form': defineAsyncComponent(() => import('@/components/form/Index.vue')),
         },
         setup() {
-            //获取当前实例
-            let instance = getCurrentInstance();
             let {
                 sysFunction_add, sysFunction_update, sysFunction_delete
             } = $function.getLocationStorage('buttonMap');
@@ -133,6 +151,18 @@
                         name: '编辑', icon: 'edit', show: sysFunction_update,
                         handleClick(row, index) {
                             editFunction.handleEdit(row, index);
+                        }
+                    },
+                    {
+                        name: '编辑拥有api', icon: 'edit', show: true,
+                        handleClick(row, index) {
+                            editApi.handleClick(row, index);
+                        }
+                    },
+                    {
+                        name: '设置图标', icon: 'edit', show: true,
+                        handleClick(row, index) {
+                            setIcon(row, index);
                         }
                     },
                     {
@@ -292,6 +322,63 @@
                     });
                 }
             });
+            //编辑拥有的api列表
+            let editApi = reactive({
+                row: {},
+                visible: false,
+                //拥有的api
+                list: [],
+                //删除项
+                deleteItem(index, item) {
+                    let {list} = editApi;
+                    list.splice(index, 1);
+                    editApi.list = list;
+                },
+                //新增项
+                addItem() {
+                    editApi.list.push({
+                        value: ''
+                    })
+                },
+                handleClick(row, index) {
+                    editApi.row = row;
+                    let list = [];
+                    let {containApi} = row;
+                    if (!$function.isBlank(containApi)) {
+                        JSON.parse(containApi).forEach((value) => {
+                            list.push({
+                                value
+                            });
+                        });
+                    }
+                    editApi.list = list;
+                    editApi.visible = true;
+                },
+                //提交
+                submit() {
+                    let {list} = editApi;
+                    console.log(list)
+                    let apiList = [];
+                    list.forEach(value => {
+                        if (!$function.isBlank(value.value)) {
+                            apiList.push(value.value);
+                        }
+                    });
+                    $axios({
+                        url: $global.url.system.sysFunction.updateContainApi,
+                        method: 'post',
+                        data: {
+                            id: editApi.row.id,
+                            apiList
+                        },
+                        success() {
+                            tableRef.getTableData();
+                            $ant.successMsg('更新成功');
+                            editApi.visible = false;
+                        }
+                    })
+                }
+            });
             //删除功能
             let deleteFunction = (row, index) => {
                 $ant.confirm({
@@ -312,6 +399,29 @@
                     }
                 });
             }
+            //设置图标
+            const setIcon = (row, index) => {
+                $ant.confirm({
+                    showInput: true,
+                    title: '图标地址 https://2x.antdv.com/components/icon-cn',
+                    content: `将要修改 ${row['title']} 的图标,如不起作用，请手动到 @/src/components/icon/Index.vue 下将图标引入`,
+                    onOk(done, value) {
+                        $axios({
+                            url: $global.url.system.sysFunction.setIcon,
+                            method: 'post',
+                            data: {
+                                id: row['id'],
+                                icon: value
+                            },
+                            success() {
+                                tableRef['dataSource'][index]['icon'] = value;
+                                $ant.successMsg('修改成功');
+                                done();
+                            }
+                        })
+                    }
+                });
+            }
             onMounted(() => {
                 //获取功能树形结构
                 $axios({
@@ -324,7 +434,8 @@
             return {
                 table,
                 detail,
-                editFunction
+                editFunction,
+                editApi
             }
         }
     }

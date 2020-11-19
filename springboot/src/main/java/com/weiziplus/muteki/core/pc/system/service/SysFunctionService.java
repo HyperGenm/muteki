@@ -322,4 +322,26 @@ public class SysFunctionService extends BaseService {
         return ResultBean.success();
     }
 
+    /**
+     * 设置图标
+     *
+     * @param id
+     * @param icon
+     * @return
+     */
+    public ResultBean setIcon(Integer id, String icon) {
+        if (null == id || 0 >= id) {
+            return ResultBean.error("id错误");
+        }
+        SysFunction sysFunction = new SysFunction()
+                .setId(id)
+                .setIcon(icon);
+        RedisUtils.setExpireDeleteLikeKey(REDIS_KEY_PREFIX);
+        RedisUtils.setExpireDeleteLikeKey(SysRoleFunctionService.REDIS_KEY_PREFIX);
+        baseUpdate(sysFunction);
+        RedisUtils.deleteLikeKey(REDIS_KEY_PREFIX);
+        RedisUtils.deleteLikeKey(SysRoleFunctionService.REDIS_KEY_PREFIX);
+        return ResultBean.success();
+    }
+
 }

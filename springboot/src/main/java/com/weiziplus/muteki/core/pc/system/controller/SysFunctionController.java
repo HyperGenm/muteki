@@ -86,4 +86,15 @@ public class SysFunctionController {
         return service.updateContainApi(id, apiList);
     }
 
+    @ApiOperation(value = "设置图标")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id", dataType = "Integer", paramType = "form"),
+            @ApiImplicitParam(name = "icon", value = "icon", dataType = "String", paramType = "form"),
+    })
+    @PostMapping("/setIcon")
+    @SysUserLogInterface(description = "功能设置图标", type = SysUserLogInterface.TYPE_UPDATE)
+    public ResultBean setIcon(Integer id, String icon) {
+        return service.setIcon(id, icon);
+    }
+
 }

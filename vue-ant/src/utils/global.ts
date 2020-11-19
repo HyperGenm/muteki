@@ -70,6 +70,8 @@ export default {
                 delete: '/sysFunction/delete',
                 /*修改功能拥有的api*/
                 updateContainApi: '/sysFunction/updateContainApi',
+                /*修改功能图标*/
+                setIcon: '/sysFunction/setIcon',
             },
             //系统异常
             sysError: {

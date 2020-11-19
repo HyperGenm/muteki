@@ -30,7 +30,7 @@
             <div class="icon">
                 <a-avatar :src="userInfo['avatarSrc']">
                     <template v-slot:icon>
-                        <wei-icon icon="BellOutlined"></wei-icon>
+                        <wei-icon icon="UserOutlined"></wei-icon>
                     </template>
                 </a-avatar>
             </div>
@@ -39,29 +39,39 @@
                     <span>{{userInfo['realName']}}</span>
                     <template v-slot:overlay>
                         <a-menu>
-                            <a-menu-item>
-                                <a href="javascript:;">1st menu item</a>
-                            </a-menu-item>
-                            <a-menu-item>
-                                <a href="javascript:;">2nd menu item</a>
-                            </a-menu-item>
-                            <a-menu-item>
-                                <a href="javascript:;">3rd menu item</a>
-                            </a-menu-item>
+                            <template v-for="(menu,index) in menuList" :key="index">
+                                <a-menu-item @click="menu.click">
+                                    <div>{{menu.title}}</div>
+                                </a-menu-item>
+                            </template>
                         </a-menu>
                     </template>
                 </a-dropdown>
             </div>
         </div>
+        <template>
+            <a-drawer width="67%"
+                      title="修改密码"
+                      v-model:visible="updatePwd.visible">
+                <my-form :form="updatePwd.form"
+                         :itemList="updatePwd.itemList"
+                         :rules="updatePwd.rules"
+                         @onSubmit="updatePwd.onSubmit"></my-form>
+            </a-drawer>
+        </template>
     </div>
 </template>
 
 <script>
-    import {Tabs, Badge, Avatar, Dropdown, Menu} from 'ant-design-vue';
-    import {ref, reactive, nextTick, onMounted, watch, inject, getCurrentInstance} from 'vue';
+    import {Tabs, Badge, Avatar, Dropdown, Menu, Drawer} from 'ant-design-vue';
+    import {ref, reactive, nextTick, onMounted, inject, getCurrentInstance, defineAsyncComponent} from 'vue';
     import {useRoute, useRouter} from 'vue-router';
     import $function from '@/utils/function';
+    import $ant from '@/utils/ant';
+    import $global from '@/utils/global';
+    import $cryptoJS from '@/utils/cryptoJS';
     import WeiIcon from '@/components/icon/Index';
+    import $axios from "../../../../utils/axios";
 
     export default {
         name: "Top",
@@ -74,6 +84,8 @@
             [Dropdown.name]: Dropdown,
             [Menu.name]: Menu,
             [Menu.Item.name]: Menu.Item,
+            [Drawer.name]: Drawer,
+            'my-form': defineAsyncComponent(() => import('@/components/form/Index.vue')),
         },
         props: {
             //菜单是否折叠
@@ -156,6 +168,69 @@
                     locale.title = localeInject['title'];
                 }
             });
+            let menuList = ref([
+                {
+                    title: '修改密码',
+                    click() {
+                        $ant.confirm({
+                            content: '确定要修改密码',
+                            onOk() {
+                                updatePwd.visible = true;
+                            }
+                        });
+                    }
+                },
+                {
+                    title: '安全退出',
+                    click() {
+                        $ant.confirm({
+                            content: '确定退出',
+                            onOk() {
+                                $axios({
+                                    url: $global.url.logout,
+                                    method: 'post',
+                                    success() {
+                                        $ant.successMsg('注销成功，即将返回登录页面');
+                                        setTimeout(() => {
+                                            $router.replace('/login');
+                                        }, 3000);
+                                    }
+                                })
+                            }
+                        });
+                    }
+                }
+            ]);
+            //修改密码
+            let updatePwd = reactive({
+                visible: false,
+                form: {},
+                itemList: [
+                    {type: 'input', label: '旧密码', prop: 'oldPwd', inputType: 'password', required: true},
+                    {type: 'input', label: '新密码', prop: 'newPwd', inputType: 'password', required: true},
+                    {type: 'input', label: '确认密码', prop: 'againPwd', inputType: 'password', required: true},
+                ],
+                rules: {},
+                onSubmit(form) {
+                    //如果密码不一样
+                    if (form['newPwd'] !== form['againPwd']) {
+                        $ant.errorMsg('两次密码不一致');
+                        return;
+                    }
+                    $axios({
+                        url: $global.url.system.sysUser.updatePwd,
+                        method: 'post',
+                        data: {
+                            oldPwd: $cryptoJS.md5(form['oldPwd']),
+                            newPwd: $cryptoJS.md5(form['newPwd']),
+                        },
+                        success() {
+                            $ant.successMsg('密码修改成功');
+                            updatePwd.visible = false;
+                        }
+                    })
+                }
+            });
             return {
                 leftIconChange,
                 tagsWidth,
@@ -163,7 +238,9 @@
                 tabActiveKey,
                 tabList,
                 tabChange,
-                locale
+                locale,
+                menuList,
+                updatePwd
             }
         }
     }

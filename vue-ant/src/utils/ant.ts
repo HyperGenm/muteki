@@ -1,6 +1,6 @@
 //ant组件的常用方法
 // @ts-ignore
-import {message, Modal} from 'ant-design-vue';
+import {message, Modal, notification} from 'ant-design-vue';
 // @ts-ignore
 import {createVNode} from 'vue';
 
