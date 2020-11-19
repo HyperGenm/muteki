@@ -1,36 +1,36 @@
 <template>
-    <div id="top" :ref="refs.top">
-        <div class="left-icon" :ref="refs.leftIcon"
+    <div id="top" ref="top">
+        <div class="left-icon" ref="leftIcon"
              @click="leftIconChange">
             <template v-if="menuInlineCollapsed">
-                <MenuFoldOutlined/>
+                <wei-icon icon="MenuFoldOutlined"></wei-icon>
             </template>
             <template v-else>
-                <MenuUnfoldOutlined/>
+                <wei-icon icon="MenuUnfoldOutlined"></wei-icon>
             </template>
         </div>
-        <div class="tags" :style="`width:${tagsWidth}px`">
+        <!--<div class="tags" :style="`width:${tagsWidth}px`">
             <a-tabs size="large"
                     v-model:activeKey="tabActiveKey"
                     @change="tabChange">
                 <a-tab-pane v-for="item in tabList"
                             :key="item.path" :tab="item.title"/>
             </a-tabs>
-        </div>
-        <div class="right" :ref="refs.right">
+        </div>-->
+        <div class="right" ref="right">
             <div class="locale"
                  @click="locale.change">
                 <span>{{locale.title}}</span>
             </div>
             <div class="badge">
                 <a-badge count="5">
-                    <BellOutlined/>
+                    <wei-icon icon="BellOutlined"></wei-icon>
                 </a-badge>
             </div>
             <div class="icon">
                 <a-avatar :src="userInfo['avatarSrc']">
                     <template v-slot:icon>
-                        <BellOutlined/>
+                        <wei-icon icon="BellOutlined"></wei-icon>
                     </template>
                 </a-avatar>
             </div>
@@ -57,23 +57,20 @@
 </template>
 
 <script>
-    import {MenuFoldOutlined, MenuUnfoldOutlined, BellOutlined, UserOutlined} from '@ant-design/icons-vue';
     import {Tabs, Badge, Avatar, Dropdown, Menu} from 'ant-design-vue';
-    import {ref, reactive, nextTick, onMounted, watch, computed, inject} from 'vue';
+    import {ref, reactive, nextTick, onMounted, watch, inject, getCurrentInstance} from 'vue';
     import {useRoute, useRouter} from 'vue-router';
     import $function from '@/utils/function';
+    import WeiIcon from '@/components/icon/Index';
 
     export default {
         name: "Top",
         components: {
-            [MenuFoldOutlined.name]: MenuFoldOutlined,
-            [MenuUnfoldOutlined.name]: MenuUnfoldOutlined,
+            'wei-icon': WeiIcon,
             [Tabs.name]: Tabs,
             [Tabs.TabPane.name]: Tabs.TabPane,
             [Badge.name]: Badge,
-            [BellOutlined.name]: BellOutlined,
             [Avatar.name]: Avatar,
-            [UserOutlined.name]: UserOutlined,
             [Dropdown.name]: Dropdown,
             [Menu.name]: Menu,
             [Menu.Item.name]: Menu.Item,
@@ -85,6 +82,8 @@
             }
         },
         setup(props, {emit}) {
+            //获取当前实例
+            let instance = getCurrentInstance();
             let $route = useRoute();
             let $router = useRouter();
             //左边图标点击,收缩/展开侧边栏
@@ -99,18 +98,6 @@
             const tabChange = (activeKey) => {
                 $router.push(activeKey);
             };
-            let $refs = {};
-            let refs = reactive({
-                top: (ref) => {
-                    $refs.top = ref;
-                },
-                leftIcon: (ref) => {
-                    $refs.leftIcon = ref;
-                },
-                right: (ref) => {
-                    $refs.right = ref;
-                }
-            });
             //用户信息
             let userInfo = reactive({});
             //tags的宽度
@@ -125,7 +112,7 @@
                 tabActiveKey.value = $route['path'];
                 //计算tags的宽度
                 nextTick(() => {
-                    let {top, leftIcon, right} = $refs;
+                    let {top, leftIcon, right} = instance.refs;
                     let topWidth = top.getBoundingClientRect().width;
                     let leftIconWidth = leftIcon.getBoundingClientRect().width;
                     let rightWidth = right.getBoundingClientRect().width;
@@ -136,7 +123,7 @@
                 userInfo['avatarSrc'] = user['icon'];
             });
             //监听路由变化
-            watch($route, (to) => {
+            /*watch($route, (to) => {
                 if ('/' === to.path) {
                     return;
                 }
@@ -156,7 +143,7 @@
                     path: to['path'],
                 });
                 tabActiveKey.value = to['path'];
-            });
+            });*/
             //引入App.vue设置的国际化
             let localeInject = inject('locale');
             let localeChange = inject('localeChange');
@@ -171,7 +158,6 @@
             });
             return {
                 leftIconChange,
-                refs,
                 tagsWidth,
                 userInfo,
                 tabActiveKey,

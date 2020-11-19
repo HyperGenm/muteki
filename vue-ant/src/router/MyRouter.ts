@@ -2,6 +2,7 @@
 import {RouteRecordRaw} from 'vue-router';
 import $function from "@/utils/function";
 import router from "@/router/index";
+import {defineComponent, defineAsyncComponent} from 'vue';
 
 /**
  * 处理路由
@@ -22,12 +23,12 @@ const handleRouter = (value: any, parentPath = '') => {
     //没有子级路由
     if (null == children || 0 >= children.length) {
         if (2 === value['externalFlag']) {
-            router['component'] = () => import(`@/views/common/externalUrl/Index.vue`);
+            router['component'] = defineAsyncComponent(() => import(`@/views/common/externalUrl/Index.vue`));
         } else {
-            router['component'] = () => import(`@/views/main/${parentPath}${value['path']}/Index.vue`);
+            router['component'] = defineAsyncComponent(() => import(`@/views/main/${parentPath}${value['path']}/Index.vue`));
         }
     } else {
-        router['component'] = () => import(`@/views/common/station/Index.vue`);
+        router['component'] = defineAsyncComponent(() => import(`@/views/common/station/Index.vue`));
         router['redirect'] = `${parentPath}/${value.path}/${children[0]['path']}`;
         router['children'] = handleChildrenRouters(value['children'], `${parentPath}${value['path']}/`);
     }
@@ -56,12 +57,12 @@ const initRouter = () => {
     routers.push({
         path: '/:pathMatch(.*)*',
         name: '404',
-        component: () => import('@/views/common/errorPage/404.vue')
+        component: defineAsyncComponent(() => import('@/views/common/errorPage/404.vue'))
     });
     router.addRoute({
         path: '/',
         name: 'index',
-        component: () => import(`@/views/common/layout/Index.vue`),
+        component: defineAsyncComponent(() => import(`@/views/common/layout/Index.vue`)),
         children: routers,
         redirect: `/${menuTree[0]['path']}`
     });

@@ -60,7 +60,7 @@ const $axios = function (
         message.loading({
             content: '加载中...',
             key: messageKey,
-            duration: timeout
+            duration: timeout / 1000
         });
     }, timeShowLoadAnimation);
     let _axios = {
@@ -217,7 +217,7 @@ const $axiosDown = function (
         message.loading({
             content: '下载打包中...',
             key: messageKey,
-            duration: timeout
+            duration: timeout / 1000
         });
     }, timeShowLoadAnimation);
     let _axios = {
@@ -244,7 +244,7 @@ const $axiosDown = function (
         clearTimeout(loadingTimer);
         if (loading) {
             message.success({
-                content: '',
+                content: 'success',
                 key: messageKey,
                 duration: 1
             });
@@ -308,7 +308,7 @@ const $axiosDown = function (
         clearTimeout(loadingTimer);
         if (loading) {
             message.success({
-                content: '',
+                content: 'fail',
                 key: messageKey,
                 duration: 1
             });

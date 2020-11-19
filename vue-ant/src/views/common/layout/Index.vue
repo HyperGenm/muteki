@@ -16,15 +16,13 @@
 </template>
 
 <script>
-    import MyLeft from './left/Index.vue';
-    import MyTop from './top/Index.vue';
-    import {ref, reactive} from 'vue';
+    import { reactive, defineAsyncComponent} from 'vue';
 
     export default {
         name: "Layout",
         components: {
-            MyLeft,
-            MyTop,
+            'my-left': defineAsyncComponent(() => import('./left/Index.vue')),
+            'my-top': defineAsyncComponent(() => import('./top/Index.vue')),
         },
         setup() {
             //menu菜单配置
@@ -52,7 +50,7 @@
             flex: 1;
 
             #my-app {
-                height: calc(100vh - 108px);
+                height: 90vh;
                 box-sizing: border-box;
                 padding: 20px;
                 overflow-y: scroll;
@@ -63,10 +61,13 @@
             }
 
             .footer {
-                margin-top: 7px;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 37px;
                 text-align: center;
                 font-size: 12px;
-                height: 37px;
                 background-color: #e2e2e2;
                 display: flex;
                 align-items: center;

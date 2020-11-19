@@ -26,10 +26,20 @@ module.exports = {
         // 是否使用css分离插件 ExtractTextPlugin
         extract: false,
         // css预设器配置项
-        loaderOptions: {},
+        loaderOptions: {
+            less: {
+                lessOptions: {
+                    //修改ant的样式
+                    modifyVars: {},
+                    javascriptEnabled: true,
+                },
+            },
+        },
         // 启用 CSS modules for all css / pre-processor files.
-        requireModuleExtension: true
+        // requireModuleExtension: true
     },
+    // 构建时开启多进程处理babel编译
+    parallel: require('os').cpus().length > 1,
     chainWebpack: config => {
         //如果是生产环境
         if (PRODUCTION === NODE_ENV) {
@@ -67,7 +77,7 @@ module.exports = {
                         drop_debugger: true,
                         drop_console: true,
                         // 移除console
-                        pure_funcs: ['console.log', 'console.debug','console.trace']
+                        pure_funcs: ['console.log', 'console.debug', 'console.trace']
                     },
                 },
                 sourceMap: false,
@@ -82,7 +92,7 @@ module.exports = {
                     analyzerMode: 'server',
                     analyzerHost: 'localhost',
                     // 运行后的端口号
-                    analyzerPort: 8000,
+                    analyzerPort: 8888,
                     reportFilename: 'report.html',
                     defaultSizes: 'parsed',
                     //是否自动打开浏览器

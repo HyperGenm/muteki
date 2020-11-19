@@ -20,14 +20,23 @@
     <template v-else-if="'UserOutlined' === icon">
         <UserOutlined/>
     </template>
-    <template v-else-if="'RedoOutlined' === icon">
-        <RedoOutlined/>
-    </template>
     <template v-else-if="'InfoCircleOutlined' === icon">
         <InfoCircleOutlined/>
     </template>
     <template v-else-if="'UndoOutlined' === icon">
-        <UndoOutlined />
+        <UndoOutlined/>
+    </template>
+    <template v-else-if="'RedoOutlined' === icon">
+        <RedoOutlined/>
+    </template>
+    <template v-else-if="'MenuFoldOutlined' === icon">
+        <MenuFoldOutlined/>
+    </template>
+    <template v-else-if="'MenuUnfoldOutlined' === icon">
+        <MenuUnfoldOutlined/>
+    </template>
+    <template v-else-if="'BellOutlined' === icon">
+        <BellOutlined/>
     </template>
     <template v-else>
         <!--没找到展示的默认icon-->
@@ -43,19 +52,20 @@
 </template>
 <!--方便使用ant的图标-->
 <script>
-    import {
-        SearchOutlined,
-        PlusOutlined,
-        DeleteOutlined,
-        EditOutlined,
-        VerticalAlignBottomOutlined,
-        HomeOutlined,
-        UserOutlined,
-        RedoOutlined,
-        InfoCircleOutlined,
-        UndoOutlined,
-    } from '@ant-design/icons-vue';
-    import {defineAsyncComponent} from 'vue';
+    import SearchOutlined from '@ant-design/icons-vue/SearchOutlined';
+    import PlusOutlined from '@ant-design/icons-vue/PlusOutlined';
+    import DeleteOutlined from '@ant-design/icons-vue/DeleteOutlined';
+    import EditOutlined from '@ant-design/icons-vue/EditOutlined';
+    import VerticalAlignBottomOutlined from '@ant-design/icons-vue/VerticalAlignBottomOutlined';
+    import HomeOutlined from '@ant-design/icons-vue/HomeOutlined';
+    import UserOutlined from '@ant-design/icons-vue/UserOutlined';
+    import InfoCircleOutlined from '@ant-design/icons-vue/InfoCircleOutlined';
+    import UndoOutlined from '@ant-design/icons-vue/UndoOutlined';
+    import RedoOutlined from '@ant-design/icons-vue/RedoOutlined';
+    import MenuFoldOutlined from '@ant-design/icons-vue/MenuFoldOutlined';
+    import MenuUnfoldOutlined from '@ant-design/icons-vue/MenuUnfoldOutlined';
+    import BellOutlined from '@ant-design/icons-vue/BellOutlined';
+    import WeiIcon from '@/components/icon/Index.vue';
 
     export default {
         name: "WeiIcon",
@@ -75,17 +85,20 @@
             }
         },
         components: {
-            'wei-icon': defineAsyncComponent(() => import('@/components/icon/Index.vue')),
-            [SearchOutlined.name]: SearchOutlined,
-            [PlusOutlined.name]: PlusOutlined,
-            [DeleteOutlined.name]: DeleteOutlined,
-            [EditOutlined.name]: EditOutlined,
-            [VerticalAlignBottomOutlined.name]: VerticalAlignBottomOutlined,
-            [HomeOutlined.name]: HomeOutlined,
-            [UserOutlined.name]: UserOutlined,
-            [RedoOutlined.name]: RedoOutlined,
-            [InfoCircleOutlined.name]: InfoCircleOutlined,
-            [UndoOutlined.name]: UndoOutlined,
+            'wei-icon': WeiIcon,
+            SearchOutlined,
+            PlusOutlined,
+            DeleteOutlined,
+            EditOutlined,
+            VerticalAlignBottomOutlined,
+            HomeOutlined,
+            UserOutlined,
+            InfoCircleOutlined,
+            UndoOutlined,
+            RedoOutlined,
+            MenuFoldOutlined,
+            MenuUnfoldOutlined,
+            BellOutlined,
         }
     }
 </script>
