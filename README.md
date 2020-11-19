@@ -1,5 +1,8 @@
 # muteki
-*springboot和vue搭建的前后端分离的后台管理模板,简便resultful接口开发*
+*vue3.0 一款基于springboot和vue的前后端分离的后台管理模版，同时可以快速开发给前端提供接口（Restfull API）*    
+*支持WEB端多终端登录，后台管理没有多余的功能，只有 权限管理 和 常用功能 。代码通过90% 阿里巴巴编码规约扫描 、 findbugs*    
+*对接口限流*  
+*有vue2 element版和vue3 ant-design-vue版*  
 *闪耀吧! 宛如流星一般*
 
 ## <a href="http://39.96.52.201/muteki/vuepress" target="_blank">说明文档</a>
