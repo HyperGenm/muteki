@@ -9,6 +9,8 @@ export default {
         login: '/login',
         //获取登录验证码
         getValidateCode: '/getValidateCode',
+        /*退出登录*/
+        logout: '/logout',
         //用户部分
         user: {
             //获取用户信息
