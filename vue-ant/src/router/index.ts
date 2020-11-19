@@ -1,6 +1,7 @@
 import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router';
 import MyRouter from './MyRouter';
 import $function from '@/utils/function';
+import {message} from 'ant-design-vue';
 /*浏览器上面进度条*/
 // @ts-ignore
 import NProgress from 'nprogress';
@@ -28,6 +29,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    try {
+        //清空提示信息
+        message.destroy()
+    } catch (e) {
+        console.log('清空加载中动画出错，此提示可忽略。', e);
+    }
     //浏览器上方显示进度条
     NProgress.start();
     let token = $function.getLocationStorage('token');
