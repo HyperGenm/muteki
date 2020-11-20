@@ -11,7 +11,7 @@
                     :theme="config.theme"
                     :inlineCollapsed="config.inlineCollapsed"
                     @click="menuClick">
-                <template v-for="menu in menuList" :key="menu.name">
+                <template v-for="menu in menuList" :key="`${2 === menu.externalFlag ? menu.name : menu.path}`">
                     <my-menu :menu="menu"></my-menu>
                 </template>
             </a-menu>

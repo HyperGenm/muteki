@@ -11,7 +11,7 @@
                 <wei-icon :icon="menu.icon" defaultIcon="InfoCircleOutlined"></wei-icon>
                 <span>{{menu.title}}</span>
             </template>
-            <template v-for="m in menu.children" :key="m.name">
+            <template v-for="m in menu.children" :key="`${2 === m.externalFlag ? m.name : m.path}`">
                 <my-menu :menu="m" :parentPath="parentPath + menu.path"></my-menu>
             </template>
         </a-sub-menu>

@@ -55,10 +55,10 @@ public class ResultBean<T> implements Serializable {
     private T data;
 
     /**
-     * 如果有异常，异常信息
+     * 系统异常Exception
      */
-    @ApiModelProperty("如果有异常，异常信息")
-    private Exception errorMsg;
+    @ApiModelProperty("系统异常Exception")
+    private Object error;
 
     /**
      * 创建无参数ResultUtil对象---fastjson反序列化需要无参数
@@ -103,7 +103,7 @@ public class ResultBean<T> implements Serializable {
         resultBean.msg = msg;
         //如果将异常信息暴露给前端
         if (RESPONSE_SHOW_RUNTIME_EXCEPTION) {
-            resultBean.errorMsg = errorMsg;
+            resultBean.error = errorMsg;
         }
         return resultBean;
     }
