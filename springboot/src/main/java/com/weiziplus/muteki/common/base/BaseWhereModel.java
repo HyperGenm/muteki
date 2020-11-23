@@ -60,4 +60,103 @@ public class BaseWhereModel implements Serializable {
         this.value = value;
     }
 
+    /**
+     * 等于
+     *
+     * @param column
+     * @param value
+     * @return
+     */
+    public static BaseWhereModel eq(String column, Object value) {
+        return new BaseWhereModel(column, BaseWhereEnum.EQUAL, value);
+    }
+
+    /**
+     * 不等于
+     *
+     * @param column
+     * @param value
+     * @return
+     */
+    public static BaseWhereModel notEq(String column, Object value) {
+        return new BaseWhereModel(column, BaseWhereEnum.NOT_EQUAL, value);
+    }
+
+    /**
+     * 大于
+     *
+     * @param column
+     * @param value
+     * @return
+     */
+    public static BaseWhereModel moreThan(String column, Object value) {
+        return new BaseWhereModel(column, BaseWhereEnum.MORE_THAN, value);
+    }
+
+    /**
+     * 小于
+     *
+     * @param column
+     * @param value
+     * @return
+     */
+    public static BaseWhereModel lessThan(String column, Object value) {
+        return new BaseWhereModel(column, BaseWhereEnum.LESS_THAN, value);
+    }
+
+    /**
+     * 大于等于
+     *
+     * @param column
+     * @param value
+     * @return
+     */
+    public static BaseWhereModel moreThanEqual(String column, Object value) {
+        return new BaseWhereModel(column, BaseWhereEnum.MORE_THAN_EQUAL, value);
+    }
+
+    /**
+     * 小于等于
+     *
+     * @param column
+     * @param value
+     * @return
+     */
+    public static BaseWhereModel lessThanEqual(String column, Object value) {
+        return new BaseWhereModel(column, BaseWhereEnum.LESS_THAN_EQUAL, value);
+    }
+
+    /**
+     * in
+     *
+     * @param column
+     * @param value
+     * @return
+     */
+    public static BaseWhereModel in(String column, Object value) {
+        return new BaseWhereModel(column, BaseWhereEnum.IN, value);
+    }
+
+    /**
+     * notIn
+     *
+     * @param column
+     * @param value
+     * @return
+     */
+    public static BaseWhereModel notIn(String column, Object value) {
+        return new BaseWhereModel(column, BaseWhereEnum.NOT_IN, value);
+    }
+
+    /**
+     * like
+     *
+     * @param column
+     * @param value
+     * @return
+     */
+    public static BaseWhereModel like(String column, Object value) {
+        return new BaseWhereModel(column, BaseWhereEnum.LIKE, value);
+    }
+
 }

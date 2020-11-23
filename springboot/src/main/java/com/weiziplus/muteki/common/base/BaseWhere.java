@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -73,6 +74,25 @@ public class BaseWhere<T> extends BaseService implements Serializable {
             oldList = new ArrayList<>(ToolUtils.initialCapacity(1));
         }
         oldList.add(baseWhereModel);
+        this.baseWhereModels = oldList;
+        return this;
+    }
+
+    /**
+     * 添加查询条件数组
+     *
+     * @param baseWhereModelList
+     * @return
+     */
+    public BaseWhere<T> where(BaseWhereModel... baseWhereModelList) {
+        if (null == baseWhereModelList) {
+            return this;
+        }
+        List<BaseWhereModel> oldList = this.getBaseWhereModels();
+        if (null == oldList) {
+            oldList = new ArrayList<>(ToolUtils.initialCapacity(1));
+        }
+        oldList.addAll(Arrays.asList(baseWhereModelList));
         this.baseWhereModels = oldList;
         return this;
     }

@@ -21,7 +21,8 @@ public enum BaseWhereEnum {
     LESS_THAN_EQUAL("小于等于", "<="),
     IN("IN", "IN"),
     NOT_IN("NOT_IN", "NOT IN"),
-    POSITION("POSITION", "POSITION");
+    POSITION("POSITION", "POSITION"),
+    LIKE("LIKE", "LIKE");
 
     private final String name;
     private final String value;
