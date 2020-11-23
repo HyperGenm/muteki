@@ -51,6 +51,15 @@
         </div>
         <template>
             <a-drawer width="67%"
+                      title="修改头像"
+                      v-model:visible="updateIcon.visible">
+                <my-icon :action="updateIcon.action"
+                         :fileList="updateIcon.fileList"
+                         @success="updateIcon.success"></my-icon>
+            </a-drawer>
+        </template>
+        <template>
+            <a-drawer width="67%"
                       title="修改密码"
                       v-model:visible="updatePwd.visible">
                 <my-form :form="updatePwd.form"
@@ -86,6 +95,7 @@
             [Menu.Item.name]: Menu.Item,
             [Drawer.name]: Drawer,
             'my-form': defineAsyncComponent(() => import('@/components/form/Index.vue')),
+            'my-icon': defineAsyncComponent(() => import('@/components/upload/Index.vue')),
         },
         props: {
             //菜单是否折叠
@@ -170,6 +180,12 @@
             });
             let menuList = ref([
                 {
+                    title: '修改头像',
+                    click() {
+                        updateIcon.visible = true;
+                    }
+                },
+                {
                     title: '修改密码',
                     click() {
                         $ant.confirm({
@@ -201,6 +217,21 @@
                     }
                 }
             ]);
+            //修改头像
+            let updateIcon = reactive({
+                visible: false,
+                action: $global.url.system.sysUser.updateIcon,
+                fileList: [],
+                success(file, fileList) {
+                    let {data} = file['response'];
+                    userInfo['avatarSrc'] = data;
+                    let user = $function.getLocationStorage('user');
+                    user['icon'] = data;
+                    $function.setLocationStorage('user', user);
+                    $ant.successMsg('修改成功');
+                    updateIcon.visible = false;
+                }
+            });
             //修改密码
             let updatePwd = reactive({
                 visible: false,
@@ -240,6 +271,7 @@
                 tabChange,
                 locale,
                 menuList,
+                updateIcon,
                 updatePwd
             }
         }

@@ -52,7 +52,7 @@ public class CorsFilter implements Filter {
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST,GET,PUT,OPTIONS,DELETE");
         response.setHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "3600");
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Accept,Content-Type,Origin," + GlobalConfig.TOKEN);
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*");
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
         String originHeader = request.getHeader(HttpHeaders.ORIGIN);
         //如果不需要跨域直接放行
