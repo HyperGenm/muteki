@@ -216,6 +216,10 @@
                 this.$refs['form'].clearValidate();
             }
         },
+        mounted() {
+            //对外抛出自身
+            this.$emit('my-ref', this);
+        },
         methods: {
             onSubmit() {
                 this.$refs['form'].validate()

@@ -447,7 +447,7 @@
                 //每条页数
                 pageSize: 10,
                 //指定每页可以显示多少条
-                pageSizeOptions: ['10', '20', '30', '40'],
+                pageSizeOptions: ['10', '15', '20', '50', '100'],
                 //是否可以改变 pageSize
                 showSizeChanger: false,
                 //数据总数

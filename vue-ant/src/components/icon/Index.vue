@@ -99,6 +99,10 @@
             MenuFoldOutlined,
             MenuUnfoldOutlined,
             BellOutlined,
-        }
+        },
+        mounted() {
+            //对外抛出自身
+            this.$emit('my-ref', this);
+        },
     }
 </script>

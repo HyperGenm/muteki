@@ -14,7 +14,8 @@
     "crypto-js": "^4.0.0",
     "nprogress": "^0.2.0",
     "vue": "^3.0.2",
-    "vue-router": "^4.0.0-rc.3"
+    "vue-router": "^4.0.0-rc.3",
+    "wangeditor": "^4.5.1"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",

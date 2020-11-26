@@ -113,6 +113,10 @@
                 default: 1
             }
         },
+        mounted() {
+            //对外抛出自身
+            this.$emit('my-ref', this);
+        },
         setup(props, {emit: $emit}) {
             const router = useRouter();
             /**
