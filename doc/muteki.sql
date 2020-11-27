@@ -82,7 +82,7 @@ CREATE TABLE `sys_function`  (
   `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '功能描述',
   `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '功能创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统功能表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统功能表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_function
@@ -122,6 +122,13 @@ INSERT INTO `sys_function` VALUES (32, 1, 'user', 'user', 'web用户管理', NUL
 INSERT INTO `sys_function` VALUES (33, 32, 'user_get', 'user_get', '查看', '[\"/pc/user/getPageList\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-08-21 15:24:45');
 INSERT INTO `sys_function` VALUES (34, 32, 'user_disable', 'user_disable', '禁用', '[\"/pc/user/disableUser\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-08-21 15:58:26');
 INSERT INTO `sys_function` VALUES (35, 32, 'user_enable', 'user_enable', '启用', '[\"/pc/user/enableUser\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-08-21 15:58:45');
+INSERT INTO `sys_function` VALUES (36, 1, 'sysDept', 'sysDept', '系统部门', NULL, 1, 1, 1, 'el-icon-info', 77, '', '2020-11-26 13:10:41');
+INSERT INTO `sys_function` VALUES (37, 4, 'sysUser_dept', 'sysUser_dept', '修改部门', NULL, 2, 1, 1, 'el-icon-info', 77, '', '2020-11-27 11:48:34');
+INSERT INTO `sys_function` VALUES (38, 36, 'sysDept_get', 'sysDept_get', '查看', '[\"/pc/sysDept/getTree\", \"/pc/sysDept/getPageList\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-11-27 11:49:55');
+INSERT INTO `sys_function` VALUES (39, 36, 'sysDept_add', 'sysDept_add', '新增', '[\"/pc/sysDept/add\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-11-27 11:51:08');
+INSERT INTO `sys_function` VALUES (40, 36, 'sysDept_update', 'sysDept_update', '修改', '[\"/pc/sysDept/update\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-11-27 11:51:52');
+INSERT INTO `sys_function` VALUES (41, 36, 'sysDept_delete', 'sysDept_delete', '删除', '[\"/pc/sysDept/delete\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-11-27 11:52:22');
+
 
 
 -- ----------------------------
@@ -365,5 +372,40 @@ CREATE TABLE `t_user_login`  (
   INDEX `username`(`username`) USING BTREE,
   INDEX `create_time`(`create_time`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录日志表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for sys_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dept`;
+CREATE TABLE `sys_dept`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) NOT NULL DEFAULT 0 COMMENT '上级部门id，最高级为0',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '部门名称',
+  `sort` int(10) NOT NULL DEFAULT 0 COMMENT '排序，数字越大越靠前',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '描述',
+  `edit_username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
+  `edit_real_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作人真实姓名',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `delete_time` bigint(20) NOT NULL DEFAULT 0 COMMENT '删除时间，0:未删除，大于0:删除时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `name`(`name`, `parent_id`, `delete_time`) USING BTREE,
+  INDEX `parent_id`(`parent_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
+
+INSERT INTO `muteki`.`sys_dept`(`id`, `parent_id`, `name`, `sort`, `remark`, `edit_username`, `edit_real_name`, `update_time`, `create_time`, `delete_time`) VALUES (1, 0, '最高级', 0, '', 'superadmin', 'superadmin', '2020-11-26 15:37:21', '2020-11-26 12:38:15', 0);
+
+-- ----------------------------
+-- Table structure for sys_user_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_dept`;
+CREATE TABLE `sys_user_dept`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户表id',
+  `dept_id` int(11) NOT NULL COMMENT '部门表id',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE,
+  INDEX `dept_id`(`dept_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

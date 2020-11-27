@@ -20,6 +20,10 @@ public class SysUserQueryDto implements Serializable {
     @ApiModelProperty("角色")
     private Integer roleId;
 
+    @Min(value = 0, message = "deptId不能小于0")
+    @ApiModelProperty("部门")
+    private Integer deptId;
+
     @ApiModelProperty("状态")
     private Integer status;
 

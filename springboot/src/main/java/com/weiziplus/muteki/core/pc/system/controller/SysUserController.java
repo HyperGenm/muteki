@@ -90,6 +90,17 @@ public class SysUserController {
         return service.updateRole(id, roleIds);
     }
 
+    @ApiOperation(value = "修改用户部门")
+    @PostMapping("/updateDept")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer", paramType = "form"),
+            @ApiImplicitParam(name = "deptIds", value = "部门ids", dataType = "Integer[]", paramType = "form"),
+    })
+    @SysUserLogInterface(description = "修改用户部门", type = SysUserLogInterface.TYPE_UPDATE)
+    public ResultBean updateDept(Integer id, Integer[] deptIds) {
+        return service.updateDept(id, deptIds);
+    }
+
     @ApiOperation(value = "删除用户")
     @PostMapping("/delete")
     @ApiImplicitParams({

@@ -32,6 +32,8 @@ export default {
                 updatePhone: '/sysUser/updatePhone',
                 /*修改角色*/
                 updateRole: '/sysUser/updateRole',
+                /*修改部门*/
+                updateDept: '/sysUser/updateDept',
                 /*重置密码*/
                 resetPwd: '/sysUser/resetPwd',
                 /*新增*/
@@ -114,6 +116,19 @@ export default {
             userLoginLog: {
                 /*获取分页数据*/
                 getPageList: '/userLoginLog/getPageList'
+            },
+            //系统部门
+            sysDept: {
+                /*获取分页数据*/
+                getPageList: '/sysDept/getPageList',
+                /*获取树形列表*/
+                getTree: '/sysDept/getTree',
+                /*新增*/
+                add: '/sysDept/add',
+                /*更新*/
+                update: '/sysDept/update',
+                /*删除*/
+                delete: '/sysDept/delete',
             },
         }
     }

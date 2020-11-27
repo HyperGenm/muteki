@@ -7,11 +7,14 @@
             parameterType="com.weiziplus.muteki.core.pc.system.dto.SysUserQueryDto"
             resultType="com.weiziplus.muteki.core.pc.system.vo.SysUserVo">
         SELECT su.*, CONCAT('${filePathPrefix}', su.icon) `iconAllPath`,
-        GROUP_CONCAT(sr.name) `roleList`,
+        GROUP_CONCAT(sr.name) `roleList`,GROUP_CONCAT(sr.id) `roleIds`,
+        GROUP_CONCAT(sd.name) `deptList`,GROUP_CONCAT(sd.id) `deptIds`,
         temp.create_time `lastActiveTime`,temp.ip_address `lastIpAddress`
         FROM `sys_user` su
         LEFT JOIN `sys_user_role` sur ON su.id = sur.user_id
         LEFT JOIN `sys_role` sr ON sur.role_id = sr.id
+        LEFT JOIN `sys_user_dept` sud ON su.id = sud.user_id
+        LEFT JOIN `sys_dept` sd ON sud.dept_id = sd.id
         LEFT JOIN (
         SELECT *
         FROM (
@@ -28,6 +31,9 @@
             su.id > 1 AND su.delete_time = 0
             <if test="null != roleId">
                 AND sr.id = #{roleId}
+            </if>
+            <if test="null != deptId">
+                AND sd.id = #{deptId}
             </if>
             <if test="null != status">
                 AND su.status = #{status}

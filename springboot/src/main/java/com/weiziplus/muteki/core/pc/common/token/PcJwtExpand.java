@@ -17,4 +17,14 @@ public class PcJwtExpand {
      * 系统用户的角色ids
      */
     private Set<Integer> roleIds;
+
+    /**
+     * 系统用户的用户名
+     */
+    private String username;
+
+    /**
+     * 系统用户的真实姓名
+     */
+    private String realName;
 }

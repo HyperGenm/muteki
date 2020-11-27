@@ -6,6 +6,7 @@ import com.weiziplus.muteki.common.base.BaseWhere;
 import com.weiziplus.muteki.common.base.BaseWhereModel;
 import com.weiziplus.muteki.common.config.GlobalConfig;
 import com.weiziplus.muteki.common.models.SysUser;
+import com.weiziplus.muteki.common.models.SysUserDept;
 import com.weiziplus.muteki.common.models.SysUserRole;
 import com.weiziplus.muteki.common.result.ResultBean;
 import com.weiziplus.muteki.common.result.ResultEnum;
@@ -196,6 +197,44 @@ public class SysUserService extends BaseService {
             baseInsertList(sysUserRoleList);
         } catch (Exception e) {
             log.warn("修改用户角色出错，详情:" + e);
+            TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savepoint);
+            return ResultBean.errorException("系统错误，请重试。Exception", e);
+        }
+        return ResultBean.success();
+    }
+
+    /**
+     * 修改用户部门
+     *
+     * @param id
+     * @param deptIds
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultBean updateDept(Integer id, Integer[] deptIds) {
+        if (null == id || 0 >= id) {
+            return ResultBean.error("id错误");
+        }
+        if (PcGlobalConfig.SUPER_ADMIN_USER_ID.equals(id)) {
+            return ResultBean.errorRole("禁止操作超级管理员");
+        }
+        if (null == deptIds || 0 >= deptIds.length) {
+            mapper.deleteUserDeptByUserId(id);
+            return ResultBean.success();
+        }
+        List<SysUserDept> list = new ArrayList<>(ToolUtils.initialCapacity(deptIds.length));
+        for (Integer deptId : deptIds) {
+            SysUserDept sysUserDept = new SysUserDept()
+                    .setUserId(id)
+                    .setDeptId(deptId);
+            list.add(sysUserDept);
+        }
+        Object savepoint = TransactionAspectSupport.currentTransactionStatus().createSavepoint();
+        try {
+            mapper.deleteUserDeptByUserId(id);
+            baseInsertList(list);
+        } catch (Exception e) {
+            log.warn("修改用户部门出错，详情:" + e);
             TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savepoint);
             return ResultBean.errorException("系统错误，请重试。Exception", e);
         }

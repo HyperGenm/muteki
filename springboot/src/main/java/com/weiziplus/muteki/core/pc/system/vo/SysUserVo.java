@@ -48,7 +48,16 @@ public class SysUserVo implements Serializable {
     @ApiModelProperty("用户创建时间")
     private String createTime;
 
+    @ApiModelProperty("角色ids")
+    private String roleIds;
+
     @ApiModelProperty("角色列表")
     private String roleList;
+
+    @ApiModelProperty("部门ids")
+    private String deptIds;
+
+    @ApiModelProperty("部门列表")
+    private String deptList;
 
 }

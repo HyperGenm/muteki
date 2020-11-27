@@ -28,6 +28,16 @@
                                 </Option>
                             </a-select>
                         </template>
+                        <template v-else-if="'treeSelect' === item.type">
+                            <a-tree-select v-model:value="data[item.prop]"
+                                           :style="item.style || 'width: 200px;'"
+                                           allowClear treeDefaultExpandAll :showSearch="false"
+                                           :multiple="item.multiple"
+                                           :dropdown-style="item.dropdownStyle || { maxHeight: '400px', overflow: 'auto' }"
+                                           :tree-data="item.deptTree"
+                                           :replaceFields="item.replaceFields"
+                                           :placeholder="item.placeholder || '请选择'"></a-tree-select>
+                        </template>
                         <template v-else-if="'datePicker' === item.type">
                             <a-date-picker v-model:value="data[item.prop]"
                                            :placeholder="item.placeholder || '请选择'"
@@ -317,6 +327,7 @@
         Input,
         Form,
         Tag,
+        TreeSelect,
     } from 'ant-design-vue';
     import $axios from 'axios';
     /**引入参数处理*/
@@ -348,6 +359,7 @@
             [Input.Search.name]: Input.Search,
             [Form.Item.name]: Form.Item,
             [Tag.name]: Tag,
+            [TreeSelect.name]: TreeSelect,
             'wei-icon': defineAsyncComponent(() => import('@/components/icon/Index.vue')),
         },
         props: {

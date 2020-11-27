@@ -33,4 +33,15 @@ public interface SysUserMapper {
             "DELETE FROM `sys_user_role` " +
             "WHERE `user_id` = #{id} ")
     int deleteUserRoleByUserId(Integer id);
+
+    /**
+     * 根据用户id删除用户部门信息
+     *
+     * @param id
+     * @return
+     */
+    @Delete("" +
+            "DELETE FROM `sys_user_dept` " +
+            "WHERE `user_id` = #{id} ")
+    int deleteUserDeptByUserId(Integer id);
 }

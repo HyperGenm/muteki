@@ -74,7 +74,7 @@
                 url: $global.url.system.sysFunction.getPageList,
                 data: {},
                 columns: [
-                    {title: '标题', dataIndex: 'title'},
+                    {title: '标题', dataIndex: 'title', width: 300,},
                     {title: 'name', dataIndex: 'name'},
                     {
                         title: '图标', dataIndex: 'icon', type: 'icon',

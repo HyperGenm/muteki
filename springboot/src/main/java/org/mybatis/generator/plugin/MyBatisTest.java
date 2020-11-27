@@ -34,7 +34,7 @@ public class MyBatisTest {
         DefaultShellCallback callback = new DefaultShellCallback(true);
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
         myBatisGenerator.generate(null);
-        log.info("如果model没有重构，请检查 MyBatisPlugin 里面的忽略数据库 IGNORE_TABLE");
+        log.debug("如果model没有重构，请检查 MyBatisPlugin 里面的忽略数据库 IGNORE_TABLE");
     }
 
 }

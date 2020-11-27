@@ -38,6 +38,19 @@
             </a-select>
         </a-modal>
     </template>
+    <template>
+        <a-modal title="修改部门"
+                 v-model:visible="dept.visible"
+                 @ok="dept.ok">
+            <a-tree-select v-model:value="dept.chooseDeptList"
+                           style="width: 100%" allowClear multiple treeDefaultExpandAll :showSearch="false"
+                           :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                           :tree-data="dept.deptTree"
+                           :replaceFields="{label:'name',value:'id'}"
+                           placeholder="请选择"
+                           tree-default-expand-all></a-tree-select>
+        </a-modal>
+    </template>
 </template>
 
 <script>
@@ -46,7 +59,7 @@
     import $axios from "../../../../utils/axios";
     import $function from '@/utils/function';
     import $ant from '@/utils/ant';
-    import {Drawer, Modal, Input, Select} from 'ant-design-vue';
+    import {Drawer, Modal, Input, Select, TreeSelect} from 'ant-design-vue';
     import $cryptoJS from '@/utils/cryptoJS';
 
     export default {
@@ -56,13 +69,14 @@
             [Input.name]: Input,
             [Select.name]: Select,
             [Select.Option.name]: Select.Option,
+            [TreeSelect.name]: TreeSelect,
             'my-table': defineAsyncComponent(() => import('@/components/table/Index.vue')),
             'my-descriptions': defineAsyncComponent(() => import('@/components/descriptions/Index.vue')),
             'my-form': defineAsyncComponent(() => import('@/components/form/Index.vue')),
         },
         setup() {
             let {
-                sysUser_add, sysUser_delete, sysUser_role, sysUser_resetPwd, sysUser_updatePhone, sysUser_updateStatus
+                sysUser_add, sysUser_delete, sysUser_role, sysUser_resetPwd, sysUser_updatePhone, sysUser_updateStatus, sysUser_dept
             } = $function.getLocationStorage('buttonMap');
             //更新用户状态
             const updateStatus = (checked, row, index) => {
@@ -165,7 +179,8 @@
                 columns: [
                     {title: '真实姓名', dataIndex: 'realName', width: 120, fixed: 'left'},
                     {title: '用户名', dataIndex: 'username', width: 120, fixed: 'left'},
-                    {title: '角色', dataIndex: 'roleList', width: 120, fixed: 'left'},
+                    {title: '角色', dataIndex: 'roleList', width: 120},
+                    {title: '部门', dataIndex: 'deptList', width: 120, tooltip: true},
                     {title: '手机号', dataIndex: 'phone', width: 120},
                     {
                         title: '状态', type: 'switch',
@@ -206,6 +221,11 @@
                         options: []
                     },
                     {
+                        type: 'treeSelect', prop: 'deptId', placeholder: '部门',
+                        replaceFields: {label: 'name', value: 'id'},
+                        deptTree: []
+                    },
+                    {
                         type: 'select', prop: 'status', placeholder: '状态',
                         options: [
                             {label: '正常', value: 1},
@@ -232,7 +252,22 @@
                         name: '修改角色', icon: 'edit', show: sysUser_role,
                         handleClick(row, index) {
                             role.nowRow = row;
+                            if (null != row['roleIds']) {
+                                let roleIds = row['roleIds'].split(',');
+                                for (let i = 0; i < roleIds.length; i++) {
+                                    roleIds[i] = Number.parseInt(roleIds[i]);
+                                }
+                                role.value = roleIds;
+                            } else {
+                                role.value = [];
+                            }
                             role.visible = true;
+                        }
+                    },
+                    {
+                        name: '修改部门', icon: 'edit', show: sysUser_dept,
+                        handleClick(row, index) {
+                            dept.handleClick(row, index);
                         }
                     },
                     {
@@ -261,6 +296,7 @@
                         {label: '用户名', content: row['username']},
                         {label: '真实姓名', content: row['realName']},
                         {label: '角色', content: row['roleList']},
+                        {label: '部门', content: row['deptList']},
                         {label: '手机号', content: row['phone']},
                         {label: '状态', content: (1 === row['status'] ? '正常' : '禁用')},
                         {
@@ -348,7 +384,45 @@
                     })
                 }
             });
+            //修改部门
+            let dept = reactive({
+                visible: false,
+                nowRow: {},
+                //部门树
+                deptTree: [],
+                //选中的部门列表
+                chooseDeptList: [],
+                handleClick(row, index) {
+                    dept.nowRow = row;
+                    if (null != row['deptIds']) {
+                        let deptIds = row['deptIds'].split(',');
+                        for (let i = 0; i < deptIds.length; i++) {
+                            deptIds[i] = Number.parseInt(deptIds[i]);
+                        }
+                        dept.chooseDeptList = deptIds;
+                    } else {
+                        dept.chooseDeptList = [];
+                    }
+                    dept.visible = true;
+                },
+                ok() {
+                    $axios({
+                        url: $global.url.system.sysUser.updateDept,
+                        method: 'post',
+                        data: {
+                            id: dept.nowRow['id'],
+                            deptIds: dept.chooseDeptList
+                        },
+                        success() {
+                            tableRef.getTableData();
+                            $ant.successMsg('成功');
+                            dept.visible = false;
+                        }
+                    })
+                }
+            })
             onMounted(() => {
+                //获取角色列表
                 $axios({
                     url: $global.url.system.sysRole.getList,
                     success(data) {
@@ -363,13 +437,22 @@
                         addUser['itemList'][5]['options'] = roleList;
                         role['options'] = roleList;
                     }
-                })
+                });
+                //获取部门树
+                $axios({
+                    url: $global.url.system.sysDept.getTree,
+                    success(data = []) {
+                        dept.deptTree = data;
+                        table.headerSearchList[2]['deptTree'] = data;
+                    }
+                });
             });
             return {
                 table,
                 detail,
                 addUser,
-                role
+                role,
+                dept
             }
         }
     };

@@ -152,7 +152,9 @@ public class LoginService extends BaseService {
         }
         HttpServletRequest request = getRequest();
         PcJwtExpand expand = new PcJwtExpand()
-                .setRoleIds(roleIds);
+                .setRoleIds(roleIds)
+                .setUsername(sysUser.getUsername())
+                .setRealName(sysUser.getRealName());
         String token = PcTokenUtils.createToken(sysUser.getId(), request, expand);
         sysUser.setPassword(null)
                 .setIcon(GlobalConfig.getMybatisFilePathPrefix() + sysUser.getIcon());
