@@ -43,6 +43,62 @@
         </rollingPolicy>
     </appender>
 
+    <!-- 输出到文档-->
+    <appender name="LOGFILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>true</prudent>
+        <!-- 文件输出的日志 的格式 -->
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%thread] %-50logger{50} - %highlight(%msg) %n
+            </pattern>
+            <!-- 此处设置字符集，防止中文乱码 -->
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/%d{yyyy-MM-dd}_warn.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文档保留天数-->
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <!--表示匹配该级别及以上-->
+            <onMatch>ACCEPT</onMatch>
+            <!--表示不匹配该级别以下-->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 输出到文档-->
+    <appender name="LOGFILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>true</prudent>
+        <!-- 文件输出的日志 的格式 -->
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%thread] %-50logger{50} - %highlight(%msg) %n
+            </pattern>
+            <!-- 此处设置字符集，防止中文乱码 -->
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/%d{yyyy-MM-dd}_error.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文档保留天数-->
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <!--表示匹配该级别及以上-->
+            <onMatch>ACCEPT</onMatch>
+            <!--表示不匹配该级别以下-->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="LOGFILE"/>
@@ -51,6 +107,8 @@
     <logger name="com.weiziplus.muteki" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="LOGFILE"/>
+        <appender-ref ref="LOGFILE_WARN"/>
+        <appender-ref ref="LOGFILE_ERROR"/>
     </logger>
 
 </configuration>
