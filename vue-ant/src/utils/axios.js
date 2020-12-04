@@ -46,7 +46,7 @@ const $axios = function (
         contentType = 'application/x-www-form-urlencoded; charset=UTF-8',
         data = {},
         timeout = parseInt(process.env.VUE_APP_AXIOS_TIMEOUT || 20000),
-        timeShowLoadAnimation = 555,
+        timeShowLoadAnimation = 1111,
         success = function () {
         },
         fail = function () {
@@ -58,7 +58,7 @@ const $axios = function (
     let loadingTimer = setTimeout(() => {
         loading = true;
         message.loading({
-            content: '加载中...',
+            content: 'loading...',
             key: messageKey,
             duration: timeout / 1000
         });
@@ -91,8 +91,8 @@ const $axios = function (
         /**关闭加载中动画*/
         clearTimeout(loadingTimer);
         if (loading) {
-            message.success({
-                content: '',
+            message.info({
+                content: 'loaded',
                 key: messageKey,
                 duration: 1
             });
@@ -140,8 +140,8 @@ const $axios = function (
         /**关闭加载中动画*/
         clearTimeout(loadingTimer);
         if (loading) {
-            message.success({
-                content: '',
+            message.warn({
+                content: 'error',
                 key: messageKey,
                 duration: 1
             });
@@ -203,7 +203,7 @@ const $axiosDown = function (
         data = {},
         filename = '新建文件',
         timeout = 20000,
-        timeShowLoadAnimation = 555,
+        timeShowLoadAnimation = 1111,
         success = function () {
         },
         fail = function () {
@@ -307,7 +307,7 @@ const $axiosDown = function (
         /**关闭加载中动画*/
         clearTimeout(loadingTimer);
         if (loading) {
-            message.success({
+            message.warn({
                 content: 'fail',
                 key: messageKey,
                 duration: 1
