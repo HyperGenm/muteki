@@ -191,6 +191,8 @@ public class SysUserService extends BaseService {
                     .setRoleId(roleId);
             sysUserRoleList.add(sysUserRole);
         }
+        //强制用户下线
+        PcTokenUtils.deleteToken(id);
         Object savepoint = TransactionAspectSupport.currentTransactionStatus().createSavepoint();
         try {
             mapper.deleteUserRoleByUserId(id);
@@ -229,6 +231,8 @@ public class SysUserService extends BaseService {
                     .setDeptId(deptId);
             list.add(sysUserDept);
         }
+        //强制用户下线
+        PcTokenUtils.deleteToken(id);
         Object savepoint = TransactionAspectSupport.currentTransactionStatus().createSavepoint();
         try {
             mapper.deleteUserDeptByUserId(id);

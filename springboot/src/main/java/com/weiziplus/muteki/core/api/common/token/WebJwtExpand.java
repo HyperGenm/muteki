@@ -6,6 +6,8 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
+ * !!!!!!!!存放的数据只有用户重新登录后才会刷新
+ *
  * @author wanglongwei
  * @date 2020/08/20 08/49
  */
