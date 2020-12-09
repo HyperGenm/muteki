@@ -7,15 +7,15 @@
     "ant-build": "vue-cli-service build"
   },
   "dependencies": {
-    "@ant-design/icons-vue": "^5.1.5",
-    "ant-design-vue": "^2.0.0-rc.1",
+    "@ant-design/icons-vue": "^5.1.7",
+    "ant-design-vue": "^2.0.0-rc.3",
     "axios": "^0.21.0",
-    "core-js": "^3.7.0",
+    "core-js": "^3.8.1",
     "crypto-js": "^4.0.0",
     "nprogress": "^0.2.0",
-    "vue": "^3.0.2",
-    "vue-router": "^4.0.0-rc.3",
-    "wangeditor": "^4.5.1"
+    "vue": "^3.0.4",
+    "vue-router": "^4.0.1",
+    "wangeditor": "^4.5.2"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
@@ -26,7 +26,7 @@
     "@vue/compiler-sfc": "^3.0.2",
     "babel-plugin-import": "^1.13.1",
     "compression-webpack-plugin": "^6.1.1",
-    "less": "^2.7.3",
+    "less": "^3.12.2",
     "less-loader": "^7.1.0",
     "typescript": "~4.0.5",
     "uglifyjs-webpack-plugin": "^2.2.0",
