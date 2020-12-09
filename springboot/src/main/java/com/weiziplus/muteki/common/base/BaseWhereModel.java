@@ -2,8 +2,10 @@ package com.weiziplus.muteki.common.base;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * sql字段与条件和值
@@ -11,6 +13,7 @@ import java.io.Serializable;
  * @author wanglongwei
  * @date 2020/06/03 14/57
  */
+@Slf4j
 @Getter
 @Accessors(chain = true)
 public class BaseWhereModel implements Serializable {
@@ -133,7 +136,7 @@ public class BaseWhereModel implements Serializable {
      * @param value
      * @return
      */
-    public static BaseWhereModel in(String column, Object value) {
+    public static BaseWhereModel in(String column, Collection<?> value) {
         return new BaseWhereModel(column, BaseWhereEnum.IN, value);
     }
 
@@ -144,7 +147,7 @@ public class BaseWhereModel implements Serializable {
      * @param value
      * @return
      */
-    public static BaseWhereModel notIn(String column, Object value) {
+    public static BaseWhereModel notIn(String column, Collection<?> value) {
         return new BaseWhereModel(column, BaseWhereEnum.NOT_IN, value);
     }
 
@@ -155,7 +158,11 @@ public class BaseWhereModel implements Serializable {
      * @param value
      * @return
      */
-    public static BaseWhereModel like(String column, Object value) {
+    public static BaseWhereModel like(String column, String value) {
+        String keyWord = "%";
+        if (!value.contains(keyWord)) {
+            log.warn("模糊查询请自行指定 % 关键字,字段:{},值:{}", column, value);
+        }
         return new BaseWhereModel(column, BaseWhereEnum.LIKE, value);
     }
 

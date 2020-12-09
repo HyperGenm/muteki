@@ -371,7 +371,7 @@ public class BaseService {
      * @param id
      * @return
      */
-    protected int baseDeleteByClassAndId(Class<?> nowClass, Object id) {
+    protected int baseDeleteByClassAndId(Class<?> nowClass, Collection<?> id) {
         if (null == nowClass || null == id) {
             return 0;
         }
@@ -569,10 +569,22 @@ public class BaseService {
      * @return
      */
     protected <T> T baseFindOneData(BaseWhere<T> baseWhere) {
+        return baseFindOneData(baseWhere, baseWhere.getModelClass());
+    }
+
+    /**
+     * 查询一条数据
+     *
+     * @param baseWhere
+     * @param targetClass
+     * @param <T>
+     * @return
+     */
+    protected <T> T baseFindOneData(BaseWhere<?> baseWhere, Class<T> targetClass) {
         if (null == baseWhere) {
             throw new RuntimeException("BaseService--baseFindOneData---BaseWhere为空");
         }
-        Class<T> modelClass = baseWhere.getModelClass();
+        Class<?> modelClass = baseWhere.getModelClass();
         String tableName = getTableName(modelClass);
         if (null == baseWhere.getBaseWhereModels()
                 || 0 >= baseWhere.getBaseWhereModels().size()) {
@@ -605,7 +617,7 @@ public class BaseService {
         if (null == byId) {
             return null;
         }
-        return JSON.parseObject(JSON.toJSONString(byId, SerializerFeature.WriteDateUseDateFormat), modelClass);
+        return JSON.parseObject(JSON.toJSONString(byId, SerializerFeature.WriteDateUseDateFormat), targetClass);
     }
 
     /**
@@ -616,10 +628,22 @@ public class BaseService {
      * @return
      */
     protected <T> List<T> baseFindList(BaseWhere<T> baseWhere) {
+        return baseFindList(baseWhere, baseWhere.getModelClass());
+    }
+
+    /**
+     * 查询列表
+     *
+     * @param baseWhere
+     * @param targetClass 返回的结果类型
+     * @param <T>
+     * @return
+     */
+    protected <T> List<T> baseFindList(BaseWhere<?> baseWhere, Class<T> targetClass) {
         if (null == baseWhere) {
             throw new RuntimeException("BaseService--baseFindOneData---BaseWhere为空");
         }
-        Class<T> modelClass = baseWhere.getModelClass();
+        Class<?> modelClass = baseWhere.getModelClass();
         String tableName = getTableName(modelClass);
         if (null == baseWhere.getBaseWhereModels()
                 || 0 >= baseWhere.getBaseWhereModels().size()) {
@@ -652,7 +676,7 @@ public class BaseService {
         if (null == byIds) {
             return null;
         }
-        return JSONArray.parseArray(JSON.toJSONString(byIds, SerializerFeature.WriteDateUseDateFormat), modelClass);
+        return JSONArray.parseArray(JSON.toJSONString(byIds, SerializerFeature.WriteDateUseDateFormat), targetClass);
     }
 
     /**

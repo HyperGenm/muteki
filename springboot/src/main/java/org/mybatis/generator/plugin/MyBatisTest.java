@@ -27,14 +27,18 @@ public class MyBatisTest {
      */
     @Test
     public void main() throws Exception {
-        File configFile = new File(MyBatisTest.class.getResource("/config/generator-config.xml").toURI());
-        List<String> warnings = new ArrayList<>();
-        ConfigurationParser cp = new ConfigurationParser(warnings);
-        Configuration config = cp.parseConfiguration(configFile);
-        DefaultShellCallback callback = new DefaultShellCallback(true);
-        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
-        myBatisGenerator.generate(null);
-        log.debug("如果model没有重构，请检查 MyBatisPlugin 里面的忽略数据库 IGNORE_TABLE");
+        try {
+            File configFile = new File(MyBatisTest.class.getResource("/config/generator-config.xml").toURI());
+            List<String> warnings = new ArrayList<>();
+            ConfigurationParser cp = new ConfigurationParser(warnings);
+            Configuration config = cp.parseConfiguration(configFile);
+            DefaultShellCallback callback = new DefaultShellCallback(true);
+            MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+            myBatisGenerator.generate(null);
+            log.debug("如果model没有重构，请检查 MyBatisPlugin 里面的忽略数据库 IGNORE_TABLE");
+        } catch (Exception e) {
+            log.warn("请检查 config/generator-config.xml 文件中配置");
+        }
     }
 
 }

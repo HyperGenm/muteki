@@ -63,7 +63,7 @@ module.exports = {
                 //匹配的文件名
                 test: /\.js$|\.html$|\.css/,
                 //对超过10K的压缩
-                threshold: 10240,
+                threshold: 1024,
                 //是否删除原文件
                 deleteOriginalAssets: false
             }));
