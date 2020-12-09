@@ -37,7 +37,7 @@ public class MyBatisTest {
             myBatisGenerator.generate(null);
             log.debug("如果model没有重构，请检查 MyBatisPlugin 里面的忽略数据库 IGNORE_TABLE");
         } catch (Exception e) {
-            log.warn("请检查 config/generator-config.xml 文件中配置");
+            log.warn("请检查 config/generator-config.xml 文件中配置,异常详情:", e);
         }
     }
 
