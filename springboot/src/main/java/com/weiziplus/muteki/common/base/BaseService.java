@@ -371,7 +371,7 @@ public class BaseService {
      * @param id
      * @return
      */
-    protected int baseDeleteByClassAndId(Class<?> nowClass, Collection<?> id) {
+    protected int baseDeleteByClassAndId(Class<?> nowClass, Object id) {
         if (null == nowClass || null == id) {
             return 0;
         }
