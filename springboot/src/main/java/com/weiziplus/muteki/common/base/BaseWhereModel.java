@@ -160,8 +160,9 @@ public class BaseWhereModel implements Serializable {
      */
     public static BaseWhereModel like(String column, String value) {
         String keyWord = "%";
-        if (!value.contains(keyWord)) {
-            log.warn("模糊查询请自行指定 % 关键字,字段:{},值:{}", column, value);
+        //如果没有设置%
+        if (!value.startsWith(keyWord) && !value.endsWith(keyWord)) {
+            value = keyWord + value + keyWord;
         }
         return new BaseWhereModel(column, BaseWhereEnum.LIKE, value);
     }
