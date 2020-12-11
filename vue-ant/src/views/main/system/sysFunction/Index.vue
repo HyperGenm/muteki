@@ -425,7 +425,7 @@
             onMounted(() => {
                 //获取功能树形结构
                 $axios({
-                    url: $global.url.system.sysFunction.getTree,
+                    url: $global.url.system.sysFunction.getAllTree,
                     success(data) {
                         editFunction.itemList[2]['options'] = data;
                     }

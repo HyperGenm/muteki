@@ -66,6 +66,8 @@ export default {
                 getPageList: '/sysFunction/getPageList',
                 /*获取树形结构*/
                 getTree: '/sysFunction/getTree',
+                /*获取所有树形结构*/
+                getAllTree: '/sysFunction/getAllTree',
                 /*新增*/
                 add: '/sysFunction/add',
                 /*修改*/

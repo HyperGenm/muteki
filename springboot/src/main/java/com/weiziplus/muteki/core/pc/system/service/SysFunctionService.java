@@ -206,6 +206,33 @@ public class SysFunctionService extends BaseService {
     }
 
     /**
+     * 获取所有树形结构
+     *
+     * @return
+     */
+    public ResultBean<List<SysFunction>> getAllTree() {
+        String redisKey = createRedisKey(REDIS_KEY_PREFIX + "getAllTree:");
+        Object object = RedisUtils.get(redisKey);
+        if (null != object) {
+            List<SysFunction> sysFunctionList = ToolUtils.objectOfList(object, SysFunction.class);
+            return ResultBean.success(sysFunctionList);
+        }
+        Integer minParentId = mapper.getMinParentId();
+        List<SysFunction> allFunctionList = mapper.getAllFunctionList();
+        List<SysFunction> resultList = new ArrayList<>();
+        for (SysFunction sysFunction : allFunctionList) {
+            if (!minParentId.equals(sysFunction.getParentId())) {
+                continue;
+            }
+            List<SysFunction> childrenListByParentId = getChildrenList(sysFunction.getId(), allFunctionList);
+            sysFunction.setChildren(childrenListByParentId);
+            resultList.add(sysFunction);
+        }
+        RedisUtils.set(redisKey, resultList);
+        return ResultBean.success(resultList);
+    }
+
+    /**
      * 新增功能
      *
      * @param sysFunctionDto

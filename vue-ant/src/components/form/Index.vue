@@ -11,96 +11,35 @@
             :scrollToFirstError="scrollToFirstError"
             :name="name"
             :validateTrigger="validateTrigger">
+        <slot name="headerSlot"></slot>
         <template v-for="item in itemList" :key="item.prop">
             <template v-if="item.slot">
                 <slot name="internalSlot"></slot>
             </template>
+            <template v-else-if="item.divider">
+                <a-divider :orientation="item.orientation || 'left'"
+                           :dashed="item.dashed"
+                           class="my-divider">
+                    {{item.content}}
+                </a-divider>
+            </template>
             <template v-else>
-                <a-form-item v-if="!item.hidden"
-                             :name="item.prop"
-                             :rules="item.rules"
-                             :autoLink="null != item.autoLink ? item.autoLink : true"
-                             :colon="item.colon"
-                             :extra="item.extra"
-                             :hasFeedback="item.hasFeedback"
-                             :help="item.help"
-                             :label="item.label"
-                             :labelCol="item.labelCol"
-                             :labelAlign="item.labelAlign"
-                             :required="item.required"
-                             :validateStatus="item.validateStatus"
-                             :wrapperCol="item.wrapperCol"
-                             :validateFirst="item.validateFirst"
-                             :validateTrigger="item.validateTrigger">
-                    <template v-if="'input' === item.type">
-                        <a-input v-model:value="form[item.prop]" allowClear
-                                 :placeholder="item.placeholder || '请输入'"
-                                 :type="item.inputType"
-                                 :disabled="item.disabled"/>
-                    </template>
-                    <template v-else-if="'textarea' === item.type">
-                        <a-textarea v-model:value="form[item.prop]"
-                                    allowClear autoSize showCount
-                                    :placeholder="item.placeholder || '请输入'"
-                                    :maxlength="item.maxlength"
-                                    :disabled="item.disabled"/>
-                    </template>
-                    <template v-else-if="'select' === item.type">
-                        <a-select v-model:value="form[item.prop]"
-                                  :placeholder="item.placeholder || '请选择'"
-                                  allowClear showSearch
-                                  :style="item.style || 'width:200px;'"
-                                  :mode="item.mode"
-                                  :disabled="item.disabled">
-                            <Option v-for="option in item.options"
-                                    :value="option.value">
-                                {{option.label || option.value}}
-                            </Option>
-                        </a-select>
-                    </template>
-                    <template v-else-if="'cascader' === item.type">
-                        <a-cascader v-model:value="form[item.prop]" showSearch
-                                    :style="item.style || 'width:200px;'"
-                                    :options="item.options"
-                                    :changeOnSelect="item.changeOnSelect"
-                                    :disabled="item.disabled"
-                                    :fieldNames="item.fieldNames"
-                                    :placeholder="item.placeholder || '请选择'"/>
-                    </template>
-                    <template v-else-if="'datePicker' === item.type">
-                        <a-date-picker v-model:value="form[item.prop]"
-                                       :placeholder="item.placeholder || '请选择'"
-                                       :valueFormat="item.valueFormat || 'YYYY-MM-DD'"
-                                       allowClear
-                                       :disabled="item.disabled"/>
-                    </template>
-                    <template v-else-if="'timePicker' === item.type">
-                        <a-time-picker v-model:value="form[item.prop]"
-                                       :placeholder="item.placeholder || '请选择'"
-                                       :valueFormat="item.valueFormat || 'HH:mm:ss'"
-                                       allowClear
-                                       :disabled="item.disabled"/>
-                    </template>
-                    <template v-else-if="'radio' === item.type">
-                        <a-radio-group v-model:value="form[item.prop]"
-                                       :size="item.size"
-                                       :name="item.name"
-                                       :buttonStyle="item.buttonStyle"
-                                       :disabled="item.disabled">
-                            <template v-for="option in item.options"
-                                      :key="option.value">
-                                <a-radio :value="option.value">
-                                    {{option.label || option.value}}
-                                </a-radio>
-                            </template>
-                        </a-radio-group>
-                    </template>
-                    <template v-else>
-                        {{item.label}}没有指定type
-                    </template>
-                </a-form-item>
+                <!--代表一行多项-->
+                <template v-if="null != item.items && 0 < item.items.length">
+                    <div style="display: flex;">
+                        <template v-for="i in item.items" :key="i.prop">
+                            <wei-form-item :form="form"
+                                           :item="i"></wei-form-item>
+                        </template>
+                    </div>
+                </template>
+                <template v-else>
+                    <wei-form-item :form="form"
+                                   :item="item"></wei-form-item>
+                </template>
             </template>
         </template>
+        <slot name="footerSlot"></slot>
         <a-form-item>
             <a-button type="primary" @click="onSubmit">
                 提交
@@ -113,37 +52,19 @@
 </template>
 
 <!--ref目前没有成功绑定到ant-design-vue的组件上-->
-
 <script>
-    import {
-        Form,
-        Switch,
-        DatePicker,
-        TimePicker,
-        Radio,
-        Button,
-        Input,
-        Select,
-        Cascader,
-    } from 'ant-design-vue';
+    import {Form, Button, Divider} from 'ant-design-vue';
     import $ant from '@/utils/ant';
+    import {defineAsyncComponent} from 'vue';
 
     export default {
         name: "WeiForm",
         components: {
             [Form.name]: Form,
             [Form.Item.name]: Form.Item,
-            [Switch.name]: Switch,
-            [DatePicker.name]: DatePicker,
-            [TimePicker.name]: TimePicker,
-            [Radio.name]: Radio,
-            [Radio.Group.name]: Radio.Group,
             [Button.name]: Button,
-            [Input.name]: Input,
-            [Input.TextArea.name]: Input.TextArea,
-            [Select.name]: Select,
-            [Select.Option.name]: Select.Option,
-            [Cascader.name]: Cascader,
+            [Divider.name]: Divider,
+            'wei-form-item': defineAsyncComponent(() => import('./Item.vue')),
         },
         props: {
             //表单数据对象
@@ -227,7 +148,7 @@
                         let {itemList, form, whitespace} = this;
                         let formData = {};
                         for (let i = 0; i < itemList.length; i++) {
-                            let {prop, label, required, hidden, disabled} = itemList[i];
+                            let {prop, label, required, hidden, disabled, items, slot} = itemList[i];
                             //如果隐藏本表单项
                             if (hidden) {
                                 continue;
@@ -236,28 +157,70 @@
                             if (disabled) {
                                 continue;
                             }
-                            let value = form[prop];
-                            //赋值
-                            formData[prop] = form[prop];
-                            //非必填
-                            if (!required) {
-                                continue;
-                            }
-                            //如果必填并且值为空
-                            if (null == value) {
-                                //滚动到对应字段位置
-                                this.$refs['form'].scrollToField();
-                                $ant.errorMsg(`${label}不能为空`);
-                                return;
-                            }
-                            //必选时，空格是否会被视为错误
-                            if (whitespace) {
-                                //如果是空字符串
-                                if ('' === ('' + value).replace(/(^\s*)|(\s*$)/g, "")) {
+                            if (null == items || 0 >= items.length) {
+                                //如果未指定prop
+                                if (null == prop) {
+                                    continue;
+                                }
+                                let value = form[prop];
+                                //赋值
+                                formData[prop] = form[prop];
+                                //非必填
+                                if (!required) {
+                                    continue;
+                                }
+                                //如果必填并且值为空
+                                if (null == value) {
                                     //滚动到对应字段位置
                                     this.$refs['form'].scrollToField();
                                     $ant.errorMsg(`${label}不能为空`);
                                     return;
+                                }
+                                //必选时，空格是否会被视为错误
+                                if (whitespace) {
+                                    //如果是空字符串
+                                    if ('' === ('' + value).replace(/(^\s*)|(\s*$)/g, "")) {
+                                        //滚动到对应字段位置
+                                        this.$refs['form'].scrollToField();
+                                        $ant.errorMsg(`${label}不能为空`);
+                                        return;
+                                    }
+                                }
+                                continue;
+                            }
+                            for (let j = 0; j < items.length; j++) {
+                                let {prop, label, required, hidden, disabled} = items[j];
+                                //如果隐藏本表单项
+                                if (hidden) {
+                                    continue;
+                                }
+                                //如果禁用本表单
+                                if (disabled) {
+                                    continue;
+                                }
+                                let value = form[prop];
+                                //赋值
+                                formData[prop] = form[prop];
+                                //非必填
+                                if (!required) {
+                                    continue;
+                                }
+                                //如果必填并且值为空
+                                if (null == value) {
+                                    //滚动到对应字段位置
+                                    this.$refs['form'].scrollToField();
+                                    $ant.errorMsg(`${label}不能为空`);
+                                    return;
+                                }
+                                //必选时，空格是否会被视为错误
+                                if (whitespace) {
+                                    //如果是空字符串
+                                    if ('' === ('' + value).replace(/(^\s*)|(\s*$)/g, "")) {
+                                        //滚动到对应字段位置
+                                        this.$refs['form'].scrollToField();
+                                        $ant.errorMsg(`${label}不能为空`);
+                                        return;
+                                    }
                                 }
                             }
                         }
@@ -276,3 +239,15 @@
         }
     }
 </script>
+
+<style lang="less" scoped>
+    ::v-deep(.my-divider) {
+        &:before {
+            border-top: 1px solid #777;
+        }
+
+        &:after {
+            border-top: 1px solid #777;
+        }
+    }
+</style>

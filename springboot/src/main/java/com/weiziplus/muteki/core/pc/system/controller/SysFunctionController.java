@@ -51,6 +51,13 @@ public class SysFunctionController {
         return service.getTree();
     }
 
+    @ApiOperation(value = "获取树形结构")
+    @GetMapping("/getAllTree")
+    @SysUserLogInterface(description = "获取所有系统功能树形结构")
+    public ResultBean<List<SysFunction>> getAllTree() {
+        return service.getAllTree();
+    }
+
     @ApiOperation(value = "新增功能")
     @PostMapping("/add")
     @SysUserLogInterface(description = "新增功能", type = SysUserLogInterface.TYPE_INSERT)

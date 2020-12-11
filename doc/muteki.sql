@@ -82,13 +82,13 @@ CREATE TABLE `sys_function`  (
   `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '功能描述',
   `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '功能创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统功能表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统功能表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_function
 -- ----------------------------
 INSERT INTO `sys_function` VALUES (1, 0, 'system', 'system', '系统管理', '[]', 1, 1, 1, 'el-icon-s-tools', 88, '后台的管理', '2019-05-09 16:55:47');
-INSERT INTO `sys_function` VALUES (2, 1, 'sysFunction', 'sysFunction', '功能管理', '[\"/pc/sysFunction/getPageList\"]', 1, 2, 1, 'el-icon-s-tools', 9, '管理后台的菜单、按钮等。对应api可以将权限精确到接口', '2019-05-09 16:56:10');
+INSERT INTO `sys_function` VALUES (2, 1, 'sysFunction', 'sysFunction', '功能管理', '[\"/pc/sysFunction/getPageList\", \"/pc/sysFunction/getAllTree\"]', 1, 2, 1, 'el-icon-s-tools', 9, '管理后台的菜单、按钮等。对应api可以将权限精确到接口', '2019-05-09 16:56:10');
 INSERT INTO `sys_function` VALUES (3, 1, 'sysRole', 'sysRole', '角色管理', NULL, 1, 1, 1, 'el-icon-user-solid\r\n', 2, '管理后台系统的各项角色，以及角色所拥有的功能等', '2019-05-09 16:56:26');
 INSERT INTO `sys_function` VALUES (4, 1, 'sysUser', 'sysUser', '系统用户管理', NULL, 1, 1, 1, 'el-icon-user', 1, '管理后台的用户', '2019-05-09 16:56:52');
 INSERT INTO `sys_function` VALUES (5, 29, 'sysUserLog', 'sysUserLog', '系统日志管理', '[\"/pc/sysUserLog/getPageList\"]', 1, 2, 1, 'el-icon-s-order', 4, '记录系统用户的操作', '2019-05-13 15:30:57');
@@ -128,6 +128,7 @@ INSERT INTO `sys_function` VALUES (38, 36, 'sysDept_get', 'sysDept_get', '查看
 INSERT INTO `sys_function` VALUES (39, 36, 'sysDept_add', 'sysDept_add', '新增', '[\"/pc/sysDept/add\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-11-27 11:51:08');
 INSERT INTO `sys_function` VALUES (40, 36, 'sysDept_update', 'sysDept_update', '修改', '[\"/pc/sysDept/update\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-11-27 11:51:52');
 INSERT INTO `sys_function` VALUES (41, 36, 'sysDept_delete', 'sysDept_delete', '删除', '[\"/pc/sysDept/delete\"]', 2, 1, 1, 'el-icon-info', 77, '', '2020-11-27 11:52:22');
+INSERT INTO `sys_function` VALUES (42, 15, 'form', 'form', '表单', NULL, 1, 2, 1, 'el-icon-info', 77, '', '2020-12-11 08:57:04');
 
 
 
