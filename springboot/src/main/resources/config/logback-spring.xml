@@ -41,6 +41,13 @@
             <!--日志文档保留天数-->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <!--表示匹配该级别及以上-->
+            <onMatch>ACCEPT</onMatch>
+            <!--表示不匹配该级别以下-->
+            <onMismatch>DENY</onMismatch>
+        </filter>
     </appender>
 
     <!-- 输出到文档-->
