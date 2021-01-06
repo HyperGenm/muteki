@@ -5,7 +5,7 @@
 *有vue2 element版和vue3 ant-design-vue版*  
 *闪耀吧! 宛如流星一般*
 
-## <a href="http://39.96.52.201/muteki/vuepress" target="_blank">说明文档</a>
+## <a href="http://82.156.70.219/muteki/vuepress" target="_blank">说明文档</a>
    * 文档更新中。。。
 
 ## <a href="https://gitee.com/WeiziPlus/springboot2-vue3-old" target="_blank">原项目地址</a>
@@ -24,8 +24,8 @@
 
 ### 演示地址
    * 在线演示地址  
-       [ant-design-vue版,vue3.0](http://39.96.52.201/muteki/vue-ant)  
-       [element版,vue2.5](http://39.96.52.201/muteki/vue)  
+       [ant-design-vue版,vue3.0](http://82.156.70.219/muteki/vue-ant)  
+       [element版,vue2.5](http://82.156.70.219/muteki/vue)  
         
         |  账号  |  密码  |
         |  :---: | :---: |
@@ -35,7 +35,7 @@
         * *tip:多个用户同时登陆可能会被顶掉,superadmin超级管理员才可以看到所有页面*
         * *tip:演示环境已经禁止部分增删改操作*
         * *tip:如果有其他异常，请强制刷新页面(有可能是缓存问题),如果还不行请提issues*
-   * [接口文档](http://39.96.52.201/muteki/doc.html)
+   * [接口文档](http://82.156.70.219/muteki/doc.html)
         * *swagger-bootstrap*
         * *tips:请在请求前面手动添加/muteki;请求会提示时间戳错误，请求请携带__t=当前时间戳*
 

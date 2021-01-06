@@ -394,7 +394,7 @@ CREATE TABLE `sys_dept`  (
   INDEX `parent_id`(`parent_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
 
-INSERT INTO sys_dept`(`id`, `parent_id`, `name`, `sort`, `remark`, `edit_username`, `edit_real_name`, `update_time`, `create_time`, `delete_time`) VALUES (1, 0, '最高级', 0, '', 'superadmin', 'superadmin', '2020-11-26 15:37:21', '2020-11-26 12:38:15', 0);
+INSERT INTO `sys_dept` (`id`, `parent_id`, `name`, `sort`, `remark`, `edit_username`, `edit_real_name`, `update_time`, `create_time`, `delete_time`) VALUES (1, 0, '最高级', 0, '', 'superadmin', 'superadmin', '2020-11-26 15:37:21', '2020-11-26 12:38:15', 0);
 
 -- ----------------------------
 -- Table structure for sys_user_dept
