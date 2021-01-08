@@ -6,7 +6,7 @@
     <properties resource="application-dev.yml"/>
     <!--mysql驱动jar路径-->
     <classPathEntry
-            location="E:\apache-maven-3.6.0\maven-repository\mysql\mysql-connector-java\8.0.15\mysql-connector-java-8.0.15.jar"/>
+            location="D:\apache-maven-3.6.3\maven-repository\mysql\mysql-connector-java\8.0.15\mysql-connector-java-8.0.15.jar"/>
     <context id="default" targetRuntime="MyBatis3">
         <!--获取application-dev.yml中的配置信息-->
         <property name="url" value="${spring.datasource.url}"/>
@@ -31,8 +31,8 @@
         </commentGenerator>
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="${url}"
-                        userId="${username}"
-                        password="${password}">
+                        userId="root1"
+                        password="123456">
             <!--使用mysql8.0时必须设置为true，防止生成其他数据库中的表-->
             <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
@@ -55,7 +55,7 @@
         <!--该元素有一个必选属性：
         tableName：指定要生成的表名，可以使用SQL通配符匹配多个表。
         例如要生成全部的表，可以按如下配置：-->
-        <table tableName="sys_function" enableCountByExample="false"
+        <table tableName="sys_user_dep1t" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <!--去除生成的T前缀-->
