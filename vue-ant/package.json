@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "ant-serve": "vue-cli-service serve",
-    "ant-build": "vue-cli-service build"
+    "ant-build-test": "vue-cli-service build --mode test",
+    "ant-build-production": "vue-cli-service build --mode production"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^5.1.7",

@@ -15,7 +15,7 @@ module.exports = {
     //打包时注意路径问题
     publicPath: PRODUCTION === NODE_ENV ? './' : '/',
     // 运行时生成的生产环境构建文件的目录(默认''dist''，构建之前会被清除)
-    outputDir: 'dist',
+    outputDir: `dist/${process.env.outputDir || 'temp'}`,
     //放置生成的静态资源(s、css、img、fonts)的(相对于 outputDir 的)目录(默认'')
     assetsDir: 'assets',
     //指定生成的 index.html 的输出路径(相对于 outputDir)也可以是一个绝对路径

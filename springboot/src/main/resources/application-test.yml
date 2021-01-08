@@ -21,7 +21,7 @@ mybatis:
 knife4j:
   production: false
   basic:
-    enable: false
+    enable: true
     ## Basic认证用户名
     username: weiziplus
     ## Basic认证密码
