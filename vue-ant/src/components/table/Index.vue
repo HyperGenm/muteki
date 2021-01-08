@@ -525,7 +525,11 @@
                         } catch (e) {
                             console.log(`表格请求出错:url:${props['url']},详情:${JSON.stringify(res['data'])}`);
                         }
-                        locale.emptyText = JSON.stringify(res['data']);
+                        locale.emptyText = JSON.stringify({
+                            code: res['code'],
+                            msg: res['msg'],
+                            data: res['data']
+                        });
                         return;
                     }
                     try {

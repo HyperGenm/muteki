@@ -35,7 +35,7 @@ public class GlobalExceptionConfig {
     public ResultBean runtimeException(RuntimeException ex) {
         log.warn("全局捕获运行时异常" + ex.getStackTrace()[0] + ":" + ex);
         errorAsync.saveError(ex, "系统捕获运行时异常" + ex.getStackTrace()[0]);
-        return ResultBean.errorException("系统异常，请重试。RuntimeException", ex);
+        return ResultBean.errorException("系统异常，请重试。RuntimeException" + ex, ex);
     }
 
     /**
@@ -49,7 +49,7 @@ public class GlobalExceptionConfig {
     public ResultBean nullPointerException(NullPointerException ex) {
         log.warn("系统捕获空指针异常NullPointerException,详情:", ex);
         errorAsync.saveError(ex, "系统捕获空指针异常NullPointerException" + ex.getStackTrace()[0]);
-        return ResultBean.errorException("系统异常，请重试。NullPointerException", ex);
+        return ResultBean.errorException("系统异常，请重试。NullPointerException" + ex, ex);
     }
 
     /**
@@ -61,8 +61,8 @@ public class GlobalExceptionConfig {
     @ExceptionHandler(Exception.class)
     public ResultBean exception(Exception ex) {
         log.warn("全局捕获所有异常" + ex.getStackTrace()[0] + ":" + ex);
-        errorAsync.saveError(ex, "系统捕获异常"+ ex.getStackTrace()[0]);
-        return ResultBean.errorException("系统异常，请重试。Exception", ex);
+        errorAsync.saveError(ex, "系统捕获异常" + ex.getStackTrace()[0]);
+        return ResultBean.errorException("系统异常，请重试。Exception" + ex, ex);
     }
 
     /**
