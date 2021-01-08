@@ -24,8 +24,7 @@
 
     <!-- 输出到文档-->
     <appender name="LOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 追加方式记录日志 -->
-        <append>true</append>
+        <prudent>true</prudent>
         <!-- 文件输出的日志 的格式 -->
         <encoder>
             <pattern>
