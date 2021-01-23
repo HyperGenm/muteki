@@ -68,9 +68,13 @@ public class LoginService extends BaseService {
         }
         HttpServletRequest request = getRequest();
         WebJwtExpand expand = new WebJwtExpand()
-                .setUsername(user.getUsername());
+                .setUsername(user.getUsername())
+                .setTerminalEnum(WebTerminalEnum.WEB);
         String token = WebTokenUtils.createToken(
                 WebTerminalEnum.WEB, user.getId(), request, expand);
+        userLogin.setResultCode(ResultEnum.SUCCESS.getValue())
+                .setResultMsg("success");
+        saveLoginLog(userLogin);
         return ResultBean.success(token);
     }
 
@@ -86,9 +90,16 @@ public class LoginService extends BaseService {
                 User.class, User.COLUMN_USERNAME, username);
         HttpServletRequest request = getRequest();
         WebJwtExpand expand = new WebJwtExpand()
-                .setUsername(user.getUsername());
+                .setUsername(user.getUsername())
+                .setTerminalEnum(WebTerminalEnum.APP);
         String token = WebTokenUtils.createToken(
                 WebTerminalEnum.APP, user.getId(), request, expand);
+        UserLogin userLogin = new UserLogin()
+                .setUsername(username)
+                .setTerminal(WebTerminalEnum.WEB.getName())
+                .setResultCode(ResultEnum.SUCCESS.getValue())
+                .setResultMsg("success");
+        saveLoginLog(userLogin);
         return ResultBean.success(token);
     }
 
