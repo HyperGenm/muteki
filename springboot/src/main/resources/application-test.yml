@@ -3,7 +3,7 @@ server:
   port: 8080
 spring:
   #开发版配置
-  profiles: dev
+  profiles: test
   #配置数据源
   datasource:
     username: root
