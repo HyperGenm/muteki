@@ -96,10 +96,10 @@
                         )
                     </when>
                     <when test="'LIKE' == item.WHERE">
-                        `${item.COLUMN}` LIKE #{value}
+                        `${item.COLUMN}` LIKE #{item.VALUE}
                     </when>
                     <when test="'POSITION' == item.WHERE">
-                        POSITION(#{value} IN `${item.COLUMN}`)
+                        POSITION(#{item.VALUE} IN `${item.COLUMN}`)
                     </when>
                     <otherwise>
                         `${item.COLUMN}` ${item.WHERE} #{item.VALUE}
