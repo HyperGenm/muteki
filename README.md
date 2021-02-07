@@ -27,7 +27,7 @@
 
 ### 演示地址
    * 在线演示地址  
-       [ant-design-vue版,vue3.0](http://82.156.70.219/muteki/vue-ant)  
+       [ant-design-vue版,vue3.0,ant-design-vue2.0.0](http://82.156.70.219/muteki/vue-ant)  
        [element版,vue2.5](http://82.156.70.219/muteki/vue)  
         
         |  账号  |  密码  |
