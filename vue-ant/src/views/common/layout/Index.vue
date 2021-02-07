@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import { reactive, defineAsyncComponent} from 'vue';
+    import {reactive, defineAsyncComponent, defineComponent} from 'vue';
 
     export default {
         name: "Layout",

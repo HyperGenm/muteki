@@ -16,19 +16,20 @@ const handleRouter = (value: any, parentPath = '') => {
         meta: {
             title: value['title'],
             id: value['id'],
-            externalUrl: value['path']
+            externalUrl: value['path'],
+            icon: value['icon']
         }
     };
     let {children} = value;
     //没有子级路由
     if (null == children || 0 >= children.length) {
         if (2 === value['externalFlag']) {
-            router['component'] = defineAsyncComponent(() => import(`@/views/common/externalUrl/Index.vue`));
+            router['component'] = () => import(`@/views/common/externalUrl/Index.vue`);
         } else {
-            router['component'] = defineAsyncComponent(() => import(`@/views/main/${parentPath}${value['path']}/Index.vue`));
+            router['component'] = () => import(`@/views/main/${parentPath}${value['path']}/Index.vue`);
         }
     } else {
-        router['component'] = defineAsyncComponent(() => import(`@/views/common/station/Index.vue`));
+        router['component'] = () => import(`@/views/common/station/Index.vue`);
         router['redirect'] = `${parentPath}/${value.path}/${children[0]['path']}`;
         router['children'] = handleChildrenRouters(value['children'], `${parentPath}${value['path']}/`);
     }
@@ -57,7 +58,7 @@ const initRouter = () => {
     routers.push({
         path: '/:pathMatch(.*)*',
         name: '404',
-        component: defineAsyncComponent(() => import('@/views/common/errorPage/404.vue'))
+        component: () => import('@/views/common/errorPage/404.vue')
     });
     router.addRoute({
         path: '/',

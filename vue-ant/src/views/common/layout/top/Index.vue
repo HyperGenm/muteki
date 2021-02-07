@@ -9,14 +9,19 @@
                 <wei-icon icon="MenuUnfoldOutlined"></wei-icon>
             </template>
         </div>
-        <!--<div class="tags" :style="`width:${tagsWidth}px`">
+        <div class="tags" :style="`width:${tagsWidth}px`">
             <a-tabs size="large"
                     v-model:activeKey="tabActiveKey"
                     @change="tabChange">
                 <a-tab-pane v-for="item in tabList"
-                            :key="item.path" :tab="item.title"/>
+                            :key="item.path">
+                    <template #tab>
+                        <wei-icon :icon="item.icon" defaultIcon="InfoCircleOutlined"></wei-icon>
+                        <span>{{item.title}}</span>
+                    </template>
+                </a-tab-pane>
             </a-tabs>
-        </div>-->
+        </div>
         <div class="right" ref="right">
             <div class="locale"
                  @click="locale.change">
@@ -103,6 +108,28 @@
                 type: Boolean
             }
         },
+        watch: {
+            //监听路由变化
+            $route(to, from) {
+                if (['/', '/404', '/login'].includes(to.path)) {
+                    return;
+                }
+                for (let i = 0; i < this.tabList.length; i++) {
+                    if (to['path'] === this.tabList[i]['path']) {
+                        //设置当前选中的
+                        this.tabActiveKey = to['path'];
+                        return;
+                    }
+                }
+                this.tabList.push({
+                    title: to['meta']['title'],
+                    icon: to['meta']['icon'],
+                    name: to['name'],
+                    path: to['path'],
+                });
+                this.tabActiveKey = to['path'];
+            }
+        },
         setup(props, {emit}) {
             //获取当前实例
             let instance = getCurrentInstance();
@@ -144,28 +171,6 @@
                 userInfo['realName'] = user['realName'];
                 userInfo['avatarSrc'] = user['icon'];
             });
-            //监听路由变化
-            /*watch($route, (to) => {
-                if ('/' === to.path) {
-                    return;
-                }
-                if ('/404' === to.path) {
-                    return;
-                }
-                for (let i = 0; i < tabList.value.length; i++) {
-                    if (to['path'] === tabList.value[i]['path']) {
-                        //设置当前选中的
-                        tabActiveKey.value = to['path'];
-                        return;
-                    }
-                }
-                tabList.value.push({
-                    title: to['meta']['title'],
-                    name: to['name'],
-                    path: to['path'],
-                });
-                tabActiveKey.value = to['path'];
-            });*/
             //引入App.vue设置的国际化
             let localeInject = inject('locale');
             let localeChange = inject('localeChange');
