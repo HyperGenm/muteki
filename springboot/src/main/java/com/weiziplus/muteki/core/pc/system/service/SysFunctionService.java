@@ -130,7 +130,7 @@ public class SysFunctionService extends BaseService {
             sysFunction.setChildren(childrenList);
             result.add(sysFunction);
         }
-        RedisUtils.set(redisKey, redisKey);
+        RedisUtils.set(redisKey, result);
         return result;
     }
 
