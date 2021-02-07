@@ -37,10 +37,10 @@
                       :style="item.style || 'width:200px;'"
                       :mode="item.mode"
                       :disabled="item.disabled">
-                <Option v-for="option in item.options"
-                        :value="option.value">
+                <a-select-option v-for="option in item.options"
+                                 :value="option.value">
                     {{option.label || option.value}}
-                </Option>
+                </a-select-option>
             </a-select>
         </template>
         <template v-else-if="'cascader' === item.type">
@@ -113,7 +113,7 @@
             [Input.name]: Input,
             [Input.TextArea.name]: Input.TextArea,
             [Select.name]: Select,
-            [Select.Option.name]: Select.Option,
+            [Select.Option.displayName]: Select.Option,
             [Cascader.name]: Cascader,
         },
         props: {

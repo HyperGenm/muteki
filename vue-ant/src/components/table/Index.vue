@@ -22,10 +22,10 @@
                                       :style="item.style || 'width:200px;'"
                                       :mode="item.mode">
                                 <!--使用 a-select-option 会爆警告-->
-                                <Option v-for="option in item.options"
+                                <a-select-option v-for="option in item.options"
                                         :value="option.value">
                                     {{option.label || option.value}}
-                                </Option>
+                                </a-select-option>
                             </a-select>
                         </template>
                         <template v-else-if="'treeSelect' === item.type">
@@ -354,7 +354,7 @@
             [TimePicker.name]: TimePicker,
             [Button.name]: Button,
             [Select.name]: Select,
-            [Select.Option.name]: Select.Option,
+            [Select.Option.displayName]: Select.Option,
             [Input.name]: Input,
             [Input.Search.name]: Input.Search,
             [Form.Item.name]: Form.Item,

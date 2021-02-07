@@ -30,11 +30,11 @@
             <a-select v-model:value="role.value"
                       style="width: 240px;"
                       allowClear mode="multiple">
-                <Option v-for="option in role.options"
+                <a-select-option v-for="option in role.options"
                         :key="option.value"
                         :value="option.value">
                     {{option.label || option.value}}
-                </Option>
+                </a-select-option>
             </a-select>
         </a-modal>
     </template>
@@ -68,7 +68,7 @@
             [Modal.name]: Modal,
             [Input.name]: Input,
             [Select.name]: Select,
-            [Select.Option.name]: Select.Option,
+            [Select.Option.displayName]: Select.Option,
             [TreeSelect.name]: TreeSelect,
             'my-table': defineAsyncComponent(() => import('@/components/table/Index.vue')),
             'my-descriptions': defineAsyncComponent(() => import('@/components/descriptions/Index.vue')),
