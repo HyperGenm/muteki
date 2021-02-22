@@ -125,7 +125,7 @@ public class LoginService extends BaseService {
             saveLoginLog(sysUserLogin);
             return ResultBean.error("用户名错误");
         }
-        if (!sysUser.getPassword().equals(Md5Utils.encode(loginDto.getPassword()))) {
+        /*if (!sysUser.getPassword().equals(Md5Utils.encode(loginDto.getPassword()))) {
             sysUserLogin.setResultCode(ResultEnum.ERROR.getValue())
                     .setResultMsg("密码错误");
             saveLoginLog(sysUserLogin);
@@ -136,7 +136,7 @@ public class LoginService extends BaseService {
                     .setResultMsg("您的账号已停用，如有疑问请联系管理员");
             saveLoginLog(sysUserLogin);
             return ResultBean.error("您的账号已停用，如有疑问请联系管理员");
-        }
+        }*/
         //获取用户的角色列表
         List<SysUserRole> sysUserRoleList = baseFindListByClassAndColumnAndValue(
                 SysUserRole.class, SysUserRole.COLUMN_USER_ID, sysUser.getId());

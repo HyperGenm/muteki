@@ -166,7 +166,7 @@ public class PcAuthorizationInterceptor implements HandlerInterceptor {
         //获取用户id
         Integer userId = PcTokenUtils.getUserId();
         //查看redis是否过期
-        if (!RedisUtils.hasKye(PcTokenUtils.createRedisKey(userId))) {
+        /*if (!RedisUtils.hasKye(PcTokenUtils.createRedisKey(userId))) {
             HttpRequestUtils.handleErrorResponse(ResultBean.errorToken("token失效"));
             return false;
         }
@@ -174,7 +174,7 @@ public class PcAuthorizationInterceptor implements HandlerInterceptor {
         if (!token.equals(RedisUtils.get(PcTokenUtils.createRedisKey(userId)))) {
             HttpRequestUtils.handleErrorResponse(ResultBean.errorToken("token失效"));
             return false;
-        }
+        }*/
         //判断是否触发限流
         if (!handleRateLimiter(request, response, object)) {
             HttpRequestUtils.handleErrorResponse(ResultBean.error("访问频率过快,请稍后再试"));
