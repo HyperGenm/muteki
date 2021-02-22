@@ -107,7 +107,6 @@ module.exports = {
     },
     //本地项目运行时的环境配置
     devServer: {
-        host: 'localhost',
         port: 80,
         https: false,
         hotOnly: false
