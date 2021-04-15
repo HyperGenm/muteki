@@ -161,6 +161,12 @@
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>4.5.3</version>
         </dependency>
+        <!-- 将System.out.print()转为slf4j打印-->
+        <dependency>
+            <groupId>uk.org.lidalia</groupId>
+            <artifactId>sysout-over-slf4j</artifactId>
+            <version>1.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>
